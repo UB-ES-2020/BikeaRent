@@ -12,7 +12,7 @@ type = ('user','support','admin','technical')
 
 class AccountsModel(db.Model):
 
-    __tablename__ = 'Accounts'
+    __tablename__ = 'accounts'
 
     id = db.column(db.Integer, primary_key = True)
     firstname = db.column(db.String(30))
@@ -27,22 +27,30 @@ class AccountsModel(db.Model):
     availableMoney = db.column(db.Integer)
     type = db.column(db.Enum(*type))
 
-    def __init__(firstname,surname,email,username,password,dni,dataEndDrivePermission,status,creditCard,availableMoney,type):
+
+    def __init__(self,firstname,surname,email,username,dni,dataEndDrivePermission,status,creditCard,availableMoney,type):
         self.firstname = firstname
         self.surname = surname
         self.email = email
         self.username = username
-        self.password = password
         self.dni = dni
         self.dataEndDrivePermission = dataEndDrivePermission
         self.status = status
         self.creditCard = creditCard
         self.availableMoney = availableMoney
         self.type = type
-"""
-    def __init__(self, username, available_money=200, is_admin=0):
-        self.username = username
-        self.available_money = available_money
-        self.is_admin = is_admin
-"""
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def find_by_username(cls, username):
+        return AccountsModel.query.filter_by(username=username).first()
+
+
 
