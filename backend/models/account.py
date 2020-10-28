@@ -8,9 +8,45 @@ from flask import g
 auth = HTTPBasicAuth()
 
 class AccountsModel(db.Model):
+    __tablename__ = 'accounts'
 
-    def __init__(self, username, available_money=200, is_admin=0):
+    email = db.Column(db.String(30), primary_key = True, unique=True, nullable=False)
+    password = db.Column(db.String(), nullable=False)
+    username = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
+    dni = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
+    iban = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
+
+    def __init__(self, email, username, password, dni, iban):
+        self.email = email
         self.username = username
-        self.available_money = available_money
-        self.is_admin = is_admin
+        self.password = password
+        self.dni = dni
+        self.iban = iban
 
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def find_by_email(cls, email):
+        return AccountsModel.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_by_username(cls, username):
+        return AccountsModel.query.filter_by(username=username).first()
+
+    def hash_password(self, password):
+        self.password = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password)
+
+    @auth.verify_password
+    def verify_password(token, password):
+        user = AccountsModel.verify_auth_token(token)
+        g.user = user
+        return user
