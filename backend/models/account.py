@@ -1,9 +1,5 @@
 from db import db
-from flask import g, current_app
-from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask_httpauth import HTTPBasicAuth
-from flask import g
 
 auth = HTTPBasicAuth()
 
@@ -14,18 +10,18 @@ class AccountsModel(db.Model):
 
     __tablename__ = 'accounts'
 
-    id = db.column(db.Integer, primary_key = True)
-    firstname = db.column(db.String(30))
-    surname = db.column(db.String(30))
-    email = db.column(db.String(30))
-    username = db.column(db.String(30))
-    password = db.column(db.String(30))
-    dni = db.column(db.String(30))
-    dataEndDrivePermission = db.column(db.Date())
-    status = db.column(db.Enum(*status))
-    creditCard = db.column(db.String(30))
-    availableMoney = db.column(db.Integer)
-    type = db.column(db.Enum(*type))
+    id = db.Column(db.Integer, primary_key = True)
+    firstname = db.Column(db.String(30))
+    surname = db.Column(db.String(30))
+    email = db.Column(db.String(30))
+    username = db.Column(db.String(30))
+    password = db.Column(db.String(30))
+    dni = db.Column(db.String(30))
+    dataEndDrivePermission = db.Column(db.Date())
+    status = db.Column(db.Enum(*status))
+    creditCard = db.Column(db.String(30))
+    availableMoney = db.Column(db.Integer)
+    type = db.Column(db.Enum(*type))
 
 
     def __init__(self,firstname,surname,email,username,dni,dataEndDrivePermission,status,creditCard,availableMoney,type):
