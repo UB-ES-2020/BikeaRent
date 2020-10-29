@@ -10,11 +10,11 @@ auth = HTTPBasicAuth()
 class AccountsModel(db.Model):
     __tablename__ = 'accounts'
 
-    email = db.Column(db.String(30), primary_key = True, unique=True, nullable=False)
-    password = db.Column(db.String(), nullable=False)
-    username = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
-    dni = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
-    iban = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
+    email = db.Column(db.String(50), primary_key = True, unique=True, nullable=False)
+    password = db.Column(db.String(30), nullable=False)
+    username = db.Column(primary_key=True, unique=True, nullable=False)
+    dni = db.Column(db.String(9),unique=True, nullable=False)
+    iban = db.Column(db.String(24),nullable=False)
 
     def __init__(self, email, username, password, dni, iban):
         self.email = email
@@ -22,6 +22,14 @@ class AccountsModel(db.Model):
         self.password = password
         self.dni = dni
         self.iban = iban
+
+    def json(self):
+        dictionary = {  'email': self.email,
+                        'username': self.username,
+                        'password': self.password,
+                        'dni': self.dni,
+                        'iban': self.iban}
+        return dictionary
 
     def save_to_db(self):
         db.session.add(self)
