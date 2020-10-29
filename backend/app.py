@@ -1,19 +1,35 @@
-from flask import Flask, render_template, url_for, request, redirect, session, request
+from flask import Flask, render_template, g, url_for, request, redirect, session, request
 from flask_restful import reqparse, Resource, Api
+from flask_migrate import Migrate
 from backend.models.account import AccountsModel
-from backend.models.order import OrderModel
+from backend.models.order import OrdersModel
+from db import db
 
 
 app = Flask(__name__)
+
+migrate = Migrate(app,db)
+db.init_app(app)
 api = Api(app)
 
+
+
 @app.route('/')
+@app.route('/userlogin')
+@app.route('/newaccount')
 def login():
-    return 'Hello World!'
+    return render_template("index.html")
 
 
 # -------- Register  ---------------------------------------------------------- #
-class Register(Resource):
+class Accounts(Resource):
+    def gest(self, username):
+        user = AccountsModel.find_by_username(username)
+        if user:
+            return user.json(), 200
+        else:
+            return {'message': 'There is no client with username [{}] .'.format(username)}, 404
+
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
@@ -23,9 +39,9 @@ class Register(Resource):
         parser.add_argument('iban', type=str, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
 
-        c = AccountsModel.find_by_username(data['username'])
+        c = AccountsModel.find_by_email(data['email'])
         if c:
-            return {"message": "Username was registered before"}, 400
+            return {"message": "This email was registered before."}, 400
         else:
             new_user = AccountsModel(data['email'])
             new_user.hash_password(data['password'])
@@ -41,7 +57,7 @@ class Register(Resource):
     def delete(self, username):
         if username == g.user.username:
             user = AccountsModel.find_by_username(username)
-            if user:
+            if user: #OrdersModel -> nombre provisional
                 user_order = OrdersModel.find_by_username(username)
                 for usr in user_order:
                     usr.delete_from_db()
@@ -60,6 +76,16 @@ class Register(Resource):
         else:
             return {"message": "User match not found"}, 400
 
+
+# -------- Accounts List  ---------------------------------------------------------- #
+class AccountsList(Resource):
+    def get(self):
+        users = AccountsModel.query.all()
+        all_accounts = []
+        for u in users:
+            all_accounts.append(u.json())
+
+        return {'accounts': all_accounts}, 200
 
 # -------- Login  ---------------------------------------------------------- #
 class Login(Resource):
@@ -81,8 +107,15 @@ class Login(Resource):
 
 # -------- Logout  ---------------------------------------------------------- #
 class Logout(Resource):
+    def logout(self):
+        return render_template("/index")
 
 
+
+api.add_resource(Accounts, '/account/<string:username>', '/account')
+api.add_resource(AccountsList, '/accounts')
+
+api.add_resource(Login, '/login')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
