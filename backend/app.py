@@ -1,5 +1,6 @@
 from flask import Flask
-
+from models.moto import MotosModel
+from flask_restful import Resource
 app = Flask(__name__)
 
 
@@ -10,3 +11,13 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run()
+
+
+class MotosList(Resource):
+    def get(self):
+        motos = MotosModel.query.filter_by(active = True)
+        motosList = []
+        for moto in motos:
+            motosList.append(moto.json())
+        return motosList
+
