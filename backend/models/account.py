@@ -12,13 +12,42 @@ class AccountsModel(db.Model):
 
     username = db.Column(db.String(30), primary_key=True, unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(50), primary_key=True, unique=True, nullable=False)
+    dni = db.Column(db.String(9), unique=True, nullable=False)
+    # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False)
     available_money = db.Column(db.Integer)
 
-    def __init__(self, username, available_money=200, is_admin=0):
+
+    def __init__(self, username, email, dni, available_money=200, is_admin=0):
         self.username = username
+        self.email = email
+        self.dni = dni
         self.available_money = available_money
         self.is_admin = is_admin
+
+
+    def json(self):
+        dictionary = {  'username': self.username,
+                        'email': self.email,
+                        'dni': self.dni}
+        return dictionary
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def find_by_email(cls, email):
+        return AccountsModel.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_by_username(cls, username):
+        return AccountsModel.query.filter_by(username=username).first()
 
 
     def hash_password(self, password):
@@ -50,3 +79,4 @@ def verify_password(token, password):
     user = AccountsModel.verify_auth_token(token)
     g.user = user
     return user
+
