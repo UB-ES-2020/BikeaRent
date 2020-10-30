@@ -1,10 +1,5 @@
 from db import db
 
-from flask_httpauth import HTTPBasicAuth
-
-
-auth = HTTPBasicAuth()
-
 class BookingModel(db.Model):
 
 	__tablename__ = 'booking'
