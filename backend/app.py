@@ -37,13 +37,14 @@ class Accounts(Resource):
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('role', type=str, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
 
         user = AccountsModel.find_by_username(data['username'])
         if user:
             return {"message": "User already exists"}, 400
         else:
-            new_user = AccountsModel(data['username'], data['email'], data['dni'])
+            new_user = AccountsModel(data['username'], data['email'], data['dni'], data['role'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()

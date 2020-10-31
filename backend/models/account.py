@@ -14,23 +14,24 @@ class AccountsModel(db.Model):
     password = db.Column(db.String(), nullable=False)
     email = db.Column(db.String(50), primary_key=True, unique=True, nullable=False)
     dni = db.Column(db.String(9), unique=True, nullable=False)
-    # 0 not admin/ 1 is admin
-    is_admin = db.Column(db.Integer, nullable=False)
+    # role: admin/soporte/tecnico/user
+    role = db.Column(db.String(10), nullable=False)
     available_money = db.Column(db.Integer)
 
 
-    def __init__(self, username, email, dni, available_money=200, is_admin=0):
+    def __init__(self, username, email, dni, available_money=200, role = 'admin'):
         self.username = username
         self.email = email
         self.dni = dni
         self.available_money = available_money
-        self.is_admin = is_admin
+        self.role = role
 
 
     def json(self):
         dictionary = {  'username': self.username,
                         'email': self.email,
-                        'dni': self.dni}
+                        'dni': self.dni,
+                        'role': self.role}
         return dictionary
 
     def save_to_db(self):
