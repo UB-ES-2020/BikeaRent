@@ -51,13 +51,7 @@ class Booking(Resource):
         except:
             return "Something went wrong", 500
 
-
-class FinalizeBooking(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('userid', type=int, required=True, help="The userid is required")
-    parser.add_argument('motoid', type=int, required=True, help="The motoid is required")
-
-    def post(self):
+    def put(self):
 
         data = Booking.parser.parse_args()
 
@@ -93,10 +87,8 @@ db.init_app(app)
 
 # app.app_context().push()
 
-api.add_resource(Booking, '/rent/<string:username>')
+api.add_resource(Booking, '/rent/<string:username>', '/rent')
 api.add_resource(BookingList, '/rents')
-
-api.add_resource(FinalizeBooking, '/finalizerent')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
