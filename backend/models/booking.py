@@ -79,3 +79,5 @@ class BookingModel(db.Model):
                 book.price = book.totalTimeUsed * pricePerSecond
 
                 book.save_to_db()
+
+        return book

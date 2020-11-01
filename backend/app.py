@@ -52,6 +52,36 @@ class Booking(Resource):
             return "Something went wrong", 500
 
 
+class FinalizeBooking(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('userid', type=int, required=True, help="The userid is required")
+    parser.add_argument('motoid', type=int, required=True, help="The motoid is required")
+
+    def post(self):
+
+        data = Booking.parser.parse_args()
+
+        userid = data['userid']
+        motoid = data['motoid']
+
+        try:
+            admin_user = AccountsModel.find_by_username('admin')
+            user = AccountsModel.find_by_id(userid)
+
+            if user is None:
+                return "User not found", 404
+
+            book = BookingModel.finalize_book(userid, motoid)
+            MotosModel.change_status(motoid)
+
+            admin_user.availableMoney += book.price
+            user.availableMoney -= book.price
+
+            return "Booking finalized correctly", 201
+        except:
+            return "Something went wrong", 500
+
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -65,6 +95,8 @@ db.init_app(app)
 
 api.add_resource(Booking, '/rent/<string:username>')
 api.add_resource(BookingList, '/rents')
+
+api.add_resource(FinalizeBooking, '/finalizerent')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
