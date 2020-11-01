@@ -1,4 +1,6 @@
-from db import db
+from backend.db import db
+from backend.models.account import AccountsModel
+
 
 class BookingModel(db.Model):
 
@@ -13,29 +15,48 @@ class BookingModel(db.Model):
 	endDate = db.Column(db.Date())
 	totalTimeUsed = db.Column(db.Time())
 
-	def __init__(self,userid,motoid,startDate,endDate,totalTimeUsed):
-		self.userid = userid
-		self.motoid = motoid
-		self.startDate = startDate
-		self.endDate = endDate
-		self.totalTimeUsed = totalTimeUsed
+    def __init__(self, userid, motoid, startDate, endDate, totalTimeUsed):
+        self.userid = userid
+        self.motoid = motoid
+        self.startDate = startDate
+        self.endDate = endDate
+        self.totalTimeUsed = totalTimeUsed
 
-	def save_to_db(self):
-		db.session.add(self)
-		db.session.commit()
+    def json(self):
+        return {
+            'id': self.id,
+            'userid': self.userid,
+            'motoid': self.motoid,
+            'startDate': self.startDate,
+            'endDate': self.endDate,
+            'totalTimeUsed': self.totalTimeUsed
+        }
 
-	def delete_from_db(self):
-		db.session.delete(self)
-		db.session.commit()
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
-	@classmethod
-	def find_by_id(cls, id):
-		return booking.query.filter_by(id=id).first()
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
 
-	@classmethod
-	def find_by_username(cls, userid):
-		return booking.query.filter_by(userid=userid)
+    # @classmethod
+    # def find_by_id(cls, id):
+    #     return cls.query.filter_by(id=id).first()
+    #
+    # @classmethod
+    # def find_by_userid(cls, userid):
+    #     return cls.query.filter_by(userid=userid).first()
 
-	@classmethod
-	def find_by_username(cls, motoid):
-		return booking.query.filter_by(motoid=motoid)
+    @classmethod
+    def find_by_username(cls, username):
+        return AccountsModel.find_by_username(username)
+
+    # @classmethod
+    # def find_by_motoid(cls, motoid):
+    #     return cls.query.filter_by(motoid=motoid).first()
+
+    @classmethod
+    def list_orders(cls):
+        orders = [order.json() for order in cls.query.all()]
+        return {"orders": orders}
