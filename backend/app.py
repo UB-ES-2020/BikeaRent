@@ -7,7 +7,7 @@ from backend.models.booking import BookingModel
 from backend.models.moto import MotosModel
 from backend.models.account import AccountsModel
 
-from datetime import datetime
+import time
 
 
 class BookingList(Resource):
@@ -42,7 +42,7 @@ class Booking(Resource):
         try:
             if user.availableMoney > 5:
                 if moto_active is True:
-                    new_rent = BookingModel(userid, motoid, datetime.now(), None, None)
+                    new_rent = BookingModel(userid, motoid, time.time(), None, None, None)
                     MotosModel.change_status(motoid)
 
                     return {"new_rent": new_rent.json()}, 201
