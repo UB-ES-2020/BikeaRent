@@ -1,10 +1,11 @@
+from sqlite3.dbapi2 import Date
+
 from flask import Flask, render_template
-from db import db
 from flask_migrate import Migrate, Resource, Api
 from backend.models.booking import BookingModel
 from backend.models.moto import MotosModel
 from backend.models.account import AccountsModel
-from flask_restful import Resource
+from flask_restful import Resource, Api, reqparse
 from backend.db import db
 
 
@@ -41,18 +42,26 @@ class Accounts(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
+        parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('role', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission', type=Date, required=True, help="This field cannot be left blank")
+        parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
 
         user = AccountsModel.find_by_username(data['username'])
         if user:
             return {"message": "User already exists"}, 400
         else:
-            new_user = AccountsModel(data['username'], data['email'], data['dni'], data['role'])
+            new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
+                                     data['dataEndDrivePermission'], data['status'], data['creditCard'], data['availableMoney'],
+                                     data['type'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()
@@ -100,6 +109,8 @@ class MotosList(Resource):
 
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
+
+api.add_resource(MotosList, '/motos')
 
 api.add_resource(Login, '/login')
 

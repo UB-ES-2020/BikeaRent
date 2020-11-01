@@ -17,24 +17,25 @@ class AccountsModel(db.Model):
 
     __tablename__ = 'accounts'
 
-    id = db.Column(db.Integer, primary_key = True)
-    firstname = db.Column(db.String(30))
-    surname = db.Column(db.String(30))
-    email = db.Column(db.String(30))
-    username = db.Column(db.String(30))
-    password = db.Column(db.String(30))
-    dni = db.Column(db.String(30))
-    dataEndDrivePermission = db.Column(db.Date())
-    status = db.Column(db.Enum(*status))
-    creditCard = db.Column(db.String(30))
-    availableMoney = db.Column(db.Integer)
-    type = db.Column(db.Enum(*type))
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(30), nullable=False)
+    surname = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(30), unique=True, nullable=False)
+    username = db.Column(db.String(30), unique=True, nullable=False)
+    password = db.Column(db.String(30), nullable=False)
+    dni = db.Column(db.String(30), unique=True, nullable=False)
+    dataEndDrivePermission = db.Column(db.Date(), nullable=False)
+    status = db.Column(db.Enum(*status), nullable=False)
+    creditCard = db.Column(db.String(30), unique=True, nullable=False)
+    availableMoney = db.Column(db.Integer, nullable=False)
+    type = db.Column(db.Enum(*type), nullable=False)
 
 
     def __init__(self,firstname,surname,email,username,dni,dataEndDrivePermission,status,creditCard,type, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
+        self.username = username
         self.dni = dni
         self.dataEndDrivePermission = dataEndDrivePermission
         self.status = status
