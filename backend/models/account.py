@@ -1,5 +1,11 @@
 from db import db
 from flask_httpauth import HTTPBasicAuth
+from flask import g
+from flask import g, current_app
+from passlib.apps import custom_app_context as pwd_context
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from flask_httpauth import HTTPBasicAuth
+from flask import g
 
 auth = HTTPBasicAuth()
 
@@ -7,6 +13,7 @@ status = ('active','notActive')
 type = ('user','support','admin','technical')
 
 class AccountsModel(db.Model):
+
 
     __tablename__ = 'accounts'
 
@@ -24,11 +31,10 @@ class AccountsModel(db.Model):
     type = db.Column(db.Enum(*type))
 
 
-    def __init__(self,firstname,surname,email,username,dni,dataEndDrivePermission,status,creditCard,availableMoney,type):
+    def __init__(self,firstname,surname,email,username,dni,dataEndDrivePermission,status,creditCard,type, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
-        self.username = username
         self.dni = dni
         self.dataEndDrivePermission = dataEndDrivePermission
         self.status = status
@@ -47,6 +53,45 @@ class AccountsModel(db.Model):
     @classmethod
     def find_by_username(cls, username):
         return AccountsModel.query.filter_by(username=username).first()
+
+    @classmethod
+    def find_by_email(cls, email):
+        return AccountsModel.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_by_username(cls, username):
+        return AccountsModel.query.filter_by(username=username).first()
+
+
+    def hash_password(self, password):
+        self.password = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password)
+
+    def generate_auth_token(self, expiration=600):
+        s = Serializer(current_app.secret_key, expires_in=expiration)
+        return s.dumps({'username': self.username})
+
+    @classmethod
+    def verify_auth_token(cls, token):
+        s = Serializer(current_app.secret_key)
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None  # valid token, but expired
+        except BadSignature:
+            return None  # invalid token
+
+        user = cls.query.filter_by(username=data['username']).first()
+
+        return user
+
+@auth.verify_password
+def verify_password(token, password):
+    user = AccountsModel.verify_auth_token(token)
+    g.user = user
+    return user
 
 
 
