@@ -3,7 +3,7 @@ from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
-status = ('','')
+status = ('active','notActive')
 type = ('user','support','admin','technical')
 
 class AccountsModel(db.Model):
