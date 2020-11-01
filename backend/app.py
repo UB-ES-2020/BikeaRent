@@ -20,23 +20,23 @@ class Booking(Resource):
     parser.add_argument('userid', type=int, required=True, help="The userid is required")
     parser.add_argument('motoid', type=int, required=True, help="The motoid is required")
 
-    def get(self, username):
-        rents = BookingModel.find_by_username(username)
+    def get(self, userid):
+        rents = BookingModel.find_by_userid(userid)
 
         if len(rents) == 1:
             return {"rents": rents.json()}, 200
         if len(rents) > 1:
             return {"rents": [rent.json() for rent in rents]}, 200
-        return {"Error": "There are no rents for username {}".format(username)}, 404
+        return {"Error": "There are no rents for user with id {}".format(userid)}, 404
 
-    def post(self, username):
+    def post(self):
 
         data = Booking.parser.parse_args()
 
         userid = data['userid']
         motoid = data['motoid']
 
-        user = AccountsModel.find_by_username(username)
+        user = AccountsModel.find_by_userid(userid)
         moto_active = MotosModel.is_active(motoid)
 
         try:
@@ -87,7 +87,7 @@ db.init_app(app)
 
 # app.app_context().push()
 
-api.add_resource(Booking, '/rent/<string:username>', '/rent')
+api.add_resource(Booking, '/rent')
 api.add_resource(BookingList, '/rents')
 
 if __name__ == '__main__':
