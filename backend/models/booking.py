@@ -1,6 +1,8 @@
 from backend.db import db
 from backend.models.account import AccountsModel
 
+import time
+
 
 class BookingModel(db.Model):
     __tablename__ = 'booking'
@@ -13,13 +15,15 @@ class BookingModel(db.Model):
     startDate = db.Column(db.Date())
     endDate = db.Column(db.Date())
     totalTimeUsed = db.Column(db.Time())
+    price = db.Column(db.Float())
 
-    def __init__(self, userid, motoid, startDate, endDate, totalTimeUsed):
+    def __init__(self, userid, motoid, startDate, endDate, totalTimeUsed, price):
         self.userid = userid
         self.motoid = motoid
         self.startDate = startDate
         self.endDate = endDate
         self.totalTimeUsed = totalTimeUsed
+        self.price = price
 
     def json(self):
         return {
@@ -28,7 +32,8 @@ class BookingModel(db.Model):
             'motoid': self.motoid,
             'startDate': self.startDate,
             'endDate': self.endDate,
-            'totalTimeUsed': self.totalTimeUsed
+            'totalTimeUsed': self.totalTimeUsed,
+            'price': self.price
         }
 
     def save_to_db(self):
@@ -39,23 +44,42 @@ class BookingModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    # @classmethod
-    # def find_by_id(cls, id):
-    #     return cls.query.filter_by(id=id).first()
-    #
-    # @classmethod
-    # def find_by_userid(cls, userid):
-    #     return cls.query.filter_by(userid=userid).first()
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
+    @classmethod
+    def find_by_userid(cls, userid):
+        return cls.query.filter_by(userid=userid).first()
 
     @classmethod
     def find_by_username(cls, username):
         return AccountsModel.find_by_username(username)
 
-    # @classmethod
-    # def find_by_motoid(cls, motoid):
-    #     return cls.query.filter_by(motoid=motoid).first()
+    @classmethod
+    def find_by_motoid(cls, motoid):
+        return cls.query.filter_by(motoid=motoid).first()
+
+    @classmethod
+    def find_by_userid_motoid(cls, userid, motoid):
+        return cls.query.filter_by(userid=userid, motoid=motoid).all()
 
     @classmethod
     def list_orders(cls):
         orders = [order.json() for order in cls.query.all()]
         return {"orders": orders}
+
+    @classmethod
+    def finalize_book(cls, userid, motoid):
+        books = cls.find_by_userid_motoid(userid, motoid)
+        for book in books:
+            if book.endDate is None:
+                pricePerSecond = 0.008  # should be a configuration
+
+                book.endDate = time.time()
+                book.totalTimeUsed = book.endDate - book.startDate
+                book.price = book.totalTimeUsed * pricePerSecond
+
+                book.save_to_db()
+
+        return book

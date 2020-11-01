@@ -88,11 +88,17 @@ class AccountsModel(db.Model):
 
         return user
 
+    @classmethod
+    def find_by_id(cls, id):
+        return AccountsModel.query.filter_by(id=id).first()
+
+
 @auth.verify_password
 def verify_password(token, password):
     user = AccountsModel.verify_auth_token(token)
     g.user = user
     return user
+
 
 
 

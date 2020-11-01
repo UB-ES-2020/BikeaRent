@@ -10,7 +10,7 @@ from backend.models.account import AccountsModel
 from flask_restful import Resource, Api, reqparse
 from backend.db import db
 
-from datetime import datetime
+import time
 
 app = Flask(__name__)
 
@@ -124,34 +124,58 @@ class Booking(Resource):
     parser.add_argument('userid', type=int, required=True, help="The userid is required")
     parser.add_argument('motoid', type=int, required=True, help="The motoid is required")
 
-    def get(self, username):
-        rents = BookingModel.find_by_username(username)
+    def get(self, userid):
+        rents = BookingModel.find_by_userid(userid)
 
         if len(rents) == 1:
             return {"rents": rents.json()}, 200
         if len(rents) > 1:
             return {"rents": [rent.json() for rent in rents]}, 200
-        return {"Error": "There are no rents for username {}".format(username)}, 404
+        return {"Error": "There are no rents for user with id {}".format(userid)}, 404
 
-    def post(self, username):
+    def post(self):
 
         data = Booking.parser.parse_args()
 
         userid = data['userid']
         motoid = data['motoid']
 
-        user = AccountsModel.find_by_username(username)
+        user = AccountsModel.find_by_userid(userid)
         moto_active = MotosModel.is_active(motoid)
 
         try:
             if user.availableMoney > 5:
                 if moto_active is True:
-                    new_rent = BookingModel(userid, motoid, datetime.now(), None, None)
+                    new_rent = BookingModel(userid, motoid, time.time(), None, None, None)
                     MotosModel.change_status(motoid)
 
                     return {"new_rent": new_rent.json()}, 201
                 return "Moto selected is not active", 400
             return "Not money enough", 400
+        except:
+            return "Something went wrong", 500
+
+    def put(self):
+
+        data = Booking.parser.parse_args()
+
+        userid = data['userid']
+        motoid = data['motoid']
+
+        try:
+            admin_user = AccountsModel.find_by_username('admin')
+            user = AccountsModel.find_by_id(userid)
+
+            if user is None:
+                return "User not found", 404
+
+            book = BookingModel.finalize_book(userid, motoid)
+            MotosModel.change_status(motoid)
+
+            admin_user.availableMoney += book.price
+            user.availableMoney -= book.price
+
+            return "Booking finalized correctly", 201
         except:
             return "Something went wrong", 500
 
@@ -163,7 +187,7 @@ api.add_resource(MotosList, '/motos')
 
 api.add_resource(Login, '/login')
 
-api.add_resource(Booking, '/rent/<string:username>')
+api.add_resource(Booking, '/rent')
 api.add_resource(BookingList, '/rents')
 
 if __name__ == '__main__':
