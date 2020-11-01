@@ -3,17 +3,16 @@ from backend.models.account import AccountsModel
 
 
 class BookingModel(db.Model):
+    __tablename__ = 'booking'
 
-	__tablename__ = 'booking'
-
-	id = db.Column(db.Integer, primary_key=True)
-	#userid = db.Column(db.Integer, db.ForeignKey('accounts.id'), nullable=False)
-	#motoid = db.Column(db.Integer, db.ForeignKey('motos.id'), nullable=False)
-	userid = db.Column(db.Integer)
-	motoid = db.Column(db.Integer)
-	startDate = db.Column(db.Date())
-	endDate = db.Column(db.Date())
-	totalTimeUsed = db.Column(db.Time())
+    id = db.Column(db.Integer, primary_key=True)
+    # userid = db.Column(db.Integer, db.ForeignKey('accounts.id'), nullable=False)
+    # motoid = db.Column(db.Integer, db.ForeignKey('motos.id'), nullable=False)
+    userid = db.Column(db.Integer)
+    motoid = db.Column(db.Integer)
+    startDate = db.Column(db.Date())
+    endDate = db.Column(db.Date())
+    totalTimeUsed = db.Column(db.Time())
 
     def __init__(self, userid, motoid, startDate, endDate, totalTimeUsed):
         self.userid = userid

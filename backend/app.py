@@ -19,11 +19,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
-#app.app_context().push()
-migrate = Migrate(app,db)
+# app.app_context().push()
+migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
-
 
 
 @app.route('/')
@@ -62,7 +61,8 @@ class Accounts(Resource):
             return {"message": "User already exists"}, 400
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
-                                     data['dataEndDrivePermission'], data['status'], data['creditCard'], data['availableMoney'],
+                                     data['dataEndDrivePermission'], data['status'], data['creditCard'],
+                                     data['availableMoney'],
                                      data['type'])
             new_user.hash_password(data['password'])
             try:
@@ -81,6 +81,7 @@ class AccountsList(Resource):
             all_accounts.append(u.json())
 
         return {'accounts': all_accounts}, 200
+
 
 # -------- Login  ---------------------------------------------------------- #
 class Login(Resource):
@@ -104,7 +105,7 @@ class Login(Resource):
 # -------- MotosList  ---------------------------------------------------------- #
 class MotosList(Resource):
     def get(self):
-        motos = MotosModel.query.filter_by(active = True)
+        motos = MotosModel.query.filter_by(active=True)
         motosList = []
         for moto in motos:
             motosList.append(moto.json())
