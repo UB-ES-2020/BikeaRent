@@ -140,7 +140,7 @@ class Booking(Resource):
         userid = data['userid']
         motoid = data['motoid']
 
-        user = AccountsModel.find_by_userid(userid)
+        user = AccountsModel.find_by_id(userid)
         moto_active = MotosModel.is_active(motoid)
 
         try:
