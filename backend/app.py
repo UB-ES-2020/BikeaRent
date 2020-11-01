@@ -29,17 +29,18 @@ class Booking(Resource):
             return {"rents": [rent.json() for rent in rents]}, 200
         return {"Error": "There are no rents for username {}".format(username)}, 404
 
-    def post(self, username):
+    def post(self):
 
         data = Booking.parser.parse_args()
 
         userid = data['userid']
         motoid = data['motoid']
 
-        user = AccountsModel.find_by_username(username)
-        moto_active = MotosModel.is_active(motoid)
-
         try:
+
+            user = AccountsModel.find_by_id(userid)
+            moto_active = MotosModel.is_active(motoid)
+
             if user.availableMoney > 5:
                 if moto_active is True:
                     new_rent = BookingModel(userid, motoid, datetime.now(), None, None)
