@@ -22,6 +22,16 @@ class MotosModel(db.Model):
         self.latitude = latitude
         self.longitude = longitude
 
+    def json(self):
+        return {
+            'id': self.id,
+            'model': self.model,
+            'active': self.active,
+            'charge': self.charge,
+            'latitude': self.latitude,
+            'longitude': self.longitude
+        }
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

@@ -26,8 +26,8 @@ class AccountsModel(db.Model):
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(*type), nullable=False)
 
-    def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, status, creditCard, type,
-                 availableMoney=100):
+    def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
+                 type, status='active', availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
@@ -40,11 +40,19 @@ class AccountsModel(db.Model):
         self.type = type
 
     def json(self):
-        dictionary = {'firstname': self.firstname, 'surname': self.surname, 'email': self.email,
-                      'username': self.username, 'dni': self.dni, 'dataEndDrivePermission': self.dataEndDrivePermission,
-                      'status': self.status, 'creditCard': self.creditCard, 'available_money': self.available_money,
-                      'type': self.type}
-        return dictionary
+        return {
+            'id': self.id,
+            'firstname': self.firstname,
+            'surname': self.surname,
+            'email': self.email,
+            'username': self.username,
+            'dni': self.dni,
+            'dataEndDrivePermission': self.dataEndDrivePermission,
+            'status': self.status,
+            'creditCard': self.creditCard,
+            'availableMoney': self.availableMoney,
+            'type': self.type
+        }
 
     def save_to_db(self):
         db.session.add(self)
