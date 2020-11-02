@@ -39,6 +39,13 @@ class AccountsModel(db.Model):
         self.availableMoney = availableMoney
         self.type = type
 
+    def json(self):
+        dictionary = {'firstname': self.firstname, 'surname': self.surname, 'email': self.email,
+                      'username': self.username, 'dni': self.dni, 'dataEndDrivePermission': self.dataEndDrivePermission,
+                      'status': self.status, 'creditCard': self.creditCard, 'available_money': self.available_money,
+                      'type': self.type}
+        return dictionary
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
