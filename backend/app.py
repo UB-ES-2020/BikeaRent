@@ -9,7 +9,7 @@ from flask_restful import Resource, Api, reqparse
 from backend.db import db
 from flask_cors import CORS
 
-
+import time
 
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -19,8 +19,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
-#app.app_context().push()
-migrate = Migrate(app,db)
+# app.app_context().push()
+migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
@@ -62,7 +62,8 @@ class Accounts(Resource):
             return {"message": "User already exists"}, 400
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
-                                     data['dataEndDrivePermission'], data['status'], data['creditCard'], data['availableMoney'],
+                                     data['dataEndDrivePermission'], data['status'], data['creditCard'],
+                                     data['availableMoney'],
                                      data['type'])
             new_user.hash_password(data['password'])
             try:
@@ -82,6 +83,7 @@ class AccountsList(Resource):
 
         return {'accounts': all_accounts}, 200
 
+
 # -------- Login  ---------------------------------------------------------- #
 class Login(Resource):
     def post(self):
@@ -100,6 +102,8 @@ class Login(Resource):
         else:
             return {"message": "User not found"}, 404
 
+
+# -------- MotosList  ---------------------------------------------------------- #
 class MotosList(Resource):
     def get(self):
         motos = MotosModel.query.filter_by(active=True)
@@ -109,12 +113,83 @@ class MotosList(Resource):
         return motosList
 
 
+# -------- BookingList  ---------------------------------------------------------- #
+class BookingList(Resource):
+    def get(self):
+        return BookingModel.list_orders()
+
+
+# -------- Booking  ---------------------------------------------------------- #
+class Booking(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('userid', type=int, required=True, help="The userid is required")
+    parser.add_argument('motoid', type=int, required=True, help="The motoid is required")
+
+    def get(self, userid):
+        rents = BookingModel.find_by_userid(userid)
+
+        if len(rents) == 1:
+            return {"rents": rents.json()}, 200
+        if len(rents) > 1:
+            return {"rents": [rent.json() for rent in rents]}, 200
+        return {"Error": "There are no rents for user with id {}".format(userid)}, 404
+
+    def post(self):
+
+        data = Booking.parser.parse_args()
+
+        userid = data['userid']
+        motoid = data['motoid']
+
+        user = AccountsModel.find_by_id(userid)
+        moto_active = MotosModel.is_active(motoid)
+
+        try:
+            if user.availableMoney > 5:
+                if moto_active is True:
+                    new_rent = BookingModel(userid, motoid, time.time(), None, None, None)
+                    MotosModel.change_status(motoid)
+
+                    return {"new_rent": new_rent.json()}, 201
+                return "Moto selected is not active", 400
+            return "Not money enough", 400
+        except:
+            return "Something went wrong", 500
+
+    def put(self):
+
+        data = Booking.parser.parse_args()
+
+        userid = data['userid']
+        motoid = data['motoid']
+
+        try:
+            admin_user = AccountsModel.find_by_username('admin')
+            user = AccountsModel.find_by_id(userid)
+
+            if user is None:
+                return "User not found", 404
+
+            book = BookingModel.finalize_book(userid, motoid)
+            MotosModel.change_status(motoid)
+
+            admin_user.availableMoney += book.price
+            user.availableMoney -= book.price
+
+            return "Booking finalized correctly", 201
+        except:
+            return "Something went wrong", 500
+
+
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
 api.add_resource(MotosList, '/motos')
 
 api.add_resource(Login, '/login')
+
+api.add_resource(Booking, '/rent')
+api.add_resource(BookingList, '/rents')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

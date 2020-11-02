@@ -1,20 +1,16 @@
-from db import db
-from flask_httpauth import HTTPBasicAuth
-from flask import g
+from backend.db import db
 from flask import g, current_app
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask_httpauth import HTTPBasicAuth
-from flask import g
 
 auth = HTTPBasicAuth()
 
-status = ('active','notActive')
-type = ('user','support','admin','technical')
+status = ('active', 'notActive')
+type = ('user', 'support', 'admin', 'technical')
+
 
 class AccountsModel(db.Model):
-
-
     __tablename__ = 'accounts'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -30,8 +26,8 @@ class AccountsModel(db.Model):
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(*type), nullable=False)
 
-
-    def __init__(self,firstname,surname,email,username,dni,dataEndDrivePermission,status,creditCard,type, availableMoney=100):
+    def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, status, creditCard, type,
+                 availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
@@ -63,7 +59,6 @@ class AccountsModel(db.Model):
     def find_by_username(cls, username):
         return AccountsModel.query.filter_by(username=username).first()
 
-
     def hash_password(self, password):
         self.password = pwd_context.encrypt(password)
 
@@ -88,11 +83,13 @@ class AccountsModel(db.Model):
 
         return user
 
+    @classmethod
+    def find_by_id(cls, id):
+        return AccountsModel.query.filter_by(id=id).first()
+
+
 @auth.verify_password
 def verify_password(token, password):
     user = AccountsModel.verify_auth_token(token)
     g.user = user
     return user
-
-
-
