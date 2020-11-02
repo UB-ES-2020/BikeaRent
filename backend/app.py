@@ -12,23 +12,19 @@ from flask_cors import CORS
 import time
 
 app = Flask(__name__)
+api = Api(app)
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-migrate = Migrate(app, db)
 db.init_app(app)
-# app.app_context().push()
 migrate = Migrate(app, db)
-db.init_app(app)
-api = Api(app)
 
+# app.app_context().push()
 
 
 @app.route('/')
-@app.route('/userlogin')
-@app.route('/newaccount')
 def render_vue():
     return render_template("index.html")
 
