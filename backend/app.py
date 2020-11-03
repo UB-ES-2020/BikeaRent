@@ -38,6 +38,13 @@ class Accounts(Resource):
         else:
             return {'message': 'There is no client with username [{}] .'.format(username)}, 404
 
+    def delete(self, username):
+        user = AccountsModel.find_by_username(username)
+        if not user:
+            return {"message": "User not found"}, 404
+        user.delete_from_db()
+        return {'message': "User deleted"}, 200
+
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")

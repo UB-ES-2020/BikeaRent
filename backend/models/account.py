@@ -1,3 +1,4 @@
+
 from backend.db import db
 from flask import g, current_app
 from passlib.apps import custom_app_context as pwd_context
