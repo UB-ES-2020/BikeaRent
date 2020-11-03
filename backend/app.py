@@ -40,16 +40,17 @@ class Accounts(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
+        parser.add_argument('id', type=int, required=True, help="This field cannot be left blank")
         parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('dataEndDrivePermission', type=Date, required=True, help="This field cannot be left blank")
-        parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
+        #parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
         parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
 
@@ -58,8 +59,7 @@ class Accounts(Resource):
             return {"message": "User already exists"}, 400
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
-                                     data['dataEndDrivePermission'], data['status'], data['creditCard'],
-                                     data['availableMoney'],
+                                     data['dataEndDrivePermission'], data['creditCard'],
                                      data['type'])
             new_user.hash_password(data['password'])
             try:
