@@ -202,7 +202,7 @@ export default {
       }
     },
     getAccount () {
-      const path = `https://bikearent-eventright.herokuapp.com/account/${this.user.id}`
+      const path = 'https://bikearent-eventright.herokuapp.com/account/' + this.user.id
       axios.get(path, {
         auth: {username: this.user.token}
       })
