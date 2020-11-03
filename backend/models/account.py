@@ -26,9 +26,8 @@ class AccountsModel(db.Model):
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(*type), nullable=False)
 
-    def __init__(self, id, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
+    def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
                  type, status='active', availableMoney=100):
-        self.id = id
         self.firstname = firstname
         self.surname = surname
         self.email = email

@@ -40,7 +40,6 @@ class Accounts(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('id', type=int, required=True, help="This field cannot be left blank")
         parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
