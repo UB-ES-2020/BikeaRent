@@ -9,14 +9,23 @@ from flask_restful import Resource, Api, reqparse
 from backend.db import db
 from flask_cors import CORS
 
+from decouple import config as config_decouple
+from backend.config import config
+
 import time
 
 app = Flask(__name__)
-api = Api(app)
-CORS(app, resources={r'/*': {'origins': '*'}})
+
+environment = config['development']
+if config_decouple('PRODUCTION', cast=bool, default=False):
+    environment = config['production']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(environment)
+
+api = Api(app)
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -27,6 +36,32 @@ migrate = Migrate(app, db)
 @app.route('/')
 def render_vue():
     return render_template("index.html")
+
+
+class Motos(Resource):
+    parser = reqparse.RequestParser()
+
+    parser.add_argument('model', type=str, required=True, help="This field cannot be left blank")
+    parser.add_argument('active', type=bool, required=True, help="This field cannot be left blank")
+    parser.add_argument('charge', type=int, required=True, help="This field cannot be left blank")
+    parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
+    parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
+
+    def get(self, id):
+        moto = MotosModel.find_by_id(id)
+        if moto:
+            return {"moto": moto.json()}, 200
+        return {"Error": "Moto with identifier {} not found".format(id)}, 404
+
+    def post(self):
+        data = self.parser.parse_args()
+
+        try:
+            new_moto = MotosModel(**data)
+            new_moto.save_to_db()
+            return "Moto created successfully", 201
+        except:
+            return {"Error": "An error occurred creating moto"}, 500
 
 
 # -------- Register  ---------------------------------------------------------- #
@@ -89,15 +124,19 @@ class AccountsList(Resource):
 # -------- Login  ---------------------------------------------------------- #
 class Login(Resource):
     def post(self):
+
         parser = reqparse.RequestParser()
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
-        data = parser.parse_args()
 
+        data = parser.parse_args()
         user = AccountsModel.find_by_username(data['username'])
+
         if user:
             if user.verify_password(data['password']):
+
                 token = user.generate_auth_token()
+                #return 201
                 return {'token': token.decode('ascii')}, 200
             else:
                 return {"message": "Password not correct"}, 400
@@ -187,6 +226,7 @@ api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
 api.add_resource(MotosList, '/motos')
+api.add_resource(Motos,'/moto','/moto/<int:id>')
 
 api.add_resource(Login, '/login')
 
