@@ -71,23 +71,6 @@ export default {
         model: '',
         street: ''
       },
-      bikes: [
-        {
-          id: 1,
-          model: 'Honda',
-          street: 'Ronda Universitat, 5'
-        },
-        {
-          id: 2,
-          model: 'Vespa',
-          street: 'Plaça Catalunya'
-        },
-        {
-          id: 3,
-          model: 'Vespa con sidecar',
-          street: 'Plaça Universitat'
-        }
-      ],
       navigation: false,
       active: false
     }
