@@ -25,7 +25,7 @@ class AccountsModel(db.Model):
     status = db.Column(db.Enum(*status))
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
-    type = db.Column(db.Enum(*type), nullable=False)
+    type = db.Column(db.Enum(*type, name='user_types'), nullable=False)
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
                  type, status='active', availableMoney=100):
