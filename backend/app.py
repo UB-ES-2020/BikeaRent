@@ -34,6 +34,7 @@ migrate = Migrate(app, db)
 
 
 @app.route('/')
+@app.route('/home')
 def render_vue():
     return render_template("index.html")
 
