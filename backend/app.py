@@ -2,15 +2,15 @@ from sqlite3.dbapi2 import Date
 
 from flask import Flask, render_template
 from flask_migrate import Migrate
-from backend.models.booking import BookingModel
-from backend.models.moto import MotosModel
-from backend.models.account import AccountsModel
+from models.booking import BookingModel
+from models.moto import MotosModel
+from models.account import AccountsModel
 from flask_restful import Resource, Api, reqparse
-from backend.db import db
+from db import db
 from flask_cors import CORS
 
 from decouple import config as config_decouple
-from backend.config import config
+from config import config
 
 import time
 

@@ -1,5 +1,5 @@
-from backend.db import db
-from backend.models.account import AccountsModel
+from db import db
+from models.account import AccountsModel
 
 import time
 
