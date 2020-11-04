@@ -22,7 +22,7 @@ class AccountsModel(db.Model):
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
     dataEndDrivePermission = db.Column(db.Date(), nullable=False)
-    status = db.Column(db.Enum(*status))
+    status = db.Column(db.Enum(*status), name='status_types')
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(*type, name='user_types'), nullable=False)
