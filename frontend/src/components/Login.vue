@@ -179,7 +179,7 @@ export default {
       if (parameters.username === '' || parameters.password === '') {
         alert('Empty fields! Please try again.')
       } else {
-        const path = 'https://bikearent-eventright.herokuapp.com/login'
+        const path = 'https://bikearent4.herokuapp.com/login'
         axios.post(path, parameters)
           .then((res) => {
             this.token = res.data.token
@@ -202,7 +202,7 @@ export default {
       }
     },
     getAccount () {
-      const path = 'https://bikearent-eventright.herokuapp.com/account/' + this.user.id
+      const path = 'https://bikearent4.herokuapp.com/account/' + this.user.id
       axios.get(path, {
         auth: {username: this.user.token}
       })
@@ -225,7 +225,7 @@ export default {
         licence_caducity: this.form.licence_caducity,
         credit_card: this.form.credit_card
       }
-      const path = 'https://bikearent-eventright.herokuapp.com/account'
+      const path = 'https://bikearent4.herokuapp.com/account'
       axios.post(path, parameters)
         .then((res) => {
           alert('Sign Up Successful! New account created')
