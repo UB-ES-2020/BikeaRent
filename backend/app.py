@@ -15,20 +15,17 @@ from config import config
 import time
 
 app = Flask(__name__)
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 environment = config['development']
 if config_decouple('PRODUCTION', cast=bool, default=False):
     environment = config['production']
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.from_object(environment)
 
-api = Api(app)
-CORS(app, resources={r'/*': {'origins': '*'}})
-
-db.init_app(app)
 migrate = Migrate(app, db)
+db.init_app(app)
+api = Api(app)
 
 # app.app_context().push()
 
