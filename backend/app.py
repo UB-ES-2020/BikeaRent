@@ -218,7 +218,6 @@ class Booking(Resource):
         except:
             return "Something went wrong", 500
 
-
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
