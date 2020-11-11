@@ -7,5 +7,7 @@ deploy:
   provider: heroku
   on:
     branch: development
+  api_key:
+    secure: "kdsfklsmfakfmafmadslvsdfasdf"
 script:
   - echo "Success"
