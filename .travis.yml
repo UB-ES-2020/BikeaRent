@@ -8,6 +8,6 @@ deploy:
   on:
     branch: development
   api_key:
-    secure: "kdsfklsmfakfmafmadslvsdfasdf"
+    secure: 2501472b-422d-42f3-8a84-d8450f544fa9
 script:
   - echo "Success"
