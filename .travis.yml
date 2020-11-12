@@ -1,13 +1,13 @@
 language: python
 python:
-  - "3.7"
+- '3.7'
 install:
-  - pip install -r backend/requirements.txt
+- pip install -r backend/requirements.txt
 deploy:
   provider: heroku
   on:
     branch: development
   api_key:
-    secure: 2501472b-422d-42f3-8a84-d8450f544fa9
+    secure: gFMStB11Mg7IyEaYUgK74Wl8hUvQpqbvFA8M6uMCfwaArSZt5DXjPIVd2Acj5nHITH2vzms49AXm8Cc050BnRJybP7+WI45mQM0TsRxVPjGtW6VzzN+a2hSOk7wGg/gWDXneLJhX8cHDFmi33qaWs+ZfDxqbq2MxWJsP82Gktw+ylcETaTJODOAxECqgBJ0xhvAW82qXGmyeiR0ot3qbXpXCFAf6O3RXZ4DYML29e00yZk6kW8BmF0DpyriPIDJDlj8XJdRQSeK/dhLFKTOTBdh9w3ITJW5oAV3NKIAlgsThLDuXFqc/S/Vdkb5SiXWSP9GaGFpvpSMjIPYQq0cLF3MVpB+tOnvpsOIdiBaxAu8V8ahqwVAp8VCGmWb9GoFzIbqKxPw19ANkFlsMsO52/dHgcT8zRbkOkk2uQw1zBAfDzvTF+eikZLbHioIzSrjLA31DBzHqk1DrwoO1IhtT3Vf2zuim8ANXMuNyHFEgSrPjf4QhA1UUnkMwHJ9jN0FzH9D1coQe8VIBH6AEb9We7s7m40gQo8k6JjAbnvBYBuFI/9EGVfLMvDktZoEYqAHNThPYRGSGQXTiA5h+2qyL3lo7/hqVe7JdqXDuReJrkTldXT4vxJRaUKDtYBcO9ADw4e7EFfeAsfOzg8umtVatsFtzI9VUj0GtTcf69qIbPtQ=
 script:
-  - echo "Success"
+- echo "Success"
