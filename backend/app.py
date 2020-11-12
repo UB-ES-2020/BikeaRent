@@ -79,19 +79,19 @@ class Accounts(Resource):
         return {'message': "User deleted"}, 200
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
-        #parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
-        parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
-        data = parser.parse_args()
+        #parser = reqparse.RequestParser()
+        #parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
+        # parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
+        ########parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
+        #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
+        #parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
+        data = self.parser.parse_args()
 
         user = AccountsModel.find_by_username(data['username'])
         if user:
