@@ -221,8 +221,8 @@ class Booking(Resource):
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
-api.add_resource(MotosList, '/motos')
-api.add_resource(Motos,'/moto','/moto/<int:id>')
+api.add_resource(MotosList, '/bikes')
+api.add_resource(Motos,'/bike','/bike/<int:id>')
 
 api.add_resource(Login, '/login')
 
