@@ -14,14 +14,14 @@ type = ('user', 'support', 'admin', 'technical')
 class AccountsModel(db.Model):
     __tablename__ = 'accounts'
 
-    id = db.Column(db.Integer, primary_key=True)
+    #id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
-    username = db.Column(db.String(30), unique=True, nullable=False)
+    username = db.Column(db.String(30),primary_key=True, unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
-    dataEndDrivePermission = db.Column(db.Date(), nullable=False)
+    #dataEndDrivePermission = db.Column(db.Date(), nullable=False)
     status = db.Column(db.Enum(*status, name='status_types'))
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
@@ -34,7 +34,7 @@ class AccountsModel(db.Model):
         self.email = email
         self.username = username
         self.dni = dni
-        self.dataEndDrivePermission = dataEndDrivePermission
+        #self.dataEndDrivePermission = dataEndDrivePermission
         self.status = status
         self.creditCard = creditCard
         self.availableMoney = availableMoney
@@ -42,13 +42,13 @@ class AccountsModel(db.Model):
 
     def json(self):
         return {
-            'id': self.id,
+            #'id': self.id,
             'firstname': self.firstname,
             'surname': self.surname,
             'email': self.email,
             'username': self.username,
             'dni': self.dni,
-            'dataEndDrivePermission': self.dataEndDrivePermission,
+            #'dataEndDrivePermission': self.dataEndDrivePermission,
             'status': self.status,
             'creditCard': self.creditCard,
             'availableMoney': self.availableMoney,
@@ -70,10 +70,6 @@ class AccountsModel(db.Model):
     @classmethod
     def find_by_email(cls, email):
         return AccountsModel.query.filter_by(email=email).first()
-
-    @classmethod
-    def find_by_username(cls, username):
-        return AccountsModel.query.filter_by(username=username).first()
 
     def hash_password(self, password):
         self.password = pwd_context.encrypt(password)

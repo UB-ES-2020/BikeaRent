@@ -86,7 +86,7 @@ class Accounts(Resource):
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
+        #parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
         ########parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
         #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
