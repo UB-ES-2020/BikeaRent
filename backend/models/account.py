@@ -6,8 +6,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
-
-type = ('user', 'support', 'admin', 'technical')
+account_type = ('USER', 'SUPPORT', 'ADMIN', 'TECHNICAL')
 
 
 class AccountsModel(db.Model):
@@ -25,10 +24,10 @@ class AccountsModel(db.Model):
     status = db.Column(db.Integer, nullable=False)
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
-    type = db.Column(db.Enum(*type, name='user_types'), nullable=False)
+    account_type = db.Column(db.Enum(*type, name='user_types'), nullable=False)
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
-                 type, status=0, availableMoney=100):
+                 account_type, status=0, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
@@ -38,7 +37,7 @@ class AccountsModel(db.Model):
         self.status = status
         self.creditCard = creditCard
         self.availableMoney = availableMoney
-        self.type = type
+        self.account_type = account_type
 
     def json(self):
         return {
@@ -52,7 +51,7 @@ class AccountsModel(db.Model):
             'status': self.status,
             'creditCard': self.creditCard,
             'availableMoney': self.availableMoney,
-            'type': self.type
+            'type': self.account_type
         }
 
     def save_to_db(self):
