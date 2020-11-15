@@ -33,7 +33,7 @@ class AccountsModel(db.Model):
         self.email = email
         self.username = username
         self.dni = dni
-        self.dataEndDrivePermission = dataEndDrivePermission
+        #self.dataEndDrivePermission = dataEndDrivePermission
         self.status = status
         self.creditCard = creditCard
         self.availableMoney = availableMoney
@@ -47,7 +47,7 @@ class AccountsModel(db.Model):
             'email': self.email,
             'username': self.username,
             'dni': self.dni,
-            'dataEndDrivePermission': self.dataEndDrivePermission,
+            #'dataEndDrivePermission': self.dataEndDrivePermission,
             'status': self.status,
             'creditCard': self.creditCard,
             'availableMoney': self.availableMoney,
