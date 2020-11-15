@@ -44,6 +44,7 @@ class Motos(Resource):
     parser.add_argument('charge', type=int, required=True, help="This field cannot be left blank")
     parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
     parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
+    parser.add_argument('plate',type=str,required = True,help = "This field cannot be left blank")
 
     def get(self, id):
         moto = MotosModel.find_by_id(id)

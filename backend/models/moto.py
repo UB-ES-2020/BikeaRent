@@ -8,19 +8,22 @@ class MotosModel(db.Model):
     __tablename__ = 'motos'
 
     id = db.Column(db.Integer, primary_key=True)
-    model = db.Column(db.String(30))
-    active = db.Column(db.Boolean)
-    charge = db.Column(db.Integer)
-    # position
-    latitude = db.Column(db.Float)
-    longitude = db.Column(db.Float)
+    model = db.Column(db.String(30),nullable=False)
+    active = db.Column(db.Boolean,nullable=False)
+    charge = db.Column(db.Integer,nullable=False)
+    position = db.Column(db.String(50),nullable=False)
+    latitude = db.Column(db.Float,nullable=False)
+    longitude = db.Column(db.Float,nullable=False)
+    plate = db.Column(db.String(8), nullable=False)
 
-    def __init__(self, model, active, charge, latitude, longitude):
+    def __init__(self, model, active, charge, latitude, longitude,plate, position = "Passeig de Gracia, 55, Barcelona"):
         self.model = model
         self.active = active
         self.charge = charge
         self.latitude = latitude
         self.longitude = longitude
+        self.position = position
+        self.plate = plate
 
     def json(self):
         return {
@@ -29,7 +32,8 @@ class MotosModel(db.Model):
             'active': self.active,
             'charge': self.charge,
             'latitude': self.latitude,
-            'longitude': self.longitude
+            'longitude': self.longitude,
+            'plate':self.plate
         }
 
     def save_to_db(self):
