@@ -22,7 +22,7 @@ class AccountsModel(db.Model):
     status = db.Column(db.Boolean, nullable=False) #true = active, false = notActive
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
-    type = db.Column(db.Integer, nullable=False) #0=user, 1 = support, 2= technical, 3 = admin
+    type = db.Column(db.Integer, nullable=False) #0=user, 1 = support, 2= technical, 3 = admi
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
                  type, status=True, availableMoney=100):
@@ -67,10 +67,6 @@ class AccountsModel(db.Model):
     @classmethod
     def find_by_email(cls, email):
         return AccountsModel.query.filter_by(email=email).first()
-
-    @classmethod
-    def find_by_username(cls, username):
-        return AccountsModel.query.filter_by(username=username).first()
 
     def hash_password(self, password):
         self.password = pwd_context.encrypt(password)
