@@ -98,8 +98,7 @@ class Accounts(Resource):
             return {"message": "User already exists"}, 400
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
-                                     data['dataEndDrivePermission'], data['creditCard'],
-                                     data['type'])
+                                     data['creditCard'], data['type'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()

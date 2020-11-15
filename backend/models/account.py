@@ -7,7 +7,6 @@ from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
-status = ('active', 'notActive')
 type = ('user', 'support', 'admin', 'technical')
 
 
@@ -22,13 +21,14 @@ class AccountsModel(db.Model):
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
     #dataEndDrivePermission = db.Column(db.Date(), nullable=False)
-    status = db.Column(db.Enum(*status, name='status_types'))
+    # 0(active)/ 1(not active)
+    status = db.Column(db.Integer, nullable=False)
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(*type, name='user_types'), nullable=False)
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
-                 type, status='active', availableMoney=100):
+                 type, status=0, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
