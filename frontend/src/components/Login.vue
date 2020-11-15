@@ -228,7 +228,7 @@ export default {
         licence_caducity: this.form.licence_caducity,
         credit_card: this.form.credit_card
       }
-      const path = 'https://bikearent4.herokuapp.com/account'
+      const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
         .then((res) => {
           alert('Sign Up Successful! New account created!')
