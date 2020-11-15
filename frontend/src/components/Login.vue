@@ -181,7 +181,7 @@ export default {
       if (parameters.username === '' || parameters.password === '') {
         alert('Empty fields! Please try again.')
       } else {
-        const path = 'https://bikearent4.herokuapp.com/login'
+        const path = 'https://bike-a-rent.herokuapp.com/'
         axios.post(path, parameters)
           .then((res) => {
             this.user = res.data.user//this.token = res.data.token
@@ -205,7 +205,7 @@ export default {
       }
     },
     getAccount () {
-      const path = 'https://bikearent4.herokuapp.com/account/' + this.user.id
+      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.id
       axios.get(path, {
         auth: {username: this.user.token}
       })
