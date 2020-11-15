@@ -12,7 +12,7 @@ account_type = ('USER', 'SUPPORT', 'ADMIN', 'TECHNICAL')
 class AccountsModel(db.Model):
     __tablename__ = 'accounts'
 
-    id = db.Column(db.Integer, primary_key=True)
+    #id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
@@ -41,7 +41,7 @@ class AccountsModel(db.Model):
 
     def json(self):
         return {
-            'id': self.id,
+            #'id': self.id,
             'firstname': self.firstname,
             'surname': self.surname,
             'email': self.email,
