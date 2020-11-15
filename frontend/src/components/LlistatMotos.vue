@@ -113,7 +113,8 @@ export default {
         active: false,
         charge: '',
         latitude: '',
-        longitude: ''
+        longitude: '',
+        plate: ''
       },
       supportLogged: true,
       navigation: false,
@@ -124,7 +125,7 @@ export default {
   methods: {
     // GET bikes
     getBikes () {
-      const path = 'https://bikearent4.herokuapp.com/bikes'
+      const path = 'https://bike-a-rent.herokuapp.com/bikes'
       axios.get(path)
         .then((res) => {
           this.bikes = res.data.bikes
@@ -134,7 +135,7 @@ export default {
         })
     },
     getAccount () {
-      const path = 'https://bikearent4.herokuapp.com/account/' + this.user.id
+      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.id
       axios.get(path, {
         auth: {username: this.user.token}
       })
@@ -155,7 +156,7 @@ export default {
         user_id: this.user.id,
         bike_id: this.bike.id
       }
-      const path = 'https://bikearent4.herokuapp.com/rent'
+      const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.post(path, parameters)
         .then((res) => {
           this.active = true
@@ -172,7 +173,7 @@ export default {
         user_id: this.user.id,
         bike_id: this.bike.id
       }
-      const path = 'https://bikearent4.herokuapp.com/rent'
+      const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.put(path, parameters)
         .then((res) => {
           this.active = false
@@ -188,7 +189,7 @@ export default {
         })
     },
     addBike () {
-      const path = 'https://bikearent4.herokuapp.com/bike'
+      const path = 'https://bike-a-rent.herokuapp.com/bike'
       const parameters = {
         model: this.bike.model,
         active: true,
