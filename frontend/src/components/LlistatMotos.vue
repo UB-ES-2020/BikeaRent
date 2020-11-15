@@ -13,6 +13,7 @@
 </style>
 
 <template>
+<<<<<<< HEAD
 <div id="app">
   <div v-if="!navigation & !bikeAdding">
     <nav class="navbar navbar-dark">
@@ -103,6 +104,59 @@
     </b-card>
   </div>
 </div>
+=======
+  <div id="app">
+    <div v-if="!navigation">
+      <nav class="navbar navbar-dark">
+        <h2 style="color: #d3d9df">BaikaRent</h2>
+        <div>
+          <h6 style="color: #d3d9df">{{this.user.username}}</h6>
+          <h6 style="color: #d3d9df">{{this.user.money_available}} €</h6>
+        </div>
+      </nav>
+      <table>
+        <thead style="border-bottom: 5px solid #000;">
+          <tr>
+            <th>Bike model</th>
+            <th>Localated</th>
+          </tr>
+        </thead>
+        <tbody v-for="(bike) in bikes" :key="bike.id">
+          <td>{{ bike.model }} </td>
+          <td>{{ bike.latitude, bike.longitude }} </td>
+          <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
+          <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
+        </tbody>
+      </table>
+    </div>
+    <div v-else>
+      <h3>Go to {{this.bike.latitude, this.bike.longitude}} to unlock your bike.</h3>
+      <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
+      <br>
+      <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
+    </div>
+    <div v-if="active">
+      <h1>Time is running!!</h1>
+      <div> Once you have stoped the bike, press the Lock button to end the renting</div>
+      <button class="btn btn-danger" @click="lockBike">Lock </button>
+    </div>
+    <div>
+      <b-modal id="info-modal" hide-footer>
+        <template v-slot:modal-title>
+            <h4 style="text-align: center">Info</h4>
+          </template>
+        <div class="d-block">
+          <br>
+            <h5>ID: {{ bike.id }}</h5>
+            <h5>Model: {{ bike.model }}</h5>
+            <hr>
+            <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
+            <h5>Location: {{ bike.latitude, bike.longitude }}</h5>
+        </div>
+      </b-modal>
+    </div>
+  </div>
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
 </template>
 
 <script>
@@ -113,6 +167,7 @@ export default {
       user: {
         id: 0,
         token: null,
+<<<<<<< HEAD
         username: 'Pene',
         money_available: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
@@ -126,6 +181,19 @@ export default {
         plate: ''
       },
       supportLogged: true,
+=======
+        username: '',
+        money_available: 69
+      },
+      bike: {
+        id: 0,
+        model: '',
+        charge: 0,
+        latitude: 0.0,
+        longitude: 0.0
+      },
+      bikes: [],
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
       navigation: false,
       active: false,
       bikeAdding: false
@@ -134,9 +202,14 @@ export default {
   methods: {
     // GET bikes
     getBikes () {
+<<<<<<< HEAD
       const path = 'https://bike-a-rent.herokuapp.com/bikes'
+=======
+      const path = 'https://bikearent-test.herokuapp.com/bikes'
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
       axios.get(path)
         .then((res) => {
+          this.bikes = []
           this.bikes = res.data.bikes
         })
         .catch((error) => {
@@ -144,7 +217,11 @@ export default {
         })
     },
     getAccount () {
+<<<<<<< HEAD
       const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.id
+=======
+      const path = 'https://bikearent-test.herokuapp.com/account/' + this.user.id
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
       axios.get(path, {
         auth: {username: this.user.token}
       })
@@ -165,7 +242,11 @@ export default {
         user_id: this.user.id,
         bike_id: this.bike.id
       }
+<<<<<<< HEAD
       const path = 'https://bike-a-rent.herokuapp.com/rent'
+=======
+      const path = 'https://bikearent-test.herokuapp.com/rent'
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
       axios.post(path, parameters)
         .then((res) => {
           this.active = true
@@ -182,7 +263,11 @@ export default {
         user_id: this.user.id,
         bike_id: this.bike.id
       }
+<<<<<<< HEAD
       const path = 'https://bike-a-rent.herokuapp.com/rent'
+=======
+      const path = 'https://bikearent-test.herokuapp.com/rent'
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
       axios.put(path, parameters)
         .then((res) => {
           this.active = false
@@ -197,6 +282,7 @@ export default {
           alert('Sorry, you cannot take this bike. Try again')
         })
     },
+<<<<<<< HEAD
     addBike () {
       const path = 'https://bike-a-rent.herokuapp.com/bike'
       const parameters = {
@@ -215,6 +301,15 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+=======
+    showInfo (bike) {
+      this.bike.id = bike.id
+      this.bike.model = bike.model
+      this.bike.charge = bike.charge
+      this.bike.latitude = bike.latitude
+      this.bike.longitude = bike.longitude
+      this.bike.$bvModal.show('info-modal')
+>>>>>>> f658d37c4e0da2b7a781463c991b61ddd01f599a
     }
   },
   created () {
