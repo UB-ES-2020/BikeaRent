@@ -63,6 +63,7 @@ export default {
         id: 0,
         token: null,
         username: 'Pene',
+        type: '',
         money_available: 69
       },
       bike: {
