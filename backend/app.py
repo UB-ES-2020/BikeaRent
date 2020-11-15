@@ -86,7 +86,7 @@ class Accounts(Resource):
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
         ########parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
         #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
@@ -98,7 +98,7 @@ class Accounts(Resource):
             return {"message": "User already exists"}, 400
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
-                                     data['creditCard'], data['account_type'])
+                                     data['dataEndDrivePermission'], data['creditCard'], data['account_type'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()
