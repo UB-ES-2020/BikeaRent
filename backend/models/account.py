@@ -19,13 +19,13 @@ class AccountsModel(db.Model):
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
     dataEndDrivePermission = db.Column(db.String(10), nullable=False)
-    status = db.Column(db.Integer, nullable=False) #0 = active, 1 = notActive
+    status = db.Column(db.Boolean, nullable=False) #true = active, false = notActive
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Integer, nullable=False) #0=user, 1 = support, 2= technical, 3 = admin
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
-                 type, status=0, availableMoney=100):
+                 type, status=True, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
