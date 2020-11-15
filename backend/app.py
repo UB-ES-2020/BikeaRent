@@ -105,8 +105,8 @@ class Accounts(Resource):
                 new_user.save_to_db()
                 return new_user.json(), 200
             except Exception as e:
-                #return {"message": "Database error"}, 500
-                return {e}
+                return {"message": "Database error"}, 500
+                #return {e}
 
 
 # -------- Accounts List  ---------------------------------------------------------- #
