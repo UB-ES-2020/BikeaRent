@@ -144,7 +144,7 @@ export default {
         id: 0,
         token: null,
         username: '',
-        type: '',
+        type: 0,
         money_available: 0
       },
       form: {
