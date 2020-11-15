@@ -90,7 +90,7 @@ class Accounts(Resource):
         ########parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
         #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
-        #parser.add_argument('account_type', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
         data = self.parser.parse_args()
 
         user = AccountsModel.find_by_username(data['username'])
@@ -98,7 +98,7 @@ class Accounts(Resource):
             return {"message": "User already exists"}, 400
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
-                                    data['dataEndDrivePermission'], data['creditCard'])
+                                    data['dataEndDrivePermission'], data['creditCard'], data['type'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()

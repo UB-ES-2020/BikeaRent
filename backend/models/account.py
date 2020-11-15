@@ -16,18 +16,19 @@ class AccountsModel(db.Model):
     firstname = db.Column(db.String(30), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
-    username = db.Column(db.String(30),primary_key=True, unique=True, nullable=False)
+    username = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
-    dataEndDrivePermission = db.Column(db.String(30), nullable=False)
+    dataEndDrivePermission = db.Column(db.String(10), nullable=False)
     # 0(active)/ 1(not active)
     status = db.Column(db.Integer, nullable=False)
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
-    #account_type = db.Column(db.Enum(*account_type, name='account_type'), nullable=False)
+    # 0 (user) / 1 (admin) / 2 (support) / 3 (technical)
+    type = db.Column(db.Integer, nullable=False)
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
-                 account, status=0, availableMoney=100):
+                 type, status=0, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
@@ -37,7 +38,7 @@ class AccountsModel(db.Model):
         self.status = status
         self.creditCard = creditCard
         self.availableMoney = availableMoney
-        #self.account_type = account
+        self.type = type
 
     def json(self):
         return {
@@ -51,7 +52,7 @@ class AccountsModel(db.Model):
             'status': self.status,
             'creditCard': self.creditCard,
             'availableMoney': self.availableMoney,
-            #'type': self.account_type
+            'type': self.type
         }
 
     def save_to_db(self):
