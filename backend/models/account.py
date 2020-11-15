@@ -12,7 +12,7 @@ account_type = ('USER', 'SUPPORT', 'ADMIN', 'TECHNICAL')
 class AccountsModel(db.Model):
     __tablename__ = 'accounts'
 
-    #id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
@@ -24,10 +24,10 @@ class AccountsModel(db.Model):
     status = db.Column(db.Integer, nullable=False)
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
-    account_type = db.Column(db.Enum(*account_type, name='account_type'), nullable=False)
+    #account_type = db.Column(db.Enum(*account_type, name='account_type'), nullable=False)
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
-                 account_type, status=0, availableMoney=100):
+                 account, status=0, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
@@ -37,11 +37,11 @@ class AccountsModel(db.Model):
         self.status = status
         self.creditCard = creditCard
         self.availableMoney = availableMoney
-        self.account_type = account_type
+        #self.account_type = account
 
     def json(self):
         return {
-            #'id': self.id,
+            'id': self.id,
             'firstname': self.firstname,
             'surname': self.surname,
             'email': self.email,
@@ -51,7 +51,7 @@ class AccountsModel(db.Model):
             'status': self.status,
             'creditCard': self.creditCard,
             'availableMoney': self.availableMoney,
-            'type': self.account_type
+            #'type': self.account_type
         }
 
     def save_to_db(self):
