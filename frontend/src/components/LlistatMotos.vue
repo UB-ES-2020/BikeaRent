@@ -22,7 +22,7 @@
         <h6 style="color: #d3d9df">{{this.user.money_available}} €</h6>
       </div>
     </nav>
-    <div v-if="user.type = 'support'" >
+    <div v-if="user.type = 1" >
       <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
     </div>
     <table>
@@ -51,8 +51,8 @@
     <button class="btn btn-danger" @click="lockBike">Lock </button>
   </div>
   <div v-if="bikeAdding">
+    <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <h3> Add a bike in the system</h3>
       <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false">Close</button>
       <b-form-group id="input-group-3" label="Model:" label-for="input-1">
         <b-form-input
@@ -90,6 +90,15 @@
           >
         </b-form-input>
       </b-form-group>
+      <b-form-group id="input-group-7" label="Plate:" label-for="input-5">
+        <b-form-input
+          id="input-5"
+          v-model="bike.plate"
+          required
+          placeholder="Enter the bike plate"
+          >
+        </b-form-input>
+      </b-form-group>
       <button class="btn btn-danger" @click="addBike, bikeAdding=false">Add this bike</button>
     </b-card>
   </div>
@@ -106,7 +115,7 @@ export default {
         token: null,
         username: 'Pene',
         money_available: 69,
-        type: ''
+        type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       bike: {
         model: '',
