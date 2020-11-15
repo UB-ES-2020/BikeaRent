@@ -136,13 +136,15 @@
 <script>
 import axios from 'axios'
 export default {
-  name: 'LogIn',
+  name: 'Login',
   data () {
     return {
+      /* eslint-disable */
       user: {
         id: 0,
         token: null,
         username: '',
+        type: 0,
         money_available: 0
       },
       form: {
@@ -179,18 +181,19 @@ export default {
       if (parameters.username === '' || parameters.password === '') {
         alert('Empty fields! Please try again.')
       } else {
-        const path = 'https://bikearent4.herokuapp.com/login'
+        const path = 'https://bike-a-rent.herokuapp.com/'
         axios.post(path, parameters)
           .then((res) => {
-            this.token = res.data.token
-            alert('Log In Succesfully')
+            this.user = res.data.user//this.token = res.data.token
             this.getAccount()
+            alert('Log In Succesfully')
             this.$router.replace({
               path: '/home',
               query: {
                 username: this.user.username,
                 money: this.user.money_available,
-                token: this.user.token
+                token: this.user.token,
+                type: this.user.type
               }
             })
           })
@@ -202,7 +205,7 @@ export default {
       }
     },
     getAccount () {
-      const path = 'https://bikearent4.herokuapp.com/account/' + this.user.id
+      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.id
       axios.get(path, {
         auth: {username: this.user.token}
       })
@@ -228,10 +231,11 @@ export default {
       const path = 'https://bikearent4.herokuapp.com/account'
       axios.post(path, parameters)
         .then((res) => {
-          alert('Sign Up Successful! New account created')
+          alert('Sign Up Successful! New account created!')
         })
         .catch((error) => {
           console.error(error)
+          alert('Could not create the account!')
           alert(error)
         })
     },
