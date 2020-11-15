@@ -11,10 +11,10 @@ class BookingModel(db.Model):
     # motoid = db.Column(db.Integer, db.ForeignKey('motos.id'), nullable=False)
     userid = db.Column(db.Integer,nullable=False)
     motoid = db.Column(db.Integer,nullable=False)
-    startDate = db.Column(db.String(10),nullable=False)
-    endDate = db.Column(db.String(10),nullable=False)
-    totalTimeUsed = db.Column(db.Integer,nullable=False)
-    price = db.Column(db.Float(),nullable=False)
+    startDate = db.Column(db.Date(),nullable=False)
+    endDate = db.Column(db.Date(),nullable=True)
+    totalTimeUsed = db.Column(db.Integer,nullable=True)
+    price = db.Column(db.Float(),nullable=True)
 
     def __init__(self, userid, motoid, startDate, endDate, totalTimeUsed, price):
         self.userid = userid
