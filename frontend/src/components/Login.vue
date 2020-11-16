@@ -155,7 +155,8 @@ export default {
         passwordR: '',
         dni: '',
         licence_caducity: '',
-        credit_card: ''
+        credit_card: '',
+        type: 0
       }
     }
   },
@@ -226,7 +227,8 @@ export default {
         passwordR: this.form.passwordR,
         dni: this.form.dni,
         licence_caducity: this.form.licence_caducity,
-        credit_card: this.form.credit_card
+        credit_card: this.form.credit_card,
+        type: this.form.type
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
