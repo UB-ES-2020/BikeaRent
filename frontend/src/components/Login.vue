@@ -186,6 +186,7 @@ export default {
             this.$router.replace({
               path: '/home',
               query: {
+                username: this.userLogin.username,
                 token: this.userToken,
               }
             })

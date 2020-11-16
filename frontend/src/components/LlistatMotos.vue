@@ -76,7 +76,7 @@
       <b-form-group id="input-group-20" label="Name:" label-for="input-20">
         <b-form-input
           id="input-20"
-          v-model="userForm.firstname"
+          v-model="newUserForm.firstname"
           required
           placeholder="Enter employee's name"
           >
@@ -85,7 +85,7 @@
       <b-form-group id="input-group-21" label="Surame:" label-for="input-21">
         <b-form-input
           id="input-21"
-          v-model="userForm.surname"
+          v-model="newUserForm.surname"
           required
           placeholder="Enter employee's surname"
           >
@@ -94,7 +94,7 @@
       <b-form-group id="input-group-22" label="Mail:" label-for="input-22">
         <b-form-input
           id="input-22"
-          v-model="userForm.email"
+          v-model="newUserForm.email"
           required
           placeholder="Enter the mail"
           >
@@ -103,7 +103,7 @@
       <b-form-group id="input-group-23" label="Username:" label-for="input-23">
         <b-form-input
           id="input-23"
-          v-model="userForm.username"
+          v-model="newUserForm.username"
           required
           placeholder="Enter the username"
           >
@@ -112,7 +112,7 @@
       <b-form-group id="input-group-24" label="Password:" label-for="input-24">
         <b-form-input
           id="input-24"
-          v-model="userForm.password"
+          v-model="newUserForm.password"
           required
           placeholder="Enter the password"
           >
@@ -121,7 +121,7 @@
       <b-form-group id="input-group-25" label="DNI:" label-for="input-25">
         <b-form-input
           id="input-25"
-          v-model="userForm.dni"
+          v-model="newUserForm.dni"
           required
           placeholder="Enter employee's DNI"
           >
@@ -130,7 +130,7 @@
       <b-form-group id="input-group-26" label="TYPE(1 = Suport 2=Technical):" label-for="input-26">
         <b-form-input
           id="input-25"
-          v-model="userForm.type"
+          v-model="newUserForm.type"
           required
           placeholder="Enter employee's Type"
           >
@@ -207,7 +207,7 @@ export default {
         money_available: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
-      userForm: {
+      newUserForm: {
         firstname: '',
         surname: '',
         email: '',
@@ -259,15 +259,15 @@ export default {
     },
     submitEmployee () {
       const parameters = {
-        firstname: this.userForm.firstname,
-        surname: this.userForm.surname,
-        email: this.userForm.email,
-        username: this.userForm.username,
-        password: this.userForm.password,
-        dni: this.userForm.dni,
-        dataEndDrivePermission: this.userForm.dataEndDrivePermission,
-        creditCard: this.userForm.creditCard,
-        type: this.userForm.type
+        firstname: this.newUserForm.firstname,
+        surname: this.newUserForm.surname,
+        email: this.newUserForm.email,
+        username: this.newUserForm.username,
+        password: this.newUserForm.password,
+        dni: this.newUserForm.dni,
+        dataEndDrivePermission: this.newUserForm.dataEndDrivePermission,
+        creditCard: this.newUserForm.creditCard,
+        type: this.newUserForm.type
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
@@ -347,7 +347,7 @@ export default {
       this.bike.$bvModal.show('info-modal')
     },
     getAccount () {
-      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.id
+      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.username
       axios.get(path, {
         auth: {username: this.user.token}
       })
@@ -360,7 +360,8 @@ export default {
     }
   },
   created () {
-    // this.getBikes()
+    this.getBikes()
+    this.user.username = this.$route.query.username
     this.user.token = this.$route.query.token
     this.getAccount()
   }
