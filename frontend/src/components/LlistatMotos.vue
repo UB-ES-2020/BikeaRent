@@ -14,7 +14,7 @@
 
 <template>
 <div id="app">
-  <div v-if="!navigation & !bikeAdding">
+  <div v-if="!navigation & !bikeAdding & !addEmpl">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <div>
@@ -24,6 +24,9 @@
     </nav>
     <div v-if="user.type = 1" >
       <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
+    </div>
+    <div v-if="user.type = 1" >
+      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
     </div>
     <table>
       <thead style="border-bottom: 5px solid #000;">
@@ -66,6 +69,75 @@
         </div>
       </b-modal>
     </div>
+  <div v-if="addEmpl">
+    <h3> Add a new employee</h3>
+    <b-card style="width:250px; margin:auto">
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="addEmpl=false">Close</button>
+      <b-form-group id="input-group-20" label="Name:" label-for="input-20">
+        <b-form-input
+          id="input-20"
+          v-model="form.name"
+          required
+          placeholder="Enter employee's name"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-21" label="Surame:" label-for="input-21">
+        <b-form-input
+          id="input-21"
+          v-model="form.surname"
+          required
+          placeholder="Enter employee's surname"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-22" label="Mail:" label-for="input-22">
+        <b-form-input
+          id="input-22"
+          v-model="form.mail"
+          required
+          placeholder="Enter the mail"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-23" label="Username:" label-for="input-23">
+        <b-form-input
+          id="input-23"
+          v-model="form.usernameR"
+          required
+          placeholder="Enter the username"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-24" label="Password:" label-for="input-24">
+        <b-form-input
+          id="input-24"
+          v-model="form.passwordR"
+          required
+          placeholder="Enter the password"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-25" label="DNI:" label-for="input-25">
+        <b-form-input
+          id="input-25"
+          v-model="form.dni"
+          required
+          placeholder="Enter employee's DNI"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-26" label="TYPE(1 = Suport 2=Technical):" label-for="input-26">
+        <b-form-input
+          id="input-25"
+          v-model="form.type"
+          required
+          placeholder="Enter employee's Type"
+          >
+        </b-form-input>
+      </b-form-group>
+    </b-card>
+  </div>
   <div v-if="bikeAdding">
     <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
@@ -134,6 +206,17 @@ export default {
         money_available: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
+      form: {
+        name: '',
+        surname: '',
+        mail: '',
+        usernameR: '',
+        passwordR: '',
+        dni: '',
+        licence_caducity: '01-01-2999',
+        credit_card: '999999999',
+        type: 1
+      },
       bike: {
         model: '',
         active: false,
@@ -156,6 +239,7 @@ export default {
       ],
       navigation: false,
       active: false,
+      addEmpl: false,
       bikeAdding: false
     }
   },
@@ -184,6 +268,7 @@ export default {
           console.error(error)
         })
     },
+
     // Take a bike
     takeBike (bike) {
       this.bike = bike
