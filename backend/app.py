@@ -134,7 +134,8 @@ class Login(Resource):
 
         if user:
             if user.verify_password(data['password']):
-                return {'account': user.json()}, 200
+                token = user.generate_auth_token()
+                return {'token': token.decode('ascii')}, 200
             else:
                 return {"message": "Password not correct"}, 400
         else:

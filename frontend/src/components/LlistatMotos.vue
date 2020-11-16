@@ -37,14 +37,14 @@
       </thead>
       <tbody v-for="(bike) in bikes" :key="bike.id">
         <td>{{ bike.model }} </td>
-        <td>{{ bike.street }} </td>
+        <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
       </tbody>
     </table>
   </div>
   <div v-if="navigation">
-    <h3>Go to {{this.bike.street}} to unlock your bike.</h3>
+    <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
     <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
     <br>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
@@ -55,19 +55,19 @@
     <button class="btn btn-danger" @click="lockBike">Lock </button>
   </div>
   <div>
-      <b-modal id="info-modal" hide-footer>
-        <template v-slot:modal-title>
-            <h4 style="text-align: center">Info</h4>
-          </template>
-        <div class="d-block">
-          <br>
-            <h5>ID: {{ bike.id }}</h5>
-            <h5>Model: {{ bike.model }}</h5>
-            <hr>
-            <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
-            <h5>Location: {{ bike.latitude, bike.longitude }}</h5>
-        </div>
-      </b-modal>
+    <b-modal id="info-modal" hide-footer>
+      <template v-slot:modal-title>
+        <h4 style="text-align: center">Info</h4>
+      </template>
+      <div class="d-block">
+        <br>
+          <h5>ID: {{ bike.id }}</h5>
+          <h5>Model: {{ bike.model }}</h5>
+          <hr>
+          <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
+          <h5>Location: {{ bike.latitude, bike.longitude }}</h5>
+      </div>
+    </b-modal>
     </div>
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
@@ -76,7 +76,7 @@
       <b-form-group id="input-group-20" label="Name:" label-for="input-20">
         <b-form-input
           id="input-20"
-          v-model="form.name"
+          v-model="userForm.firstname"
           required
           placeholder="Enter employee's name"
           >
@@ -85,7 +85,7 @@
       <b-form-group id="input-group-21" label="Surame:" label-for="input-21">
         <b-form-input
           id="input-21"
-          v-model="form.surname"
+          v-model="userForm.surname"
           required
           placeholder="Enter employee's surname"
           >
@@ -94,7 +94,7 @@
       <b-form-group id="input-group-22" label="Mail:" label-for="input-22">
         <b-form-input
           id="input-22"
-          v-model="form.mail"
+          v-model="userForm.email"
           required
           placeholder="Enter the mail"
           >
@@ -103,7 +103,7 @@
       <b-form-group id="input-group-23" label="Username:" label-for="input-23">
         <b-form-input
           id="input-23"
-          v-model="form.usernameR"
+          v-model="userForm.username"
           required
           placeholder="Enter the username"
           >
@@ -112,7 +112,7 @@
       <b-form-group id="input-group-24" label="Password:" label-for="input-24">
         <b-form-input
           id="input-24"
-          v-model="form.passwordR"
+          v-model="userForm.password"
           required
           placeholder="Enter the password"
           >
@@ -121,7 +121,7 @@
       <b-form-group id="input-group-25" label="DNI:" label-for="input-25">
         <b-form-input
           id="input-25"
-          v-model="form.dni"
+          v-model="userForm.dni"
           required
           placeholder="Enter employee's DNI"
           >
@@ -130,7 +130,7 @@
       <b-form-group id="input-group-26" label="TYPE(1 = Suport 2=Technical):" label-for="input-26">
         <b-form-input
           id="input-25"
-          v-model="form.type"
+          v-model="userForm.type"
           required
           placeholder="Enter employee's Type"
           >
@@ -203,20 +203,20 @@ export default {
       user: {
         id: 0,
         token: null,
-        username: 'Pene',
+        username: 'Albert',
         money_available: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
-      form: {
-        name: '',
+      userForm: {
+        firstname: '',
         surname: '',
-        mail: '',
-        usernameR: '',
-        passwordR: '',
+        email: '',
+        username: '',
+        password: '',
         dni: '',
-        licence_caducity: '01-01-2999',
-        credit_card: '999999999',
-        type: 1
+        dataEndDrivePermission: 'XXX',
+        creditCard: '99999',
+        type: null
       },
       bike: {
         model: '',
@@ -257,29 +257,17 @@ export default {
           console.error(error)
         })
     },
-    getAccount () {
-      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.id
-      axios.get(path, {
-        auth: {username: this.user.token}
-      })
-        .then((res) => {
-          this.user = res.data.user
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
     submitEmployee () {
       const parameters = {
-        name: this.form.name,
-        surname: this.form.surname,
-        mail: this.form.mail,
-        usernameR: this.form.usernameR,
-        passwordR: this.form.passwordR,
-        dni: this.form.dni,
-        licence_caducity: this.form.licence_caducity,
-        credit_card: this.form.credit_card,
-        type: this.form.type
+        firstname: this.userForm.firstname,
+        surname: this.userForm.surname,
+        email: this.userForm.email,
+        username: this.userForm.username,
+        password: this.userForm.password,
+        dni: this.userForm.dni,
+        dataEndDrivePermission: this.userForm.dataEndDrivePermission,
+        creditCard: this.userForm.creditCard,
+        type: this.userForm.type
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
@@ -305,7 +293,7 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.post(path, parameters)
         .then((res) => {
-          this.active = true
+          this.active = false
           // this.bikes.splice(this.bike.id, 1)
         })
         .catch((error) => {
@@ -323,7 +311,7 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.put(path, parameters)
         .then((res) => {
-          this.active = false
+          this.active = true
           this.navigation = false
           // actualitzem diners
           this.getAccount()
@@ -357,15 +345,24 @@ export default {
     showInfo (bike) {
       this.bike = bike
       this.bike.$bvModal.show('info-modal')
+    },
+    getAccount () {
+      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.id
+      axios.get(path, {
+        auth: {username: this.user.token}
+      })
+        .then((res) => {
+          this.user = res.data.user
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   },
   created () {
-    this.getBikes()
-    this.getAccount()
-    this.user.username = this.$route.query.username
-    this.user.money_available = this.$route.query.token
+    // this.getBikes()
     this.user.token = this.$route.query.token
-    this.user.type = this.$route.query.type
+    this.getAccount()
   }
 }
 </script>

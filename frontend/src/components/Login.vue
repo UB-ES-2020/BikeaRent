@@ -54,7 +54,7 @@
                   <b-form-group id="input-group-3" label="Name:" label-for="input-1">
                     <b-form-input
                       id="input-1"
-                      v-model="form.name"
+                      v-model="form.firstname"
                       required
                       placeholder="Enter your name"
                       >
@@ -72,7 +72,7 @@
                   <b-form-group id="input-group-5" label="Mail:" label-for="input-3">
                     <b-form-input
                       id="input-3"
-                      v-model="form.mail"
+                      v-model="form.email"
                       required
                       placeholder="Enter your mail"
                       >
@@ -81,7 +81,7 @@
                   <b-form-group id="input-group-6" label="Username:" label-for="input-4">
                     <b-form-input
                       id="input-4"
-                      v-model="form.usernameR"
+                      v-model="form.username"
                       required
                       placeholder="Enter your username"
                       >
@@ -90,7 +90,7 @@
                   <b-form-group id="input-group-7" label="Password:" label-for="input-5">
                     <b-form-input
                       id="input-5"
-                      v-model="form.passwordR"
+                      v-model="form.password"
                       required
                       placeholder="Enter your username"
                       >
@@ -108,7 +108,7 @@
                   <b-form-group id="input-group-9" label="DNI caducity:" label-for="input-7">
                     <b-form-input
                       id="input-7"
-                      v-model="form.dni_caducity"
+                      v-model="form.dataEndDrivePermission"
                       required
                       placeholder="Enter your Caducity DNI date"
                       >
@@ -117,7 +117,7 @@
                   <b-form-group id="input-group-10" label="Credit Card:" label-for="input-8">
                     <b-form-input
                       id="input-8"
-                      v-model="form.credit_card"
+                      v-model="form.creditCard"
                       required
                       placeholder="Enter your credit card number"
                       >
@@ -140,38 +140,34 @@ export default {
   data () {
     return {
       /* eslint-disable */
-      user: {
-        id: 0,
-        token: null,
+      userToken: '',
+      userLogin: {
         username: '',
-        type: 0,
-        money_available: 0
+        password: ''
       },
       form: {
-        name: '',
+        firstname: '',
         surname: '',
-        mail: '',
-        usernameR: '',
-        passwordR: '',
+        email: '',
+        username: '',
+        password: '',
         dni: '',
-        licence_caducity: '',
-        credit_card: '',
+        dataEndDrivePermission: '',
+        creditCard: '',
         type: 0
       }
     }
   },
   methods: {
     clearLogin () {
-      this.username = ''
-      this.password = ''
-      this.form.name = ''
+      this.form.firstname = ''
       this.form.surname = ''
-      this.form.mail = ''
-      this.form.usernameR = ''
-      this.form.passwordR = ''
+      this.form.email = ''
+      this.form.username = ''
+      this.form.password = ''
       this.form.dni = ''
-      this.form.dni_caducity = ''
-      this.form.credit_card = ''
+      this.form.dataEndDrivePermission = ''
+      this.form.creditCard = ''
       this.$bvModal.show('bv-modal')
     },
     checkLogin () {
@@ -185,16 +181,12 @@ export default {
         const path = 'https://bike-a-rent.herokuapp.com/login'
         axios.post(path, parameters)
           .then((res) => {
-            this.user = res.data.user//this.token = res.data.token
-            this.getAccount()
+            this.userToken = res.data.token//this.user = res.data.user
             alert('Log In Succesfully')
             this.$router.replace({
               path: '/home',
               query: {
-                username: this.user.username,
-                money: this.user.money_available,
-                token: this.user.token,
-                type: this.user.type
+                token: this.userToken,
               }
             })
           })
@@ -205,30 +197,18 @@ export default {
           })
       }
     },
-    getAccount () {
-      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.id
-      axios.get(path, {
-        auth: {username: this.user.token}
-      })
-        .then((res) => {
-          this.user = res.data.user
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
     onSubmit () {
       this.$bvModal.hide('bv-modal')
       const parameters = {
-        name: this.form.name,
+        firstname: this.form.firstname,
         surname: this.form.surname,
-        mail: this.form.mail,
-        usernameR: this.form.usernameR,
-        passwordR: this.form.passwordR,
+        email: this.form.email,
+        username: this.form.username,
+        password: this.form.password,
         dni: this.form.dni,
-        licence_caducity: this.form.licence_caducity,
-        credit_card: this.form.credit_card,
-        type: this.form.type
+        dataEndDrivePermission: this.form.dataEndDrivePermission,
+        creditCard: this.form.creditCard,
+        type: 0
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
