@@ -44,6 +44,7 @@ class Motos(Resource):
     parser.add_argument('charge', type=int, required=True, help="This field cannot be left blank")
     parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
     parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
+    parser.add_argument('plate',type=str,required = True,help = "This field cannot be left blank")
 
     def get(self, id):
         moto = MotosModel.find_by_id(id)
@@ -79,19 +80,19 @@ class Accounts(Resource):
         return {'message': "User deleted"}, 200
 
     def post(self):
-        #parser = reqparse.RequestParser()
-        #parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        # parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
-        ########parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
+        parser = reqparse.RequestParser()
+        parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission',type=str, required=True, help="This field cannot be left blank")
+        #parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
         #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
-        #parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
-        data = self.parser.parse_args()
+        parser.add_argument('type', type=int, required=True, help="This field cannot be left blank")
+        data = parser.parse_args()
 
         user = AccountsModel.find_by_username(data['username'])
         if user:
@@ -104,8 +105,9 @@ class Accounts(Resource):
             try:
                 new_user.save_to_db()
                 return new_user.json(), 200
-            except:
+            except Exception as e:
                 return {"message": "Database error"}, 500
+                #return {e}
 
 
 # -------- Accounts List  ---------------------------------------------------------- #
@@ -132,9 +134,7 @@ class Login(Resource):
 
         if user:
             if user.verify_password(data['password']):
-
-                token = user.generate_auth_token()
-                return {'token': token.decode('ascii')}, 200
+                return user
             else:
                 return {"message": "Password not correct"}, 400
         else:
@@ -221,8 +221,8 @@ class Booking(Resource):
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
-api.add_resource(MotosList, '/motos')
-api.add_resource(Motos,'/moto','/moto/<int:id>')
+api.add_resource(MotosList, '/bikes')
+api.add_resource(Motos,'/bike','/bike/<int:id>')
 
 api.add_resource(Login, '/login')
 
