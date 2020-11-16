@@ -134,7 +134,7 @@ class Login(Resource):
 
         if user:
             if user.verify_password(data['password']):
-                return user
+                return {'account': user.json()}, 200
             else:
                 return {"message": "Password not correct"}, 400
         else:
