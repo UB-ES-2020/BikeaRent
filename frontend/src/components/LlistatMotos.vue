@@ -25,7 +25,7 @@
     <div v-if="user.type = 1" >
       <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
     </div>
-    <div v-if="user.type = 1" >
+    <div v-if="user.type = 3" >
       <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
     </div>
     <table>
@@ -136,6 +136,7 @@
           >
         </b-form-input>
       </b-form-group>
+      <button class="btn btn-danger" @click="submitEmployee, addEmpl=false">Add employee</button>
     </b-card>
   </div>
   <div v-if="bikeAdding">
@@ -268,7 +269,29 @@ export default {
           console.error(error)
         })
     },
-
+    submitEmployee () {
+      const parameters = {
+        name: this.form.name,
+        surname: this.form.surname,
+        mail: this.form.mail,
+        usernameR: this.form.usernameR,
+        passwordR: this.form.passwordR,
+        dni: this.form.dni,
+        licence_caducity: this.form.licence_caducity,
+        credit_card: this.form.credit_card,
+        type: this.form.type
+      }
+      const path = 'https://bike-a-rent.herokuapp.com/account'
+      axios.post(path, parameters)
+        .then((res) => {
+          alert('New employee added!')
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Could not create the account!')
+          alert(error)
+        })
+    },
     // Take a bike
     takeBike (bike) {
       this.bike = bike
