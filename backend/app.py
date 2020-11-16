@@ -44,6 +44,7 @@ class Motos(Resource):
     parser.add_argument('charge', type=int, required=True, help="This field cannot be left blank")
     parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
     parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
+    parser.add_argument('plate',type=str,required = True,help = "This field cannot be left blank")
 
     def get(self, id):
         moto = MotosModel.find_by_id(id)
@@ -86,11 +87,11 @@ class Accounts(Resource):
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('dataEndDrivePermission', required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission',type=str, required=True, help="This field cannot be left blank")
         #parser.add_argument('status', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
-        #parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
-        parser.add_argument('type', type=str, required=True, help="This field cannot be left blank")
+        #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('type', type=int, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
 
         user = AccountsModel.find_by_username(data['username'])
@@ -104,8 +105,9 @@ class Accounts(Resource):
             try:
                 new_user.save_to_db()
                 return new_user.json(), 200
-            except:
+            except Exception as e:
                 return {"message": "Database error"}, 500
+                #return {e}
 
 
 # -------- Accounts List  ---------------------------------------------------------- #
@@ -216,12 +218,11 @@ class Booking(Resource):
         except:
             return "Something went wrong", 500
 
-
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
-api.add_resource(MotosList, '/motos')
-api.add_resource(Motos,'/moto','/moto/<int:id>')
+api.add_resource(MotosList, '/bikes')
+api.add_resource(Motos,'/bike','/bike/<int:id>')
 
 api.add_resource(Login, '/login')
 
