@@ -19,13 +19,13 @@
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.money_available}} €</h6>
+        <h6 style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
       </div>
     </nav>
-    <div v-if="user.type = 1" >
+    <div v-if="user.type == 1" >
       <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
     </div>
-    <div v-if="user.type = 3" >
+    <div v-if="user.type == 3" >
       <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
     </div>
     <table>
@@ -65,7 +65,8 @@
           <h5>Model: {{ bike.model }}</h5>
           <hr>
           <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
-          <h5>Location: {{ bike.latitude, bike.longitude }}</h5>
+          <h5>Location: {{bike.latitude}},{{bike.longitude}}</h5>
+          <h5 class="mt-2">Plate: {{bike.plate}}</h5>
       </div>
     </b-modal>
     </div>
@@ -136,7 +137,7 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="submitEmployee, addEmpl=false">Add employee</button>
+      <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
     </b-card>
   </div>
   <div v-if="bikeAdding">
@@ -188,7 +189,7 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="addBike, bikeAdding=false">Add this bike</button>
+      <button class="btn btn-danger" @click="addBike">Add this bike</button>
     </b-card>
   </div>
 </div>
@@ -204,7 +205,7 @@ export default {
         id: 0,
         token: null,
         username: 'Albert',
-        money_available: 69,
+        moneyAvailable: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       newUserForm: {
@@ -273,6 +274,7 @@ export default {
       axios.post(path, parameters)
         .then((res) => {
           alert('New employee added!')
+          this.addEmpl = false
         })
         .catch((error) => {
           console.error(error)
@@ -330,28 +332,30 @@ export default {
         active: true,
         charge: this.bike.charge,
         latitude: this.bike.latitude,
-        longitude: this.bike.longitude
+        longitude: this.bike.longitude,
+        plate: this.bike.plate
       }
-      axios.post(path, parameters, {
-        auth: {username: this.user.token}
-      })
+      axios.post(path, parameters)
         .then((res) => {
-          this.user = res.data.user
+          alert('New bike created!')
+          this.bikeAdding = false
+          this.created()
         })
         .catch((error) => {
+          alert(error)
           console.error(error)
         })
     },
     showInfo (bike) {
       this.bike = bike
-      this.bike.$bvModal.show('info-modal')
+      this.$bvModal.show('info-modal')
     },
     getAccount () {
-      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.username
+      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
       axios.get(path)
         .then((res) => {
-          alert(this.user)
-          this.user = res.data
+          this.user.moneyAvailable = res.data.availableMoney
+          this.user.type = res.data.type
         })
         .catch((error) => {
           console.error(error)
