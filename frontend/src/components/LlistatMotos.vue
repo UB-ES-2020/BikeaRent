@@ -128,6 +128,15 @@
           >
         </b-form-input>
       </b-form-group>
+      <b-form-group id="input-group-27" label="Credit Card:" label-for="input-27">
+        <b-form-input
+          id="input-27"
+          v-model="newUserForm.creditCard"
+          required
+          placeholder="Enter employee's Credit Card"
+          >
+        </b-form-input>
+      </b-form-group>
       <b-form-group id="input-group-26" label="TYPE(1 = Suport 2=Technical):" label-for="input-26">
         <b-form-input
           id="input-25"
@@ -216,7 +225,7 @@ export default {
         password: '',
         dni: '',
         dataEndDrivePermission: 'XXX',
-        creditCard: '99999',
+        creditCard: '',
         type: null
       },
       bike: {
