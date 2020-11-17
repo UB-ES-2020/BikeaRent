@@ -251,7 +251,7 @@ export default {
       axios.get(path)
         .then((res) => {
           this.bikes = []
-          this.bikes = res.data.bikes
+          this.bikes = res.data
         })
         .catch((error) => {
           console.error(error)
@@ -348,11 +348,10 @@ export default {
     },
     getAccount () {
       const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.username
-      axios.get(path, {
-        auth: {username: this.user.token}
-      })
+      axios.get(path)
         .then((res) => {
-          this.user = res.data.user
+          alert(this.user)
+          this.user = res.data
         })
         .catch((error) => {
           console.error(error)
