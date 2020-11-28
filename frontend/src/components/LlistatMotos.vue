@@ -40,6 +40,9 @@
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
+        <div v-if="user.type = 1">
+          <button style="position: absolute; right: 0%" class="btn btn-success"  @click="bikeUpdate=true">Update Bike</button>
+        </div>
       </tbody>
     </table>
   </div>
@@ -191,6 +194,58 @@
       <button class="btn btn-danger" @click="addBike, bikeAdding=false">Add this bike</button>
     </b-card>
   </div>
+  <div v-if="bikeUpdate">
+    <h3> Update a bike in the system</h3>
+    <b-card style="width:250px; margin:auto">
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false">Close</button>
+      <b-form-group id="input-group-8" label="Model:" label-for="input-8">
+        <b-form-input
+          id="input-8"
+          v-model="bike.model"
+          required
+          placeholder="Enter the bike model"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-9" label="Charge:" label-for="input-9">
+        <b-form-input
+          id="input-9"
+          v-model="bike.charge"
+          required
+          placeholder="Enter the bike charge"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-10" label="Latitude:" label-for="input-10">
+        <b-form-input
+          id="input-10"
+          v-model="bike.latitude"
+          required
+          placeholder="Enter the bike latitude"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-11" label="Longitude:" label-for="input-11">
+        <b-form-input
+          id="input-11"
+          v-model="bike.longitude"
+          required
+          placeholder="Enter the bike longitude"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-12" label="Plate:" label-for="input-12">
+        <b-form-input
+          id="input-12"
+          v-model="bike.plate"
+          required
+          placeholder="Enter the bike plate"
+          >
+        </b-form-input>
+      </b-form-group>
+      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false">Update this bike</button>
+    </b-card>
+  </div>
 </div>
 
 </template>
@@ -241,7 +296,8 @@ export default {
       navigation: false,
       active: false,
       addEmpl: false,
-      bikeAdding: false
+      bikeAdding: false,
+      bikeUpdate: false
     }
   },
   methods: {
@@ -349,6 +405,25 @@ export default {
     getAccount () {
       const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.username
       axios.get(path, {
+        auth: {username: this.user.token}
+      })
+        .then((res) => {
+          this.user = res.data.user
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    updateBike (bike) {
+      const path = 'https://bike-a-rent.herokuapp.com/bike' + bike.id
+      const parameters = {
+        model: bike.model,
+        active: true,
+        charge: bike.charge,
+        latitude: bike.latitude,
+        longitude: bike.longitude
+      }
+      axios.put(path, parameters, {
         auth: {username: this.user.token}
       })
         .then((res) => {
