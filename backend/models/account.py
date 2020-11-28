@@ -18,14 +18,17 @@ class AccountsModel(db.Model):
     username = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
+    dni2 = db.Column(db.String(30), unique=True, nullable=False)
     dataEndDrivePermission = db.Column(db.String(10), nullable=False)
     status = db.Column(db.Boolean, nullable=False) #true = active, false = notActive
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Integer, nullable=False) #0=user, 1 = support, 2= technical, 3 = admi
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
 
     def __init__(self, firstname, surname, email, username, dni, dataEndDrivePermission, creditCard,
-                 type, status=True, availableMoney=100):
+                 type, latitude, longitude, status=True, availableMoney=100):
         self.firstname = firstname
         self.surname = surname
         self.email = email
@@ -36,6 +39,8 @@ class AccountsModel(db.Model):
         self.creditCard = creditCard
         self.availableMoney = availableMoney
         self.type = type
+        self.latitude = latitude
+        self.longitude = longitude
 
     def json(self):
         return {
@@ -49,7 +54,9 @@ class AccountsModel(db.Model):
             'status': self.status,
             'creditCard': self.creditCard,
             'availableMoney': self.availableMoney,
-            'type': self.type
+            'type': self.type,
+            'latitude': self.latitude,
+            'longitude': self.longitude
         }
 
     def save_to_db(self):
