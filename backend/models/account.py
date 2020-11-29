@@ -18,7 +18,6 @@ class AccountsModel(db.Model):
     username = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
-    dni2 = db.Column(db.String(30), unique=True, nullable=False)
     dataEndDrivePermission = db.Column(db.String(10), nullable=False)
     status = db.Column(db.Boolean, nullable=False) #true = active, false = notActive
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
