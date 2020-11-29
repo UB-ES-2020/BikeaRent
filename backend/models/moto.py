@@ -1,6 +1,6 @@
 from db import db
 from flask_httpauth import HTTPBasicAuth
-
+from math import radians, sin, cos, acos
 auth = HTTPBasicAuth()
 
 
@@ -63,3 +63,17 @@ class MotosModel(db.Model):
 
         db.session.add(moto)
         db.session.commit()
+
+    @classmethod
+    def distMotoUser(cls, coordUser, coordMoto):
+        # Ej:
+        coordUser = [41.386422, 2.16407]  # UB #0.45 km
+        coordMoto = [41.387872, 2.170001]  # ECI - Pz Cat.
+
+        slat = radians(coordUser[0])
+        slon = radians(coordUser[1])
+        elat = radians(coordMoto[0])
+        elon = radians(coordMoto[1])
+
+        # Distance in kilometer
+        return 6371.01 * acos(sin(slat) * sin(elat) + cos(slat) * cos(elat) * cos(slon - elon))
