@@ -16,7 +16,7 @@ before_deploy:
 branches:
   only:
     - main
-    - travis_testing
+    - development
 deploy:
   skip_cleanup: true
   provider: heroku
