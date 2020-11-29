@@ -4,7 +4,6 @@ python:
 install:
 - pip install -r backend/requirements.txt
 before_deploy:
-- cd backend
 - heroku
 - npm install -g @vue/cli
 - cd frontend
