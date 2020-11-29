@@ -14,7 +14,7 @@ def test_getAccount():
 
     assert resp.status_code == 200
 
-'''
+
 def test_getAccountFail():
     url = "http://127.0.0.1:5000/account/user2"
 
@@ -27,4 +27,4 @@ def test_getAccountFail():
     resp = requests.get(url, headers=headers, data=json.dumps(payload, indent=4))
 
     assert resp.status_code == 404
-'''
+
