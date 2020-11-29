@@ -6,6 +6,9 @@ install:
 before_deploy:
 - cd backend
 - heroku
+- npm install -g @vue/cli
+- cd frontend
+- npm run build
 branches:
   only:
     - main
