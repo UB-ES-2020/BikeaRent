@@ -197,7 +197,7 @@
   <div v-if="bikeUpdate">
     <h3> Update a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false, getToUpdate(bike)">Close</button>
       <b-form-group id="input-group-8" label="Model:" label-for="input-8">
         <b-form-input
           id="input-8"
@@ -432,6 +432,13 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    getToUpdate (bike) {
+      document.getElementById('input-8').value = bike.model
+      document.getElementById('input-9').value = bike.charge
+      document.getElementById('input-10').value = bike.latitude
+      document.getElementById('input-11').value = bike.longitude
+      document.getElementById('input-12').value = bike.plate
     }
   },
   created () {
