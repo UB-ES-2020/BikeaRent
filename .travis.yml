@@ -8,6 +8,9 @@ before_deploy:
 - npm install -g @vue/cli
 - cd frontend
 - npm run build
+- cp dist/index.html ../backend
+- cp dist/static ../backend
+- cd backend
 branches:
   only:
     - main
