@@ -94,7 +94,10 @@ class Accounts(Resource):
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
         #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
         parser.add_argument('type', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
+        parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
+
 
         user = AccountsModel.find_by_username(data['username'])
         if user:
