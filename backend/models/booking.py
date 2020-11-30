@@ -25,6 +25,9 @@ class BookingModel(db.Model):
         self.price = price
 
     def json(self):
+        self.startDate = self.startDate.strftime('%Y-%m-%d %H:%M:%S.%f')
+        if self.endDate != None:
+            self.endDate = self.endDate.strftime('%Y-%m-%d %H:%M:%S.%f')
         return {
             'id': self.id,
             'userid': self.userid,

@@ -19,13 +19,13 @@
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.money_available}} €</h6>
+        <h6 style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
       </div>
     </nav>
-    <div v-if="user.type = 1" >
+    <div v-if="user.type == 1" >
       <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
     </div>
-    <div v-if="user.type = 3" >
+    <div v-if="user.type == 3" >
       <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
     </div>
     <table>
@@ -40,6 +40,9 @@
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
+        <div v-if="user.type == 1">
+          <button style="position: absolute; right: 0%" class="btn btn-success"  @click="bikeUpdate=true">Update Bike</button>
+        </div>
       </tbody>
     </table>
   </div>
@@ -65,7 +68,8 @@
           <h5>Model: {{ bike.model }}</h5>
           <hr>
           <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
-          <h5>Location: {{ bike.latitude, bike.longitude }}</h5>
+          <h5>Location: {{bike.latitude}},{{bike.longitude}}</h5>
+          <h5 class="mt-2">Plate: {{bike.plate}}</h5>
       </div>
     </b-modal>
     </div>
@@ -127,6 +131,15 @@
           >
         </b-form-input>
       </b-form-group>
+      <b-form-group id="input-group-27" label="Credit Card:" label-for="input-27">
+        <b-form-input
+          id="input-27"
+          v-model="newUserForm.creditCard"
+          required
+          placeholder="Enter employee's Credit Card"
+          >
+        </b-form-input>
+      </b-form-group>
       <b-form-group id="input-group-26" label="TYPE(1 = Suport 2=Technical):" label-for="input-26">
         <b-form-input
           id="input-25"
@@ -136,7 +149,7 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="submitEmployee, addEmpl=false">Add employee</button>
+      <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
     </b-card>
   </div>
   <div v-if="bikeAdding">
@@ -188,7 +201,59 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="addBike, bikeAdding=false">Add this bike</button>
+      <button class="btn btn-danger" @click="addBike">Add this bike</button>
+    </b-card>
+  </div>
+  <div v-if="bikeUpdate">
+    <h3> Update a bike in the system</h3>
+    <b-card style="width:250px; margin:auto">
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false, getToUpdate(bike)">Close</button>
+      <b-form-group id="input-group-8" label="Model:" label-for="input-8">
+        <b-form-input
+          id="input-8"
+          v-model="bike.model"
+          required
+          placeholder="Enter the bike model"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-9" label="Charge:" label-for="input-9">
+        <b-form-input
+          id="input-9"
+          v-model="bike.charge"
+          required
+          placeholder="Enter the bike charge"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-10" label="Latitude:" label-for="input-10">
+        <b-form-input
+          id="input-10"
+          v-model="bike.latitude"
+          required
+          placeholder="Enter the bike latitude"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-11" label="Longitude:" label-for="input-11">
+        <b-form-input
+          id="input-11"
+          v-model="bike.longitude"
+          required
+          placeholder="Enter the bike longitude"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-12" label="Plate:" label-for="input-12">
+        <b-form-input
+          id="input-12"
+          v-model="bike.plate"
+          required
+          placeholder="Enter the bike plate"
+          >
+        </b-form-input>
+      </b-form-group>
+      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false">Update this bike</button>
     </b-card>
   </div>
 </div>
@@ -204,7 +269,7 @@ export default {
         id: 0,
         token: null,
         username: 'Albert',
-        money_available: 69,
+        moneyAvailable: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       newUserForm: {
@@ -215,7 +280,7 @@ export default {
         password: '',
         dni: '',
         dataEndDrivePermission: 'XXX',
-        creditCard: '99999',
+        creditCard: '',
         type: null
       },
       bike: {
@@ -241,7 +306,8 @@ export default {
       navigation: false,
       active: false,
       addEmpl: false,
-      bikeAdding: false
+      bikeAdding: false,
+      bikeUpdate: false
     }
   },
   methods: {
@@ -251,7 +317,7 @@ export default {
       axios.get(path)
         .then((res) => {
           this.bikes = []
-          this.bikes = res.data.bikes
+          this.bikes = res.data
         })
         .catch((error) => {
           console.error(error)
@@ -273,6 +339,7 @@ export default {
       axios.post(path, parameters)
         .then((res) => {
           alert('New employee added!')
+          this.addEmpl = false
         })
         .catch((error) => {
           console.error(error)
@@ -330,25 +397,45 @@ export default {
         active: true,
         charge: this.bike.charge,
         latitude: this.bike.latitude,
-        longitude: this.bike.longitude
+        longitude: this.bike.longitude,
+        plate: this.bike.plate
       }
-      axios.post(path, parameters, {
-        auth: {username: this.user.token}
-      })
+      axios.post(path, parameters)
         .then((res) => {
-          this.user = res.data.user
+          alert('New bike created!')
+          this.bikeAdding = false
+          this.created()
         })
         .catch((error) => {
+          alert(error)
           console.error(error)
         })
     },
     showInfo (bike) {
       this.bike = bike
-      this.bike.$bvModal.show('info-modal')
+      this.$bvModal.show('info-modal')
     },
     getAccount () {
-      const path = 'https://bike-a-rent.herokuapp.com/account' + this.user.username
-      axios.get(path, {
+      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
+      axios.get(path)
+        .then((res) => {
+          this.user.moneyAvailable = res.data.availableMoney
+          this.user.type = res.data.type
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    updateBike (bike) {
+      const path = 'https://bike-a-rent.herokuapp.com/bike/' + bike.id
+      const parameters = {
+        model: bike.model,
+        active: true,
+        charge: bike.charge,
+        latitude: bike.latitude,
+        longitude: bike.longitude
+      }
+      axios.put(path, parameters, {
         auth: {username: this.user.token}
       })
         .then((res) => {
@@ -357,6 +444,13 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    getToUpdate (bike) {
+      document.getElementById('input-8').value = bike.model
+      document.getElementById('input-9').value = bike.charge
+      document.getElementById('input-10').value = bike.latitude
+      document.getElementById('input-11').value = bike.longitude
+      document.getElementById('input-12').value = bike.plate
     }
   },
   created () {
