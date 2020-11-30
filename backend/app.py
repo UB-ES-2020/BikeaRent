@@ -105,7 +105,7 @@ class Accounts(Resource):
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
                                      data['dataEndDrivePermission'], data['creditCard'],
-                                     data['type'])
+                                     data['type'], data['latitude'], data['longitude'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()
