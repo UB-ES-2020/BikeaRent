@@ -2,7 +2,7 @@ from db import db
 from flask_httpauth import HTTPBasicAuth
 from math import radians, sin, cos, acos
 auth = HTTPBasicAuth()
-from backend.models.account import AccountsModel
+
 
 
 class MotosModel(db.Model):
