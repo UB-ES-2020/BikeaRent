@@ -427,7 +427,7 @@ export default {
         })
     },
     updateBike (bike) {
-      const path = 'https://bike-a-rent.herokuapp.com/bike' + bike.id
+      const path = 'https://bike-a-rent.herokuapp.com/bike/' + bike.id
       const parameters = {
         model: bike.model,
         active: true,
