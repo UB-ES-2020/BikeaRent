@@ -8,12 +8,12 @@ class MotosModel(db.Model):
     __tablename__ = 'motos'
 
     id = db.Column(db.Integer, primary_key=True)
-    model = db.Column(db.String(30),nullable=False)
-    active = db.Column(db.Boolean,nullable=False)
-    charge = db.Column(db.Integer,nullable=False)
-    position = db.Column(db.String(50),nullable=False)
-    latitude = db.Column(db.Float,nullable=False)
-    longitude = db.Column(db.Float,nullable=False)
+    model = db.Column(db.String(30), nullable=False)
+    active = db.Column(db.Boolean, nullable=False)
+    charge = db.Column(db.Integer, nullable=False)
+    position = db.Column(db.String(50), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
     plate = db.Column(db.String(8), unique=True, nullable=False)
 
     def __init__(self, model, active, charge, latitude, longitude,plate, position = "Passeig de Gracia, 55, Barcelona"):

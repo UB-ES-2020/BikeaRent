@@ -3,13 +3,13 @@ import json
 
 def test_getAccount():
 
-    url = "http://127.0.0.1:5000/account/user1"
+    url = "http://127.0.0.1:5000/account/admin"
 
     headers = {'Content-Type': 'application/json'}
 
-    payload = {'firstname': 'lokt', 'surname': 'dada', 'email': 'jofna@dd', 'username': 'user1',
-               'password': 'user1', 'dni': '3124431', 'dataEndDrivePermission': 'sddsdsads', 'status': 'aedew',
-               'creditCard': '2343432', 'availableMoney': 12, 'type': 1}
+    payload = {'firstname': 'admin', 'surname': 'admin', 'email': 'jofna@dd', 'username': 'admin',
+               'password': 'admin', 'dni': '3333', 'dataEndDrivePermission': 'sddsds', 'status': 'aeee',
+               'creditCard': '2343432', 'availableMoney': 12, 'type': 3}
     resp = requests.get(url, headers=headers, data=json.dumps(payload, indent=4))
 
     assert resp.status_code == 200
