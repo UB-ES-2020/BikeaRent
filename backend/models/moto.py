@@ -59,7 +59,7 @@ class MotosModel(db.Model):
         moto = cls.query.filter_by(id=id).first()
         if moto.active is True:
             moto.active = False
-        if moto.active is False:
+        elif moto.active is False:
             moto.active = True
 
         db.session.add(moto)
