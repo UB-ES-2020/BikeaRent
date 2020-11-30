@@ -40,7 +40,7 @@
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
-        <div v-if="user.type = 1">
+        <div v-if="user.type == 1">
           <button style="position: absolute; right: 0%" class="btn btn-success"  @click="bikeUpdate=true">Update Bike</button>
         </div>
       </tbody>
