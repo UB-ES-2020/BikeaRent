@@ -94,10 +94,7 @@ class Accounts(Resource):
         parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
         #######parser.add_argument('availableMoney', type=int, required=True, help="This field cannot be left blank")
         parser.add_argument('type', type=int, required=True, help="This field cannot be left blank")
-        parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
-        parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
-
 
         user = AccountsModel.find_by_username(data['username'])
         if user:
@@ -105,7 +102,7 @@ class Accounts(Resource):
         else:
             new_user = AccountsModel(data['firstname'], data['surname'], data['email'], data['username'], data['dni'],
                                      data['dataEndDrivePermission'], data['creditCard'],
-                                     data['type'], data['latitude'], data['longitude'])
+                                     data['type'])
             new_user.hash_password(data['password'])
             try:
                 new_user.save_to_db()
