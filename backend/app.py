@@ -64,6 +64,7 @@ class Motos(Resource):
 
 # -------- Register  ---------------------------------------------------------- #
 class Accounts(Resource):
+    #@auth.login_required()
     def get(self, username):
         user = AccountsModel.find_by_username(username)
         if user:
@@ -71,6 +72,8 @@ class Accounts(Resource):
         else:
             return {'message': 'There is no client with username [{}] .'.format(username)}, 404
 
+
+    #@auth.login_required()
     def delete(self, username):
         user = AccountsModel.find_by_username(username)
         if not user:
