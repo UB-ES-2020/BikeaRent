@@ -1,5 +1,3 @@
-from sqlite3.dbapi2 import Date
-
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from models.booking import BookingModel
@@ -9,10 +7,11 @@ from flask_restful import Resource, Api, reqparse
 from db import db
 from flask_cors import CORS
 
+from datetime import datetime
+
 from decouple import config as config_decouple
 from config import config
 
-import time
 
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -72,6 +71,7 @@ class Accounts(Resource):
             return user.json(), 200
         else:
             return {'message': 'There is no client with username [{}] .'.format(username)}, 404
+
 
     #@auth.login_required()
     def delete(self, username):
@@ -164,7 +164,7 @@ class BookingList(Resource):
 class Booking(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('userid', type=int, required=True, help="The userid is required")
-    parser.add_argument('motoid', type=int, required=True, help="The motoid is required")
+    parser.add_argument('bikeid', type=int, required=True, help="The bikeid is required")
 
     def get(self, userid):
         rents = BookingModel.find_by_userid(userid)
@@ -180,16 +180,26 @@ class Booking(Resource):
         data = Booking.parser.parse_args()
 
         userid = data['userid']
-        motoid = data['motoid']
+        bikeid = data['bikeid']
 
         user = AccountsModel.find_by_id(userid)
-        moto_active = MotosModel.is_active(motoid)
+        bike = MotosModel.find_by_id(bikeid)
+
+        if user is None:
+            return "User not found", 404
+
+        if bike is None:
+            return "Bike not found", 404
+
+        moto_active = MotosModel.is_active(bikeid)
 
         try:
             if user.availableMoney > 5:
                 if moto_active is True:
-                    new_rent = BookingModel(userid, motoid, time.time(), None, None, None)
-                    MotosModel.change_status(motoid)
+                    new_rent = BookingModel(userid, bikeid, datetime.now(), None, None, None)
+                    MotosModel.change_status(bikeid)
+
+                    new_rent.save_to_db()
 
                     return {"new_rent": new_rent.json()}, 201
                 return "Moto selected is not active", 400
@@ -202,7 +212,7 @@ class Booking(Resource):
         data = Booking.parser.parse_args()
 
         userid = data['userid']
-        motoid = data['motoid']
+        bikeid = data['bikeid']
 
         try:
             admin_user = AccountsModel.find_by_username('admin')
@@ -211,8 +221,8 @@ class Booking(Resource):
             if user is None:
                 return "User not found", 404
 
-            book = BookingModel.finalize_book(userid, motoid)
-            MotosModel.change_status(motoid)
+            book = BookingModel.finalize_book(userid, bikeid)
+            MotosModel.change_status(bikeid)
 
             admin_user.availableMoney += book.price
             user.availableMoney -= book.price
