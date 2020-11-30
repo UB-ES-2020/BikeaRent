@@ -193,7 +193,8 @@ class Booking(Resource):
         try:
             if user.availableMoney > 5:
                 if moto_active is True:
-                    new_rent = BookingModel(userid, bikeid, datetime.now(), None, None, None)
+                    new_rent = BookingModel(userid, bikeid, None, None, None)
+                    new_rent.startDate = datetime.now()
                     MotosModel.change_status(bikeid)
 
                     new_rent.save_to_db()
@@ -211,22 +212,31 @@ class Booking(Resource):
         userid = data['userid']
         bikeid = data['bikeid']
 
+        user = AccountsModel.find_by_id(userid)
+        bike = MotosModel.find_by_id(bikeid)
+
+        if user is None:
+            return "User not found", 404
+        if bike is None:
+            return "Bike not found", 404
+
         try:
             admin_user = AccountsModel.find_by_username('admin')
-            user = AccountsModel.find_by_id(userid)
 
-            if user is None:
-                return "User not found", 404
+            if admin_user:
+                book = BookingModel.finalize_book(userid, bikeid)
+                if book is None:
+                    return "No renting found", 404
+                MotosModel.change_status(bikeid)
 
-            book = BookingModel.finalize_book(userid, bikeid)
-            MotosModel.change_status(bikeid)
+                admin_user.availableMoney += book.price
+                user.availableMoney -= book.price
 
-            admin_user.availableMoney += book.price
-            user.availableMoney -= book.price
-
-            return "Booking finalized correctly", 201
+                return {"finalized_rent": book.json()}, 201
+            return "Admin user not found", 404
         except:
             return "Something went wrong", 500
+
 
 api.add_resource(Accounts, '/account/<string:username>', '/account')
 api.add_resource(AccountsList, '/accounts')
@@ -236,7 +246,7 @@ api.add_resource(Motos,'/bike','/bike/<int:id>')
 
 api.add_resource(Login, '/login')
 
-api.add_resource(Booking, '/rent')
+api.add_resource(Booking, '/rent', '/rent/<int:userid>')
 api.add_resource(BookingList, '/rents')
 
 if __name__ == '__main__':
