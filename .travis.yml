@@ -9,8 +9,7 @@ before_deploy:
 - cd frontend
 - npm run build
 - cp dist/index.html ../backend
-- cp dist/static/css/* ../backend/static/css
-- cp dist/static/js/* ../backend/static/js
+- cp dist/static ../backend
 - cd ..
 - cd backend
 branches:
