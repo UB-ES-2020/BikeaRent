@@ -18,8 +18,11 @@
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <div>
+        <div>
+          <button class="btn btn-primary"  @click="showInfoUser()">Info User</button>
+        </div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
+        <h6 style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
@@ -40,7 +43,7 @@
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
-        <button v-if="user.type == 1" class="btn btn-success"  @click="bikeUpdate=true">Update Bike</button>
+        <button v-if="user.type == 1" class="btn btn-success"  @click="getToUpdate(bike)">Edit Bike</button>
       </tbody>
     </table>
   </div>
@@ -70,7 +73,7 @@
           <h5 class="mt-2">Plate: {{bike.plate}}</h5>
       </div>
     </b-modal>
-    </div>
+  </div>
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
     <b-card style="width:250px; margin:auto">
@@ -205,7 +208,7 @@
   <div v-if="bikeUpdate">
     <h3> Update a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false, getToUpdate(bike)">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false">Close</button>
       <b-form-group id="input-group-8" label="Model:" label-for="input-8">
         <b-form-input
           id="input-8"
@@ -254,6 +257,27 @@
       <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false">Update this bike</button>
     </b-card>
   </div>
+  <div>
+    <b-modal id="infoUser-modal" hide-footer>
+      <template v-slot:modal-title>
+        <h4 style="text-align: center">Info Usuari</h4>
+      </template>
+      <div class="d-block">
+        <br>
+          <h5>ID: {{ user.id }}</h5>
+          <hr>
+          <h5 class="mt-2">Name: {{ user.firstname }}</h5>
+          <h5 class="mt-2">Lastname: {{ user.surname }}</h5>
+          <h5 class="mt-2">Mail: {{ user.email }}</h5>
+          <h5 class="mt-2">Username: {{ user.username }}</h5>
+          <h5 class="mt-2">DNI: {{ user.dni }}</h5>
+          <h5 class="mt-2">Data End Drive Permission: {{ user.dataEndDrivePermission }}</h5>
+          <h5 class="mt-2">Credit Card: {{user.creditCard}}</h5>
+          <h5 class="mt-2">Available Money: {{user.availableMoney}}</h5>
+          <h5>Location: {{user.latitude}},{{user.longitude}}</h5>
+      </div>
+    </b-modal>
+  </div>
 </div>
 
 </template>
@@ -267,7 +291,7 @@ export default {
         id: 0,
         token: null,
         username: 'Albert',
-        moneyAvailable: 69,
+        availableMoney: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       newUserForm: {
@@ -417,8 +441,7 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
       axios.get(path)
         .then((res) => {
-          this.user.moneyAvailable = res.data.availableMoney
-          this.user.type = res.data.type
+          this.user = res.data
         })
         .catch((error) => {
           console.error(error)
@@ -444,11 +467,15 @@ export default {
         })
     },
     getToUpdate (bike) {
+      this.bikeUpdate = true
       document.getElementById('input-8').value = bike.model
       document.getElementById('input-9').value = bike.charge
       document.getElementById('input-10').value = bike.latitude
       document.getElementById('input-11').value = bike.longitude
       document.getElementById('input-12').value = bike.plate
+    },
+    showInfoUser () {
+      this.$bvModal.show('infoUser-modal')
     }
   },
   created () {
