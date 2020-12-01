@@ -36,3 +36,5 @@ deploy:
   app:
     main: bike__aRent
     travis_arreglo: bike-a-rent
+  run:
+    - git push heroku master
