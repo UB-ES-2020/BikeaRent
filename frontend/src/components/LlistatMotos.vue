@@ -17,17 +17,20 @@
   <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
+      <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
+      <h4 v-if="user.type == 2" style="color: #f6a90f">Technician account</h4>
+      <h4 v-if="user.type == 3" style="color: #ff00ff">Admin account</h4>
       <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
+        <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
-      <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
+      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
     </div>
     <div v-if="user.type == 3" >
-      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
+      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
     <table>
       <thead style="border-bottom: 5px solid #000;">
@@ -40,8 +43,8 @@
         <td>{{ bike.model }} </td>
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
-        <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
-        <button v-if="user.type == 1" class="btn btn-success"  @click="bikeUpdate=true">Update Bike</button>
+        <button v-if="user.type != 1" class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
+        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeUpdate=true">Update Bike</button>
       </tbody>
     </table>
   </div>
