@@ -72,7 +72,6 @@ class Accounts(Resource):
         else:
             return {'message': 'There is no client with username [{}] .'.format(username)}, 404
 
-
     #@auth.login_required()
     def delete(self, username):
         user = AccountsModel.find_by_username(username)
@@ -112,6 +111,30 @@ class Accounts(Resource):
             except Exception as e:
                 return {"message": "Database error"}, 500
                 #return {e}
+
+    def put(self, id):
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
+
+        data = parser.parse_args()
+
+        account = AccountsModel.find_by_id(id)
+        if account:
+
+            modified_account = AccountsModel(data['firstname'], data['surname'], data['email'], account.username,
+                                             data['dni'], data['dataEndDrivePermission'], data['creditCard'],
+                                             account.type, account.latitude, account.longitude)
+            if account.firstname == modified_account.firstname and account.surname == modified_account.surname and account.email == modified_account.email and account.dni == modified_account.dni and account.dataEndDrivePermission == modified_account.dataEndDrivePermission and account.creditCard == modified_account.creditCard:
+                return {"Error": "User {} is up to date".format(account.username)}, 400
+            AccountsModel.modify_account(id, modified_account)
+            return {"account": account.json()}, 200
+        return {"Error": "Account with identifier {} not found".format(id)}, 404
 
 
 # -------- Accounts List  ---------------------------------------------------------- #
@@ -233,7 +256,8 @@ class Booking(Resource):
         except:
             return "Something went wrong", 500
 
-api.add_resource(Accounts, '/account/<string:username>', '/account')
+
+api.add_resource(Accounts, '/account/<string:username>', '/account/<int:id>', '/account')
 api.add_resource(AccountsList, '/accounts')
 
 api.add_resource(MotosList, '/bikes')
