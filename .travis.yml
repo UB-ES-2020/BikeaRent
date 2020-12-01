@@ -13,6 +13,12 @@ before_deploy:
 - cd ..
 - cd backend
 - ls
+- cd static
+- ls
+- cd js
+- ls
+- cd ..
+- cd ..
 branches:
   only:
     - main
