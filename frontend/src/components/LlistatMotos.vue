@@ -14,13 +14,13 @@
 
 <template>
 <div id="app">
-  <div v-if="!navigation & !bikeAdding & !addEmpl">
+  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
+        <h6 style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
@@ -49,6 +49,7 @@
     <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
     <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
     <br>
+    <button class="btn btn-info" @click="navigation=false">Cancel</button>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
   </div>
   <div v-if="active">
@@ -267,7 +268,7 @@ export default {
         id: 0,
         token: null,
         username: 'Albert',
-        moneyAvailable: 69,
+        availableMoney: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       newUserForm: {
@@ -282,6 +283,7 @@ export default {
         type: null
       },
       bike: {
+        id: 0,
         model: '',
         active: false,
         charge: '',
@@ -352,19 +354,20 @@ export default {
     },
     unlockBike () {
       const parameters = {
-        user_id: this.user.id,
-        bike_id: this.bike.id
+        userid: this.user.id,
+        bikeid: this.bike.id
       }
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.post(path, parameters)
         .then((res) => {
-          this.active = false
-          // this.bikes.splice(this.bike.id, 1)
+          this.navigation = false
+          this.active = true
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
           alert('Sorry, you cannot take this bike. Try again')
+          alert(this.bike.id)
         })
     },
     lockBike () {
@@ -402,7 +405,7 @@ export default {
         .then((res) => {
           alert('New bike created!')
           this.bikeAdding = false
-          this.created()
+          // this.created()
         })
         .catch((error) => {
           alert(error)
@@ -417,7 +420,8 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
       axios.get(path)
         .then((res) => {
-          this.user.moneyAvailable = res.data.availableMoney
+          this.user.id = res.data.id
+          this.user.availableMoney = res.data.availableMoney
           this.user.type = res.data.type
         })
         .catch((error) => {
