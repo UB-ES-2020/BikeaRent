@@ -23,6 +23,9 @@ script:
   - cd css
   - ls
   - cd ..
+  - cd tr
+  - ls
+  - cd ..
   - cd ..
 before_deploy:
 - heroku
