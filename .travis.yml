@@ -12,6 +12,7 @@ before_deploy:
 - cp -r dist/static ../backend
 - cd ..
 - cd backend
+- ls
 branches:
   only:
     - main
