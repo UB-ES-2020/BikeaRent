@@ -63,7 +63,6 @@
       </template>
       <div class="d-block">
         <br>
-          <h5>ID: {{ bike.id }}</h5>
           <h5>Model: {{ bike.model }}</h5>
           <hr>
           <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
