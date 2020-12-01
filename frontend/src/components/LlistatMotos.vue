@@ -14,19 +14,23 @@
 
 <template>
 <div id="app">
-  <div v-if="!navigation & !bikeAdding & !addEmpl">
+  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
+      <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
+      <h4 v-if="user.type == 2" style="color: #f6a90f">Technician account</h4>
+      <h4 v-if="user.type == 3" style="color: #ff00ff">Admin account</h4>
+      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
+        <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
-      <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
+      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
     </div>
     <div v-if="user.type == 3" >
-      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
+      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
     <table>
       <thead style="border-bottom: 5px solid #000;">
@@ -39,7 +43,8 @@
         <td>{{ bike.model }} </td>
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
-        <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
+        <button v-if="user.type != 1" class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
+        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeUpdate=true">Update Bike</button>
       </tbody>
     </table>
   </div>
@@ -47,6 +52,7 @@
     <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
     <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
     <br>
+    <button class="btn btn-info" @click="navigation=false">Cancel</button>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
   </div>
   <div v-if="active">
@@ -61,7 +67,6 @@
       </template>
       <div class="d-block">
         <br>
-          <h5>ID: {{ bike.id }}</h5>
           <h5>Model: {{ bike.model }}</h5>
           <hr>
           <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
@@ -201,6 +206,58 @@
       <button class="btn btn-danger" @click="addBike">Add this bike</button>
     </b-card>
   </div>
+  <div v-if="bikeUpdate">
+    <h3> Update a bike in the system</h3>
+    <b-card style="width:250px; margin:auto">
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false, getToUpdate(bike)">Close</button>
+      <b-form-group id="input-group-8" label="Model:" label-for="input-8">
+        <b-form-input
+          id="input-8"
+          v-model="bike.model"
+          required
+          placeholder="Enter the bike model"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-9" label="Charge:" label-for="input-9">
+        <b-form-input
+          id="input-9"
+          v-model="bike.charge"
+          required
+          placeholder="Enter the bike charge"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-10" label="Latitude:" label-for="input-10">
+        <b-form-input
+          id="input-10"
+          v-model="bike.latitude"
+          required
+          placeholder="Enter the bike latitude"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-11" label="Longitude:" label-for="input-11">
+        <b-form-input
+          id="input-11"
+          v-model="bike.longitude"
+          required
+          placeholder="Enter the bike longitude"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-12" label="Plate:" label-for="input-12">
+        <b-form-input
+          id="input-12"
+          v-model="bike.plate"
+          required
+          placeholder="Enter the bike plate"
+          >
+        </b-form-input>
+      </b-form-group>
+      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false">Update this bike</button>
+    </b-card>
+  </div>
 </div>
 
 </template>
@@ -214,7 +271,7 @@ export default {
         id: 0,
         token: null,
         username: 'Albert',
-        moneyAvailable: 69,
+        availableMoney: 69,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       newUserForm: {
@@ -229,6 +286,7 @@ export default {
         type: null
       },
       bike: {
+        id: 0,
         model: '',
         active: false,
         charge: '',
@@ -251,7 +309,8 @@ export default {
       navigation: false,
       active: false,
       addEmpl: false,
-      bikeAdding: false
+      bikeAdding: false,
+      bikeUpdate: false
     }
   },
   methods: {
@@ -277,7 +336,9 @@ export default {
         dni: this.newUserForm.dni,
         dataEndDrivePermission: this.newUserForm.dataEndDrivePermission,
         creditCard: this.newUserForm.creditCard,
-        type: this.newUserForm.type
+        type: this.newUserForm.type,
+        latitude: 0,
+        longitude: 0
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
@@ -298,19 +359,20 @@ export default {
     },
     unlockBike () {
       const parameters = {
-        user_id: this.user.id,
-        bike_id: this.bike.id
+        userid: this.user.id,
+        bikeid: this.bike.id
       }
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.post(path, parameters)
         .then((res) => {
-          this.active = false
-          // this.bikes.splice(this.bike.id, 1)
+          this.navigation = false
+          this.active = true
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
           alert('Sorry, you cannot take this bike. Try again')
+          alert(this.bike.id)
         })
     },
     lockBike () {
@@ -348,7 +410,7 @@ export default {
         .then((res) => {
           alert('New bike created!')
           this.bikeAdding = false
-          this.created()
+          // this.created()
         })
         .catch((error) => {
           alert(error)
@@ -363,12 +425,42 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
       axios.get(path)
         .then((res) => {
-          this.user.moneyAvailable = res.data.availableMoney
+          this.user.id = res.data.id
+          this.user.availableMoney = res.data.availableMoney
           this.user.type = res.data.type
         })
         .catch((error) => {
           console.error(error)
         })
+    },
+    updateBike (bike) {
+      const path = 'https://bike-a-rent.herokuapp.com/bike/' + bike.id
+      const parameters = {
+        model: bike.model,
+        active: true,
+        charge: bike.charge,
+        latitude: bike.latitude,
+        longitude: bike.longitude
+      }
+      axios.put(path, parameters, {
+        auth: {username: this.user.token}
+      })
+        .then((res) => {
+          this.user = res.data.user
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    getToUpdate (bike) {
+      document.getElementById('input-8').value = bike.model
+      document.getElementById('input-9').value = bike.charge
+      document.getElementById('input-10').value = bike.latitude
+      document.getElementById('input-11').value = bike.longitude
+      document.getElementById('input-12').value = bike.plate
+    },
+    logout () {
+      this.$router.replace({path: '/'})
     }
   },
   created () {
