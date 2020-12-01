@@ -23,7 +23,7 @@
       <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.moneyAvailable}} €</h6>
+        <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
