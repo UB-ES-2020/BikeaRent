@@ -102,6 +102,26 @@ class AccountsModel(db.Model):
     def find_by_id(cls, id):
         return AccountsModel.query.filter_by(id=id).first()
 
+    @classmethod
+    def modify_account(cls, id, modified_account):
+        account = cls.query.filter_by(id=id).first()
+
+        if account.firstname != modified_account.firstname:
+            account.firstname = modified_account.firstname
+        if account.surname != modified_account.surname:
+            account.surname = modified_account.surname
+        if account.email != modified_account.email:
+            account.email = modified_account.email
+        if account.dni != modified_account.dni:
+            account.dni = modified_account.dni
+        if account.dataEndDrivePermission != modified_account.dataEndDrivePermission:
+            account.dataEndDrivePermission = modified_account.dataEndDrivePermission
+        if account.creditCard != modified_account.creditCard:
+            account.creditCard = modified_account.creditCard
+
+        db.session.add(account)
+        db.session.commit()
+
 
 @auth.verify_password
 def verify_password(token, password):
