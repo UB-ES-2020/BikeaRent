@@ -17,7 +17,7 @@ class MotosModel(db.Model):
     longitude = db.Column(db.Float,nullable=False)
     plate = db.Column(db.String(8), nullable=False)
 
-    def __init__(self, model, active, charge, latitude, longitude,plate, position = "Passeig de Gracia, 55, Barcelona"):
+    def __init__(self, model, active, charge, latitude, longitude, plate, position="Passeig de Gracia, 55, Barcelona"):
         self.model = model
         self.active = active
         self.charge = charge
@@ -81,3 +81,23 @@ class MotosModel(db.Model):
 
         # Distance in kilometer
         return 6371.01 * acos(sin(slat) * sin(elat) + cos(slat) * cos(elat) * cos(slon - elon))
+
+    @classmethod
+    def modify_bike(cls, id, modified_bike):
+        bike = cls.query.filter_by(id=id).first()
+
+        if bike.model != modified_bike.model:
+            bike.model = modified_bike.model
+        if bike.active != modified_bike.active:
+            bike.active = modified_bike.active
+        if bike.charge != modified_bike.charge:
+            bike.charge = modified_bike.charge
+        if bike.latitude != modified_bike.latitude:
+            bike.latitude = modified_bike.latitude
+        if bike.longitude != modified_bike.longitude:
+            bike.longitude = modified_bike.longitude
+        if bike.plate != modified_bike.plate:
+            bike.plate = modified_bike.plate
+
+        db.session.add(bike)
+        db.session.commit()
