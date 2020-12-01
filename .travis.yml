@@ -18,6 +18,9 @@ before_deploy:
 - cd js
 - ls
 - cd ..
+- cd css
+- ls
+- cd ..
 - cd ..
 branches:
   only:
