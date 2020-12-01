@@ -209,7 +209,9 @@ export default {
         dni: this.form.dni,
         dataEndDrivePermission: this.form.dataEndDrivePermission,
         creditCard: this.form.creditCard,
-        type: 0
+        type: 0,
+        latitude: 0,
+        longitude: 0
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)

@@ -14,22 +14,26 @@
 
 <template>
 <div id="app">
-  <div v-if="!navigation & !bikeAdding & !addEmpl">
+  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
+      <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
+      <h4 v-if="user.type == 2" style="color: #f6a90f">Technician account</h4>
+      <h4 v-if="user.type == 3" style="color: #ff00ff">Admin account</h4>
+      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
       <div>
         <div>
           <button class="btn btn-primary"  @click="showInfoUser()">Info User</button>
         </div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
+        <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
-      <button style="position: absolute; right: 0%" class="btn btn-warning"  @click="bikeAdding=true">Add Bike</button>
+      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
     </div>
     <div v-if="user.type == 3" >
-      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%">Add Employee</button>
+      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
     <table>
       <thead style="border-bottom: 5px solid #000;">
@@ -42,8 +46,8 @@
         <td>{{ bike.model }} </td>
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
-        <button class="btn btn-warning"  @click="takeBike(bike)">Take Bike</button>
-        <button v-if="user.type == 1" class="btn btn-success"  @click="getToUpdate(bike)">Edit Bike</button>
+        <button v-if="user.type != 1" class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
+        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeUpdate=true">Update Bike</button>
       </tbody>
     </table>
   </div>
@@ -51,6 +55,7 @@
     <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
     <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
     <br>
+    <button class="btn btn-info" @click="navigation=false">Cancel</button>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
   </div>
   <div v-if="active">
@@ -65,7 +70,6 @@
       </template>
       <div class="d-block">
         <br>
-          <h5>ID: {{ bike.id }}</h5>
           <h5>Model: {{ bike.model }}</h5>
           <hr>
           <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
@@ -306,6 +310,7 @@ export default {
         type: null
       },
       bike: {
+        id: 0,
         model: '',
         active: false,
         charge: '',
@@ -355,7 +360,9 @@ export default {
         dni: this.newUserForm.dni,
         dataEndDrivePermission: this.newUserForm.dataEndDrivePermission,
         creditCard: this.newUserForm.creditCard,
-        type: this.newUserForm.type
+        type: this.newUserForm.type,
+        latitude: 0,
+        longitude: 0
       }
       const path = 'https://bike-a-rent.herokuapp.com/account'
       axios.post(path, parameters)
@@ -376,19 +383,20 @@ export default {
     },
     unlockBike () {
       const parameters = {
-        user_id: this.user.id,
-        bike_id: this.bike.id
+        userid: this.user.id,
+        bikeid: this.bike.id
       }
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.post(path, parameters)
         .then((res) => {
-          this.active = false
-          // this.bikes.splice(this.bike.id, 1)
+          this.navigation = false
+          this.active = true
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
           alert('Sorry, you cannot take this bike. Try again')
+          alert(this.bike.id)
         })
     },
     lockBike () {
@@ -426,7 +434,7 @@ export default {
         .then((res) => {
           alert('New bike created!')
           this.bikeAdding = false
-          this.created()
+          // this.created()
         })
         .catch((error) => {
           alert(error)
@@ -476,6 +484,9 @@ export default {
     },
     showInfoUser () {
       this.$bvModal.show('infoUser-modal')
+    },
+    logout () {
+      this.$router.replace({path: '/'})
     }
   },
   created () {

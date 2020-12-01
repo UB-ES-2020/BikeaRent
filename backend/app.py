@@ -43,7 +43,7 @@ class Motos(Resource):
     parser.add_argument('charge', type=int, required=True, help="This field cannot be left blank")
     parser.add_argument('latitude', type=float, required=True, help="This field cannot be left blank")
     parser.add_argument('longitude', type=float, required=True, help="This field cannot be left blank")
-    parser.add_argument('plate',type=str,required = True,help = "This field cannot be left blank")
+    parser.add_argument('plate', type=str, required=True, help="This field cannot be left blank")
 
     def get(self, id):
         moto = MotosModel.find_by_id(id)
@@ -61,6 +61,18 @@ class Motos(Resource):
         except:
             return {"Error": "An error occurred creating moto"}, 500
 
+    def put(self, id):
+        data = self.parser.parse_args()
+
+        bike = MotosModel.find_by_id(id)
+        if bike:
+            modified_bike = MotosModel(**data)
+            if bike.model == modified_bike.model and bike.active == modified_bike.active and bike.charge == modified_bike.charge and bike.latitude == modified_bike.latitude and bike.longitude == modified_bike.longitude and bike.plate == modified_bike.plate:
+                return {"Error": "Bike {} is up to date".format(bike.plate)}, 400
+            MotosModel.modify_bike(id, modified_bike)
+            return {"bike": bike.json()}, 200
+        return {"Error": "Event with identifier {} not found".format(id)}, 404
+
 
 # -------- Register  ---------------------------------------------------------- #
 class Accounts(Resource):
@@ -71,7 +83,6 @@ class Accounts(Resource):
             return user.json(), 200
         else:
             return {'message': 'There is no client with username [{}] .'.format(username)}, 404
-
 
     #@auth.login_required()
     def delete(self, username):
@@ -112,6 +123,30 @@ class Accounts(Resource):
             except Exception as e:
                 return {"message": "Database error"}, 500
                 #return {e}
+
+    def put(self, id):
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('firstname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dni', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('dataEndDrivePermission', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('creditCard', type=str, required=True, help="This field cannot be left blank")
+
+        data = parser.parse_args()
+
+        account = AccountsModel.find_by_id(id)
+        if account:
+
+            modified_account = AccountsModel(data['firstname'], data['surname'], data['email'], account.username,
+                                             data['dni'], data['dataEndDrivePermission'], data['creditCard'],
+                                             account.type, account.latitude, account.longitude)
+            if account.firstname == modified_account.firstname and account.surname == modified_account.surname and account.email == modified_account.email and account.dni == modified_account.dni and account.dataEndDrivePermission == modified_account.dataEndDrivePermission and account.creditCard == modified_account.creditCard:
+                return {"Error": "User {} is up to date".format(account.username)}, 400
+            AccountsModel.modify_account(id, modified_account)
+            return {"account": account.json()}, 200
+        return {"Error": "Account with identifier {} not found".format(id)}, 404
 
 
 # -------- Accounts List  ---------------------------------------------------------- #
@@ -198,7 +233,8 @@ class Booking(Resource):
         try:
             if user.availableMoney > 5:
                 if moto_active is True:
-                    new_rent = BookingModel(userid, bikeid, datetime.now(), None, None, None)
+                    new_rent = BookingModel(userid, bikeid, None, None, None)
+                    new_rent.startDate = datetime.now()
                     MotosModel.change_status(bikeid)
 
                     new_rent.save_to_db()
@@ -216,24 +252,35 @@ class Booking(Resource):
         userid = data['userid']
         bikeid = data['bikeid']
 
+        user = AccountsModel.find_by_id(userid)
+        bike = MotosModel.find_by_id(bikeid)
+
+        if user is None:
+            return "User not found", 404
+        if bike is None:
+            return "Bike not found", 404
+
         try:
             admin_user = AccountsModel.find_by_username('admin')
-            user = AccountsModel.find_by_id(userid)
 
-            if user is None:
-                return "User not found", 404
+            if admin_user:
+                book = BookingModel.finalize_book(userid, bikeid)
+                if book is None:
+                    return "No renting found", 404
+                MotosModel.change_status(bikeid)
 
-            book = BookingModel.finalize_book(userid, bikeid)
-            MotosModel.change_status(bikeid)
+                admin_user.availableMoney += book.price
+                user.availableMoney -= book.price
 
-            admin_user.availableMoney += book.price
-            user.availableMoney -= book.price
-
-            return "Booking finalized correctly", 201
+                return {"finalized_rent": book.json()}, 201
+            return "Admin user not found", 404
         except:
             return "Something went wrong", 500
 
-api.add_resource(Accounts, '/account/<string:username>', '/account')
+
+
+api.add_resource(Accounts, '/account/<string:username>', '/account/<int:id>', '/account')
+
 api.add_resource(AccountsList, '/accounts')
 
 api.add_resource(MotosList, '/bikes')
@@ -241,7 +288,7 @@ api.add_resource(Motos,'/bike','/bike/<int:id>')
 
 api.add_resource(Login, '/login')
 
-api.add_resource(Booking, '/rent')
+api.add_resource(Booking, '/rent', '/rent/<int:userid>')
 api.add_resource(BookingList, '/rents')
 
 if __name__ == '__main__':
