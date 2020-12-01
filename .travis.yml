@@ -12,7 +12,7 @@ branches:
     - main
     - travis_arreglo
 deploy:
-  deploy.skip_cleanup: true
+  skip_cleanup: true
   provider: heroku
   api_key:
     secure: vCFK50l4hQzmgH2I8Tqqs1cjTeg8qctufDUSFoqpSTAMRcsAqjc7jbSVi8CKzUZa0hzbKSEj2mMvpX2dc4W3IIkqctmuTU61oanD7qTilt525mhDsgHrjCGk0BjbygNvkc194MhZd9NlNXqbgeSTDHppIWZnxhjfuycGMkUQnJwIjAFezeNgqimg1qdAL2ci+TRdYiZc+1LVAnF8/kens7DLREI5wzPpXmeo/sG1wtToBLj42NrcM0m9gaGfGkGKf+QErdKMOYXV6RXFc6cvk1E8K9RQSQ+wj+xjzlJE/CflxBn+ItyQMO5Oje4Iu+1MaFYhj/Q/HlulHsFU4tsxZ8YbkJskI/eRink5X5SmvdkRm0wowrHnA57vriFY//NDj+GVX9Mwfm4oTWByMPIJxixiVzCcq03lD6GZ9by6GLiShIgntWCrkVnQCPc67yY3UNV/IrloJkSCecoegwQu1bKp7ITUTdPeZqk+VdAnZkka0XXsrVtg33fENpSLmUnxEhceIwUUntoslP0ihv01/P4g81g4cu075oKnmVx6kTuCD9WyhX57I0PaprwMHq8C6jZ2XWTK2PPMBUixZrAEGtXdP1ljNXWG+FzVAHv15cvDMfaSRntA34we+xgNWU4a1opCKQggaHfdlWD1bU2ERs99DGu6MhqAMaXGDsmLfcc=
