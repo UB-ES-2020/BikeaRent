@@ -4,24 +4,7 @@ python:
 install:
 - pip install -r backend/requirements.txt
 script:
-  - npm install -g @vue/cli
   - cd backend
-  - ls
-  - cd ..
-  - cd frontend
-  - npm run build
-  - cd ..
-  - cd backend
-  - ls
-  - cd static
-  - ls
-  - cd js
-  - ls
-  - cd ..
-  - cd css
-  - ls
-  - cd ..
-  - cd ..
 before_deploy:
 - heroku
 branches:
@@ -36,5 +19,4 @@ deploy:
   app:
     main: bike__aRent
     travis_arreglo: bike-a-rent
-  run:
-    - git push heroku master
+  strategy: git
