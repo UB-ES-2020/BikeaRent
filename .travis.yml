@@ -4,19 +4,18 @@ python:
 install:
 - pip install -r backend/requirements.txt
 script:
-  - cd backend
+- cd backend
 before_deploy:
 - heroku
 branches:
   only:
-    - main
-    - travis_arreglo
+  - main
+  - travis_arreglo
 deploy:
   skip_cleanup: true
   provider: heroku
   api_key:
-    secure: vCFK50l4hQzmgH2I8Tqqs1cjTeg8qctufDUSFoqpSTAMRcsAqjc7jbSVi8CKzUZa0hzbKSEj2mMvpX2dc4W3IIkqctmuTU61oanD7qTilt525mhDsgHrjCGk0BjbygNvkc194MhZd9NlNXqbgeSTDHppIWZnxhjfuycGMkUQnJwIjAFezeNgqimg1qdAL2ci+TRdYiZc+1LVAnF8/kens7DLREI5wzPpXmeo/sG1wtToBLj42NrcM0m9gaGfGkGKf+QErdKMOYXV6RXFc6cvk1E8K9RQSQ+wj+xjzlJE/CflxBn+ItyQMO5Oje4Iu+1MaFYhj/Q/HlulHsFU4tsxZ8YbkJskI/eRink5X5SmvdkRm0wowrHnA57vriFY//NDj+GVX9Mwfm4oTWByMPIJxixiVzCcq03lD6GZ9by6GLiShIgntWCrkVnQCPc67yY3UNV/IrloJkSCecoegwQu1bKp7ITUTdPeZqk+VdAnZkka0XXsrVtg33fENpSLmUnxEhceIwUUntoslP0ihv01/P4g81g4cu075oKnmVx6kTuCD9WyhX57I0PaprwMHq8C6jZ2XWTK2PPMBUixZrAEGtXdP1ljNXWG+FzVAHv15cvDMfaSRntA34we+xgNWU4a1opCKQggaHfdlWD1bU2ERs99DGu6MhqAMaXGDsmLfcc=
+    secure: 3DO/BH6wrEW8PuTyhVUmOH3XtgzFM05BycpMcfXgsaf5Am6wG9lWTnAZreE/Rdh32Hk5wTXCeZbrknFjahE/hMWHpfH+os7VmmxPZVuFGxNh3759aNDBLUXQrU4VoNN83iasozLM2fEWseO1wp+1ixdVKvG7X4u+IicH/eMnsPzuuJW7Epz3xZLu3ye/DpzN0Z5/fZwe/7HSmMu+jWIYtM/mDWpJOWgF82jdFGsTlvzizucujhv0todwcUn0soz2XYcL+ruGvoSqn5G8Ec9D/rAIpFU41fEBXyLHoWEDTzWh1zXFJiiXQug7hJNU2uZSWG1SsBwbmv+LZQIKhIXVWwQioqr5K45HT5g6sNqEjk+dAPllDvDneBpEhZFlziG/O64EWprqcAptX7fKNSWBepqW+3vyh8vZIVWZIeJx9Smxp5wnwC+n4W/vgXl5djG/LcBxuEKsm36zxpYlGgLeLUc9WtQ4z2FZvk1fTjhCc7sZLFr3mDEhoKBCUpFzVRTjZrRQDxmv0K7PiaD+Iy8kjhdBJ1qgQSBqKqmACnP/GX5QsF0qXOPB9ndoDz67/RZ095eiwK7xy1tC9LY0h8rZrJ3KwmOp30BDOZrhdotNHwIgLRZNDp0WZo5EO4hovb1FLKOu63COZma4dHK/25vTjF59c7CBowzMbMWDwGAOkzU=
   app:
     main: bike__aRent
     travis_arreglo: bike-a-rent
-
