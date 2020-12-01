@@ -17,6 +17,7 @@
   <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
+      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
       <div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
         <h6 style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
@@ -63,7 +64,6 @@
       </template>
       <div class="d-block">
         <br>
-          <h5>ID: {{ bike.id }}</h5>
           <h5>Model: {{ bike.model }}</h5>
           <hr>
           <h5 class="mt-2">Charge: {{ bike.charge }}</h5>
@@ -453,6 +453,9 @@ export default {
       document.getElementById('input-10').value = bike.latitude
       document.getElementById('input-11').value = bike.longitude
       document.getElementById('input-12').value = bike.plate
+    },
+    logout () {
+      this.$router.replace({path: '/'})
     }
   },
   created () {
