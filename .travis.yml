@@ -19,5 +19,4 @@ deploy:
   app:
     main: bike__aRent
     travis_arreglo: bike-a-rent
-  strategy: git
 
