@@ -456,19 +456,20 @@ export default {
         })
     },
     updateBike (bike) {
-      const path = 'https://bike-a-rent.herokuapp.com/bike/' + bike.id
+      const path = 'https://bike-a-rent.herokuapp.com/bike/' + this.bike.id
       const parameters = {
-        model: bike.model,
+        model: this.bike.model,
         active: true,
-        charge: bike.charge,
-        latitude: bike.latitude,
-        longitude: bike.longitude
+        charge: this.bike.charge,
+        latitude: this.bike.latitude,
+        longitude: this.bike.longitude,
+        plate: this.bike.plate
       }
       axios.put(path, parameters, {
         auth: {username: this.user.token}
       })
-        .then((res) => {
-          this.user = res.data.user
+        .then(() => {
+          alert('Bike updated')
         })
         .catch((error) => {
           console.error(error)
