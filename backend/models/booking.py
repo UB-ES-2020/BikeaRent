@@ -1,7 +1,7 @@
 from db import db
 from models.account import AccountsModel
 
-import time
+from datetime import datetime
 
 class BookingModel(db.Model):
     __tablename__ = 'booking'
@@ -11,12 +11,12 @@ class BookingModel(db.Model):
     # motoid = db.Column(db.Integer, db.ForeignKey('motos.id'), nullable=False)
     userid = db.Column(db.Integer,nullable=False)
     motoid = db.Column(db.Integer,nullable=False)
-    startDate = db.Column(db.Date(),nullable=False)
-    endDate = db.Column(db.Date(),nullable=True)
+    startDate = db.Column(db.String(25),nullable=False)
+    endDate = db.Column(db.String(25),nullable=True)
     totalTimeUsed = db.Column(db.Integer,nullable=True)
     price = db.Column(db.Float(),nullable=True)
 
-    def __init__(self, userid, motoid, startDate, endDate, totalTimeUsed, price):
+    def __init__(self, userid, motoid, totalTimeUsed, endDate, price, startDate=datetime.now()):
         self.userid = userid
         self.motoid = motoid
         self.startDate = startDate
@@ -25,9 +25,6 @@ class BookingModel(db.Model):
         self.price = price
 
     def json(self):
-        self.startDate = self.startDate.strftime('%Y-%m-%d %H:%M:%S.%f')
-        if self.endDate != None:
-            self.endDate = self.endDate.strftime('%Y-%m-%d %H:%M:%S.%f')
         return {
             'id': self.id,
             'userid': self.userid,
@@ -52,7 +49,7 @@ class BookingModel(db.Model):
 
     @classmethod
     def find_by_userid(cls, userid):
-        return cls.query.filter_by(userid=userid).first()
+        return cls.query.filter_by(userid=userid).all()
 
     @classmethod
     def find_by_username(cls, username):
@@ -78,10 +75,14 @@ class BookingModel(db.Model):
             if book.endDate is None:
                 pricePerSecond = 0.008  # should be a configuration
 
-                book.endDate = time.time()
-                book.totalTimeUsed = book.endDate - book.startDate
-                book.price = book.totalTimeUsed * pricePerSecond
+                book.endDate = datetime.now()
+                startDate = datetime.strptime(book.startDate, '%Y-%m-%d %H:%M:%S.%f')
+                timeUsed = book.endDate - startDate
+                timeUsed = timeUsed.total_seconds()
+                book.totalTimeUsed = int(timeUsed)
+                book.price = timeUsed * pricePerSecond
 
                 book.save_to_db()
 
-        return book
+                return book
+        return None

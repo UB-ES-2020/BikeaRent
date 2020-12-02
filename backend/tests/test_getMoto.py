@@ -7,7 +7,8 @@ def addMoto():
 
     headers = {'Content-Type': 'application/json'}
 
-    payload = {'model': 'VESPIN', 'active': True, 'charge': 32132, 'latitude': 231, 'longitude': 42, 'plate': "fds"}
+    payload = {'model': 'VespaTest', 'active': True, 'charge': 9999, 'latitude': 9999, 'longitude': 999,
+                   'plate': "aaaa"}
 
     requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
 
