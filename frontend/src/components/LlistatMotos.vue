@@ -14,7 +14,7 @@
 
 <template>
 <div id="app">
-  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl">
+  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
@@ -210,6 +210,15 @@
       <button class="btn btn-danger" @click="addBike">Add this bike</button>
     </b-card>
   </div>
+  <div v-if="finReserva">
+    <h3>Rent details</h3>
+    <b-card style="width:250px; margin:auto">
+      <h4>Total time: {{this.reserva.totalTimeUsed}}</h4>
+      <h4>Total cost: {{this.reserva.price}}</h4>
+      <button class="btn btn-success" @click="finReserva=false">OK</button>
+      <h5>Enjoy your day!</h5>
+    </b-card>
+  </div>
   <div v-if="bikeUpdate">
     <h3> Update a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
@@ -390,7 +399,6 @@ export default {
         plate: ''
       },
       supportLogged: true,
-
       bikes: [
         {
           model: 'Vespa',
@@ -401,11 +409,16 @@ export default {
           plate: 'Ola Soy una PlaTe'
         }
       ],
+      reserva: {
+        totalTimeUsed: 0,
+        price: 0
+      },
       navigation: false,
       active: false,
       addEmpl: false,
       bikeAdding: false,
       bikeUpdate: false,
+      finReserva: false,
       userUpdate: false
     }
   },
@@ -467,8 +480,7 @@ export default {
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
-          alert('Sorry, you cannot take this bike. Try again')
-          alert(this.bike.id)
+          alert(error)
         })
     },
     lockBike () {
@@ -480,11 +492,11 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.put(path, parameters)
         .then((res) => {
-          this.active = true
-          this.navigation = false
-          // actualitzem diners
-          this.getAccount()
-          // this.bikes.splice(this.bike.id, 1)
+          this.reserva.totalTimeUsed = res.data.totalTimeUsed
+          this.reserva.price = res.data.price
+          this.getAccount() // actualitzem diners user
+          this.active = false
+          this.finReserva = true
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -522,6 +534,7 @@ export default {
       axios.get(path)
         .then((res) => {
           this.user = res.data
+          this.user.availableMoney = res.data.availableMoney
         })
         .catch((error) => {
           console.error(error)
