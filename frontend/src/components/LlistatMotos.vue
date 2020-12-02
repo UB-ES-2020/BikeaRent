@@ -20,11 +20,11 @@
       <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
       <h4 v-if="user.type == 2" style="color: #f6a90f">Technician account</h4>
       <h4 v-if="user.type == 3" style="color: #ff00ff">Admin account</h4>
-      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
+      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 5%;" @click="logout" >Logout</button>
       <div>
         <div>
-          <button class="btn btn-primary"  @click="showInfoUser()">Info User</button>
-          <button class="btn btn-success"  @click="userUpdate=true">Edit User</button>
+          <button class="btn btn-primary" style="position: absolute; right: 15%" @click="showInfoUser()">Info User</button>
+          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true">Edit User</button>
         </div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
         <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
