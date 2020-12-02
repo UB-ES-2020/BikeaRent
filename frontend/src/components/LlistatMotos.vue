@@ -290,7 +290,7 @@
       <b-form-group id="input-group-13" label="Name:" label-for="input-13">
         <b-form-input
           id="input-13"
-          v-model="this.user.firstname"
+          v-model="user.firstname"
           required
           placeholder="Enter your name"
           >
@@ -299,7 +299,7 @@
       <b-form-group id="input-group-14" label="Lastname:" label-for="input-14">
         <b-form-input
           id="input-14"
-          v-model="this.user.surname"
+          v-model="user.surname"
           required
           placeholder="Enter your lastname"
           >
@@ -308,7 +308,7 @@
       <b-form-group id="input-group-15" label="Username:" label-for="input-15">
         <b-form-input
           id="input-15"
-          v-model="this.user.username"
+          v-model="user.username"
           required
           placeholder="Enter your username"
           >
@@ -317,7 +317,7 @@
       <b-form-group id="input-group-16" label="Email:" label-for="input-16">
         <b-form-input
           id="input-16"
-          v-model="this.user.email"
+          v-model="user.email"
           required
           placeholder="Enter your email address"
           >
@@ -326,7 +326,7 @@
       <b-form-group id="input-group-17" label="DNI:" label-for="input-17">
         <b-form-input
           id="input-17"
-          v-model="this.user.dni"
+          v-model="user.dni"
           required
           placeholder="Enter your DNI"
           >
@@ -335,7 +335,7 @@
       <b-form-group id="input-group-18" label="Data End Drive Permission:" label-for="input-18">
         <b-form-input
           id="input-18"
-          v-model="this.user.dataEndDrivePermission"
+          v-model="user.dataEndDrivePermission"
           required
           placeholder="Enter the end data of your permission"
           >
@@ -344,7 +344,7 @@
       <b-form-group id="input-group-19" label="Credit Card:" label-for="input-19">
         <b-form-input
           id="input-19"
-          v-model="this.user.creditCard"
+          v-model="user.creditCard"
           required
           placeholder="Enter your credit card"
           >
