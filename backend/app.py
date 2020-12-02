@@ -71,7 +71,7 @@ class Motos(Resource):
                 return {"Error": "Bike {} is up to date".format(bike.plate)}, 400
             MotosModel.modify_bike(id, modified_bike)
             return {"bike": bike.json()}, 200
-        return {"Error": "Event with identifier {} not found".format(id)}, 404
+        return {"Error": "Bike with identifier {} not found".format(id)}, 404
 
 
 # -------- Register  ---------------------------------------------------------- #
