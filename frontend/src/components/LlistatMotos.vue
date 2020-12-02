@@ -20,10 +20,11 @@
       <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
       <h4 v-if="user.type == 2" style="color: #f6a90f">Technician account</h4>
       <h4 v-if="user.type == 3" style="color: #ff00ff">Admin account</h4>
-      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 10%" @click="logout" >Logout</button>
+      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 5%;" @click="logout" >Logout</button>
       <div>
         <div>
-          <button class="btn btn-primary"  @click="showInfoUser()">Info User</button>
+          <button class="btn btn-primary" style="position: absolute; right: 15%" @click="showInfoUser()">Info User</button>
+          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true">Edit User</button>
         </div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
         <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
@@ -291,6 +292,76 @@
       </div>
     </b-modal>
   </div>
+  <div v-if="userUpdate">
+    <h3> Update a user in the system</h3>
+    <b-card style="width:250px; margin:auto">
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="userUpdate=false">Close</button>
+      <b-form-group id="input-group-13" label="Name:" label-for="input-13">
+        <b-form-input
+          id="input-13"
+          v-model="user.firstname"
+          required
+          placeholder="Enter your name"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-14" label="Lastname:" label-for="input-14">
+        <b-form-input
+          id="input-14"
+          v-model="user.surname"
+          required
+          placeholder="Enter your lastname"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-15" label="Username:" label-for="input-15">
+        <b-form-input
+          id="input-15"
+          v-model="user.username"
+          required
+          placeholder="Enter your username"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-16" label="Email:" label-for="input-16">
+        <b-form-input
+          id="input-16"
+          v-model="user.email"
+          required
+          placeholder="Enter your email address"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-17" label="DNI:" label-for="input-17">
+        <b-form-input
+          id="input-17"
+          v-model="user.dni"
+          required
+          placeholder="Enter your DNI"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-18" label="Data End Drive Permission:" label-for="input-18">
+        <b-form-input
+          id="input-18"
+          v-model="user.dataEndDrivePermission"
+          required
+          placeholder="Enter the end data of your permission"
+          >
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-19" label="Credit Card:" label-for="input-19">
+        <b-form-input
+          id="input-19"
+          v-model="user.creditCard"
+          required
+          placeholder="Enter your credit card"
+          >
+        </b-form-input>
+      </b-form-group>
+      <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
+    </b-card>
+  </div>
 </div>
 
 </template>
@@ -347,7 +418,8 @@ export default {
       addEmpl: false,
       bikeAdding: false,
       bikeUpdate: false,
-      finReserva: false
+      finReserva: false,
+      userUpdate: false
     }
   },
   methods: {
@@ -469,19 +541,20 @@ export default {
         })
     },
     updateBike (bike) {
-      const path = 'https://bike-a-rent.herokuapp.com/bike/' + bike.id
+      const path = 'https://bike-a-rent.herokuapp.com/bike/' + this.bike.id
       const parameters = {
-        model: bike.model,
+        model: this.bike.model,
         active: true,
-        charge: bike.charge,
-        latitude: bike.latitude,
-        longitude: bike.longitude
+        charge: this.bike.charge,
+        latitude: this.bike.latitude,
+        longitude: this.bike.longitude,
+        plate: this.bike.plate
       }
       axios.put(path, parameters, {
         auth: {username: this.user.token}
       })
-        .then((res) => {
-          this.user = res.data.user
+        .then(() => {
+          alert('Bike updated')
         })
         .catch((error) => {
           console.error(error)
@@ -500,6 +573,28 @@ export default {
     },
     logout () {
       this.$router.replace({path: '/'})
+    },
+    updateUser () {
+      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.id
+      const parameters = {
+        firstname: this.user.firstname,
+        surname: this.user.surname,
+        username: this.user.username,
+        email: this.user.email,
+        dni: this.user.dni,
+        dataEndDrivePermission: this.user.dataEndDrivePermission,
+        creditCard: this.user.creditCard
+      }
+      axios.put(path, parameters, {
+        auth: {username: this.user.token}
+      })
+        .then((res) => {
+          this.user = res.data.user
+          alert('User updated')
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   },
   created () {
