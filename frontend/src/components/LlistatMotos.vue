@@ -216,7 +216,7 @@
       <h4>Total time: {{this.reserva.totalTimeUsed}}</h4>
       <h4>Total cost: {{this.reserva.price}}</h4>
       <button class="btn btn-success" @click="finReserva=false">OK</button>
-      <h3>Enjoy your day!</h3>
+      <h5>Enjoy your day!</h5>
     </b-card>
   </div>
   <div v-if="bikeUpdate">
