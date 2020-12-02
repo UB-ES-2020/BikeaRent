@@ -15,7 +15,7 @@ class MotosModel(db.Model):
     position = db.Column(db.String(50),nullable=False)
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)
-    plate = db.Column(db.String(8), nullable=False)
+    plate = db.Column(db.String(8), unique=True, nullable=False)
 
     def __init__(self, model, active, charge, latitude, longitude,plate, position = "Passeig de Gracia, 55, Barcelona"):
         self.model = model
