@@ -210,11 +210,12 @@
     </b-card>
   </div>
   <div v-if="finReserva">
-    <h3>Show rent details</h3>
+    <h3>Rent details</h3>
     <b-card style="width:250px; margin:auto">
       <h4>Total time: {{this.reserva.totalTimeUsed}}</h4>
       <h4>Total cost: {{this.reserva.price}}</h4>
       <button class="btn btn-success" @click="finReserva=false">OK</button>
+      <h3>Enjoy your day!</h3>
     </b-card>
   </div>
   <div v-if="bikeUpdate">
@@ -419,9 +420,11 @@ export default {
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.put(path, parameters)
         .then((res) => {
-          this.reserva = res.data
-          // actualitzem diners user
+          this.reserva.totalTimeUsed = res.data.totalTimeUsed
+          this.reserva.price = res.data.price
+          this.getAccount() // actualitzem diners user
           this.active = false
+          this.finReserva = true
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -459,6 +462,7 @@ export default {
       axios.get(path)
         .then((res) => {
           this.user = res.data
+          this.user.availableMoney = res.data.availableMoney
         })
         .catch((error) => {
           console.error(error)
