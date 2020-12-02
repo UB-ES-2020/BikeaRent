@@ -21,15 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0e89715f-4739-4cf3-90e1-6f94a6d1e1f3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/app.c8370094ba324071bbcb450fe87f24ba.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/app.c8370094ba324071bbcb450fe87f24ba.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/app.b41d2ffe85b114f175d7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/app.b41d2ffe85b114f175d7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/vendor.bcb9d2eba48116a6a591.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/vendor.bcb9d2eba48116a6a591.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/LlistatMotos.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/LlistatMotos.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.db" beforeDir="false" afterPath="$PROJECT_DIR$/data.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_getMoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_getMoto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_postMoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_postMoto.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +128,7 @@
       <workItem from="1606817373930" duration="3070000" />
       <workItem from="1606865904836" duration="4513000" />
       <workItem from="1606871404916" duration="831000" />
-      <workItem from="1606873951818" duration="1259000" />
+      <workItem from="1606873951818" duration="2719000" />
     </task>
     <servers />
   </component>
@@ -166,28 +160,28 @@
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="501" y="216" key="FileChooserDialogImpl/0.0.1440.920@0.0.1440.920" timestamp="1606670560639" />
-    <state width="1238" height="232" key="GridCell.Tab.0.bottom" timestamp="1606875590001">
+    <state width="1238" height="100" key="GridCell.Tab.0.bottom" timestamp="1606877136518">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="232" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1606875590001" />
+    <state width="1238" height="100" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1606877136518" />
     <state width="1397" height="242" key="GridCell.Tab.0.bottom/0.0.1440.920@0.0.1440.920" timestamp="1606766134938" />
     <state width="1238" height="212" key="GridCell.Tab.0.bottom/0.23.1280.716@0.23.1280.716" timestamp="1606849126304" />
-    <state width="1238" height="232" key="GridCell.Tab.0.center" timestamp="1606875589999">
+    <state width="1238" height="100" key="GridCell.Tab.0.center" timestamp="1606877136515">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="232" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1606875589999" />
+    <state width="1238" height="100" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1606877136515" />
     <state width="1397" height="242" key="GridCell.Tab.0.center/0.0.1440.920@0.0.1440.920" timestamp="1606766134938" />
     <state width="1238" height="212" key="GridCell.Tab.0.center/0.23.1280.716@0.23.1280.716" timestamp="1606849126296" />
-    <state width="1238" height="232" key="GridCell.Tab.0.left" timestamp="1606875589998">
+    <state width="1238" height="100" key="GridCell.Tab.0.left" timestamp="1606877136513">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="232" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1606875589998" />
+    <state width="1238" height="100" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1606877136513" />
     <state width="1397" height="242" key="GridCell.Tab.0.left/0.0.1440.920@0.0.1440.920" timestamp="1606766134937" />
     <state width="1238" height="212" key="GridCell.Tab.0.left/0.23.1280.716@0.23.1280.716" timestamp="1606849126284" />
-    <state width="1238" height="232" key="GridCell.Tab.0.right" timestamp="1606875590000">
+    <state width="1238" height="100" key="GridCell.Tab.0.right" timestamp="1606877136517">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="232" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1606875590000" />
+    <state width="1238" height="100" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1606877136517" />
     <state width="1397" height="242" key="GridCell.Tab.0.right/0.0.1440.920@0.0.1440.920" timestamp="1606766134938" />
     <state width="1238" height="212" key="GridCell.Tab.0.right/0.23.1280.716@0.23.1280.716" timestamp="1606849126301" />
     <state width="1238" height="220" key="GridCell.Tab.1.bottom" timestamp="1606868015744">
@@ -214,10 +208,14 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="240" y="140" key="Vcs.Push.Dialog.v2/0.0.1280.800@0.0.1280.800" timestamp="1606873999108" />
+    <state x="428" y="321" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606876314218">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="428" y="321" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.800@0.0.1280.800" timestamp="1606876314218" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/backend$app.coverage" NAME="app Coverage Results" MODIFIED="1606765916324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/backend$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1606670364382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/backend$backend.coverage" NAME="backend Coverage Results" MODIFIED="1606875705834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/backend$backend.coverage" NAME="backend Coverage Results" MODIFIED="1606877136490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
