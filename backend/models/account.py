@@ -1,4 +1,3 @@
-
 from db import db
 from flask import g, current_app
 from passlib.apps import custom_app_context as pwd_context
@@ -19,10 +18,10 @@ class AccountsModel(db.Model):
     password = db.Column(db.String(), nullable=False)
     dni = db.Column(db.String(30), unique=True, nullable=False)
     dataEndDrivePermission = db.Column(db.String(10), nullable=False)
-    status = db.Column(db.Boolean, nullable=False) #true = active, false = notActive
+    status = db.Column(db.Boolean, nullable=False)  # true = active, false = notActive
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
     availableMoney = db.Column(db.Integer, nullable=False)
-    type = db.Column(db.Integer, nullable=False) #0=user, 1 = support, 2= technical, 3 = admi
+    type = db.Column(db.Integer, nullable=False)  # 0=user, 1 = support, 2= technical, 3 = admi
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 

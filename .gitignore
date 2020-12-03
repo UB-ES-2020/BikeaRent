@@ -1,0 +1,5 @@
+/backend/migrations/
+/backend/.idea/
+/venv/
+*.pyc
+*.o
