@@ -4,10 +4,10 @@ from flask_restful import Api
 from db import db
 from flask_cors import CORS
 
-from backend.resources.account import Account, AccountList
-from backend.resources.bike import Bike, BikeList
-from backend.resources.login import Login
-from backend.resources.booking import Booking, BookingList
+from resources.account import Account, AccountList
+from resources.bike import Bike, BikeList
+from resources.login import Login
+from resources.booking import Booking, BookingList
 
 from decouple import config as config_decouple
 from config import config
