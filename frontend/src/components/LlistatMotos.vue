@@ -362,6 +362,9 @@
       <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
     </b-card>
   </div>
+  <div id="map" style="height: 250px">
+    {{LlistaMotos.html}}{{map.js}}
+  </div>
 </div>
 
 </template>
