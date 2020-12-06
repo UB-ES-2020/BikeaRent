@@ -1,5 +1,9 @@
 /backend/migrations/
 /backend/.idea/
+/backend/__pycache__/
+/backend/models/__pycache__/
+/backend/resources/__pycache__/
+/backend/tests/__pycache__/
 /venv/
 *.pyc
 *.o
