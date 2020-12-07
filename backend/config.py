@@ -1,7 +1,9 @@
 from decouple import config
 
+
 class Config:
     pass
+
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -11,6 +13,7 @@ class ProductionConfig(Config):
     TEMPLATE_FOLDER = "/templates"
     SECRET_KEY = config('SECRET_KEY', default='localhost')
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data.db'
@@ -18,6 +21,7 @@ class DevelopmentConfig(Config):
     STATIC_FOLDER = "/P2_VUE_WEBPACK/frontend/dist/static"
     TEMPLATE_FOLDER = "/P2_VUE_WEBPACK/frontend/dist"
     SECRET_KEY = "kdsfklsmfakfmafmadslvsdfasdf"
+
 
 config = {
     'development': DevelopmentConfig,
