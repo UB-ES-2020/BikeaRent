@@ -87,7 +87,7 @@ class Booking(Resource):
                 user.availableMoney -= book.price
                 user.save_to_db()
 
+                return {"finalized_rent": book.json()}, 201
             except:
                 return "Something went wrong", 500
-            return {"finalized_rent": book.json()}, 201
         return "Admin user not found", 404
