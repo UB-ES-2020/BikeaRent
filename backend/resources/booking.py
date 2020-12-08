@@ -48,9 +48,9 @@ class Booking(Resource):
                 if moto_active is True:
                     new_rent = BookingModel(userid, bikeid, None, None, None)
                     new_rent.startDate = datetime.now()
-                    MotosModel.change_status(bikeid)
-
                     new_rent.save_to_db()
+
+                    MotosModel.change_status(bikeid)
 
                     return {"new_rent": new_rent.json()}, 201
                 return "Moto selected is not active", 400
@@ -83,7 +83,9 @@ class Booking(Resource):
                 MotosModel.change_status(bikeid)
 
                 admin_user.availableMoney += book.price
+                admin_user.save_to_db()
                 user.availableMoney -= book.price
+                user.save_to_db()
 
                 return {"finalized_rent": book.json()}, 201
             return "Admin user not found", 404
