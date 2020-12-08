@@ -43,9 +43,9 @@ class Booking(Resource):
 
         moto_active = MotosModel.is_active(bikeid)
 
-        try:
-            if user.availableMoney > 5:
-                if moto_active is True:
+        if user.availableMoney > 5:
+            if moto_active is True:
+                try:
                     new_rent = BookingModel(userid, bikeid, None, None, None)
                     new_rent.startDate = datetime.now()
                     new_rent.save_to_db()
@@ -53,10 +53,10 @@ class Booking(Resource):
                     MotosModel.change_status(bikeid)
 
                     return {"new_rent": new_rent.json()}, 201
-                return "Moto selected is not active", 400
-            return "Not money enough", 400
-        except:
-            return "Something went wrong", 500
+                except:
+                    return "Something went wrong", 500
+            return "Moto selected is not active", 400
+        return "Not money enough", 400
 
     def put(self):
 
@@ -73,13 +73,13 @@ class Booking(Resource):
         if bike is None:
             return "Bike not found", 404
 
-        try:
-            admin_user = AccountsModel.find_by_username('admin')
+        admin_user = AccountsModel.find_by_username('admin')
 
-            if admin_user:
-                book = BookingModel.finalize_book(userid, bikeid)
-                if book is None:
-                    return "No renting found", 404
+        if admin_user:
+            book = BookingModel.finalize_book(userid, bikeid)
+            if book is None:
+                return "No renting found", 404
+            try:
                 MotosModel.change_status(bikeid)
 
                 admin_user.availableMoney += book.price
@@ -87,7 +87,7 @@ class Booking(Resource):
                 user.availableMoney -= book.price
                 user.save_to_db()
 
-                return {"finalized_rent": book.json()}, 201
-            return "Admin user not found", 404
-        except:
-            return "Something went wrong", 500
+            except:
+                return "Something went wrong", 500
+            return {"finalized_rent": book.json()}, 201
+        return "Admin user not found", 404
