@@ -5,9 +5,11 @@ import '@/../bootstrap/css/bootstrap.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+// import x5GMaps from 'x5-gmaps'
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
+// Vue.use(x5GMaps, { key: 'AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4', libraries: ['visualization'] })
 
 new Vue({
   router,

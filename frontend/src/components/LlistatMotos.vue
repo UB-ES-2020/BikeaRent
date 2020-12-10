@@ -11,7 +11,6 @@
     width: 100%;
   }
 </style>
-
 <template>
 <div id="app">
   <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva">
@@ -362,8 +361,10 @@
       <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
     </b-card>
   </div>
-  <div id="map" style="height: 250px">
-    {{LlistaMotos.html}}{{map.js}}
+  <div>
+    <h1>Flask Google Maps Example</h1>
+    <div id="map">
+    </div>
   </div>
 </div>
 
@@ -371,7 +372,10 @@
 
 <script>
 import axios from 'axios'
+// import { gmapsMap, gmapsMarker } from 'x5-gmaps'
 export default {
+  name: 'Map',
+  // components: { gmapsMap, gmapsMarker },
   data () {
     return {
       user: {
@@ -422,8 +426,13 @@ export default {
       bikeAdding: false,
       bikeUpdate: false,
       finReserva: false,
-      userUpdate: false
+      userUpdate: false,
+      map: null,
+      mapCenter: { lat: 0, lng: 0 }
     }
+  },
+  mounted () {
+    this.initMap()
   },
   methods: {
     // GET bikes
@@ -598,6 +607,19 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    getMap (callback) {
+      function checkForMap () {
+        if (this.map) callback(this.map)
+        else setTimeout(checkForMap, 200)
+      }
+      checkForMap()
+    },
+    initMap () {
+      this.map = new google.maps.Map(document.getElementById('map'), {
+        center: this.mapCenter,
+        zoom: true
+      })
     }
   },
   created () {

@@ -18,8 +18,8 @@ from flask_googlemaps import GoogleMaps, Map
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-app.config['GOOGLEMAPS_KEY'] = "AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4"
-GoogleMaps(app, key="AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4")
+# app.config['GOOGLEMAPS_KEY'] = "AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4"
+# GoogleMaps(app, key="AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4")
 
 environment = config['development']
 if config_decouple('PRODUCTION', cast=bool, default=False):
@@ -284,25 +284,27 @@ class Booking(Resource):
 
 # -------- Map  ---------------------------------------------------------- #
 class Map(Resource):
-    b = MotosList()
-    bikes = b.get()
+    def get(self):
+        b = MotosList()
+        bikes = b.get()
 
-    map = Map(
-        identifier="map", varname="map",
-        # set identifier, varname
-        lat=0, lng=0,
-        # set map base to user_location
-        zoom=15,  # set zoomlevel
-        markers=[
-                {
-                    'lat': 0,
-                    'lng': 0,
-                    'infobox': bikes[0]
-                }
-        ],
-        # set markers to location of devices
-        # pass circles
-    )
+        map = Map(
+            identifier="map", varname="map",
+            # set identifier, varname
+            lat=0, lng=0,
+            # set map base to user_location
+            zoom=15,  # set zoomlevel
+            markers=[
+                    {
+                        'lat': 0,
+                        'lng': 0,
+                        'infobox': bikes[0]
+                    }
+            ],
+            # set markers to location of devices
+            # pass circles
+        )
+        return map
 
 
 api.add_resource(Accounts, '/account/<string:username>', '/account/<int:id>', '/account')
@@ -316,6 +318,8 @@ api.add_resource(Login, '/login')
 
 api.add_resource(Booking, '/rent', '/rent/<int:userid>')
 api.add_resource(BookingList, '/rents')
+
+# api.add_resource(Map, '/map')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
