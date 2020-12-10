@@ -6,10 +6,17 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 // import x5GMaps from 'x5-gmaps'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
-// Vue.use(x5GMaps, { key: 'AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4', libraries: ['visualization'] })
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyC7g__qRA71WBebAoQPdKSbzfoUheEj_HQ',
+    libraries: 'places' // If you need to use place input
+  }
+})
 
 new Vue({
   router,

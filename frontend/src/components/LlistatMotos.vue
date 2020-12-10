@@ -363,7 +363,15 @@
   </div>
   <div>
     <h1>Flask Google Maps Example</h1>
-    <div id="map">
+    <div class="map-container">
+      <gmap-map
+        id="map"
+        ref="map"
+        :center="center"
+        :zoom="15"
+        map-type-id="roadmap"
+        style="width:100%;  height: 400px;">
+       </gmap-map>
     </div>
   </div>
 </div>
@@ -372,10 +380,10 @@
 
 <script>
 import axios from 'axios'
-// import { gmapsMap, gmapsMarker } from 'x5-gmaps'
+import * as VueGoogleMaps from 'vue2-google-maps'
+import { mapState } from 'vuex'
 export default {
   name: 'Map',
-  // components: { gmapsMap, gmapsMarker },
   data () {
     return {
       user: {
@@ -427,8 +435,19 @@ export default {
       bikeUpdate: false,
       finReserva: false,
       userUpdate: false,
-      map: null,
-      mapCenter: { lat: 0, lng: 0 }
+      map: null
+    }
+  },
+  computed: {
+    ...mapState([
+      'map'
+    ]),
+    mapStyle: function () {
+      const h = document.body.clientHeight - 80
+      return 'width: 100%; height: ' + h + 'px'
+    },
+    center: function () {
+      return { lat: 44.837938, lng: -0.579174 }
     }
   },
   mounted () {
@@ -616,9 +635,8 @@ export default {
       checkForMap()
     },
     initMap () {
-      this.map = new google.maps.Map(document.getElementById('map'), {
-        center: this.mapCenter,
-        zoom: true
+      VueGoogleMaps.loaded.then(() => {
+        this.map = new VueGoogleMaps.gmapApi.maps.Map(document.getElementById('map'))
       })
     }
   },
