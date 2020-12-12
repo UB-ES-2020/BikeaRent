@@ -375,6 +375,7 @@
           v-for="(bike) in bikes"
           :position="{lat: bike.latitude, lng: bike.longitude}"
           @click="center={lat: bike.latitude, lng: bike.longitude}"
+          :icon="markerOptions"
         ></gmap-marker>
        </gmap-map>
     </div>
@@ -440,7 +441,12 @@ export default {
       bikeUpdate: false,
       finReserva: false,
       userUpdate: false,
-      map: null
+      map: null,
+      markerOptions: {
+        url: require('../assets/logo.png'),
+        size: {width: 60, height: 90, f: 'px', b: 'px'},
+        scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}
+      }
     }
   },
   computed: {
