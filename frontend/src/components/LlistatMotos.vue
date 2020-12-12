@@ -362,15 +362,20 @@
     </b-card>
   </div>
   <div>
-    <h1>Flask Google Maps Example</h1>
     <div class="map-container">
       <gmap-map
         id="map"
         ref="map"
         :center="center"
-        :zoom="15"
+        :zoom="13"
         map-type-id="roadmap"
-        style="width:100%;  height: 400px;">
+        style="width:100%;  height: 600px;">
+        <gmap-marker
+          :key="bike.id"
+          v-for="(bike) in bikes"
+          :position="{lat: bike.latitude, lng: bike.longitude}"
+          @click="center={lat: bike.latitude, lng: bike.longitude}"
+        ></gmap-marker>
        </gmap-map>
     </div>
   </div>
@@ -447,7 +452,7 @@ export default {
       return 'width: 100%; height: ' + h + 'px'
     },
     center: function () {
-      return { lat: 44.837938, lng: -0.579174 }
+      return { lat: 41.38879, lng: 2.15899 }
     }
   },
   mounted () {
