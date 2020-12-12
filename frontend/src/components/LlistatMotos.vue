@@ -4,7 +4,7 @@
     text-align: center;
   }
   .navbar {
-    z-index: 1;
+    z-index: auto;
     background-color: #333;
     position: fixed;
     top: 0;
@@ -15,27 +15,38 @@
 <template>
 <div id="app">
   <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva">
-    <nav class="navbar navbar-dark">
-      <h2 style="color: #d3d9df">BaikaRent</h2>
-      <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
-      <h4 v-if="user.type == 2" style="color: #f6a90f">Technician account</h4>
-      <h4 v-if="user.type == 3" style="color: #ff00ff">Admin account</h4>
-      <button type="button" class="btn-sm btn-outline-light" style="position: absolute; right: 5%;" @click="logout" >Logout</button>
-      <div>
-        <div>
-          <button class="btn btn-primary" style="position: absolute; right: 15%" @click="showInfoUser()">Info User</button>
-          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true">Edit User</button>
-        </div>
-        <h6 style="color: #d3d9df">{{this.user.username}}</h6>
-        <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
+    <nav class="navbar navbar-expand-lg fixed-top activate-menu navbar-dark bg-dark" style="visibility: visible;">
+      <a class="navbar-brand" href="#">
+        <img src="./Images/logoBK_blanco.png" alt= "Logo" style= "width:150px;">
+      </a>
+      <h5 v-if="user.type == 1" style="text-align:center; color: #9f40bf">Support account   </h5>
+      <h5 v-if="user.type == 2" style="text-align: center; color: #f6a90f">Technician account</h5>
+      <h5 v-if="user.type == 3" style="text-align:center; color: #ff00ff">Admin account</h5>
+      /*<h6 style="margin-left: 3px; color: #d3d9df">{{this.user.username}}</h6>*/
+      <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
+      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" style="text-align: right; height:50px">
+        <ul class="navbar-nav ml-auto" style="size: 20px;  float:right">
+          <li v-if="user.type == 3" class="nav-item" >
+            <button type="button" class="btn btn-warning" @click="addEmpl=true" style="color:white; background-color: #ff00ff">Add Employee</button>
+          </li>
+          <li v-if="user.type == 1" class="nav-item">
+            <button style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-primary" @click="showInfoUser()">Info User</button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-success" @click="userUpdate=true">Edit User</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-outline-light" @click="logout" >Logout</button>
+          </li>
+        </ul>
       </div>
     </nav>
-    <div v-if="user.type == 1" >
-      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
-    </div>
-    <div v-if="user.type == 3" >
-      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
-    </div>
     <table>
       <thead style="border-bottom: 5px solid #000;">
         <tr>
