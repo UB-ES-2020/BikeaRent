@@ -20,7 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e89715f-4739-4cf3-90e1-6f94a6d1e1f3" name="Default Changelist" comment="imports">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/assets/moto_red.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/assets/moto_red_128.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/LlistatMotos.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/LlistatMotos.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

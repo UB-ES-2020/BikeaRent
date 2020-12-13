@@ -35,7 +35,7 @@
     <div v-if="user.type == 3" >
       <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
-    <table>
+    <table v-if="user.type == 1 || user.type == 2 || user.type == 3">
       <thead style="border-bottom: 5px solid #000;">
         <tr>
           <th>Bike model</th>
