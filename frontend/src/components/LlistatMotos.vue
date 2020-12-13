@@ -361,7 +361,7 @@
       <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
     </b-card>
   </div>
-  <div>
+  <div v-if="showMap = true">
     <div class="map-container">
       <gmap-map
         id="map"
@@ -370,11 +370,24 @@
         :zoom="13"
         map-type-id="roadmap"
         style="width:100%;  height: 600px;">
+        <gmap-info-window
+          :options="infoOptions"
+          :position="infoPosition"
+          :opened="infoOpened"
+          @closeclick="infoOpened=false">
+          <div>
+            <p>Id: {{bike.id}}</p>
+            <p>Plate: {{bike.plate}}</p>
+            <p>Charge: {{bike.charge}}</p>
+            <p>Model: {{bike.model}}</p>
+            <button class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
+          </div>
+        </gmap-info-window>
         <gmap-marker
           :key="bike.id"
           v-for="(bike) in bikes"
           :position="{lat: bike.latitude, lng: bike.longitude}"
-          @click="center={lat: bike.latitude, lng: bike.longitude}"
+          @click="toggleInfoWindow(bike, bike.id)"
           :icon="markerOptions"
         ></gmap-marker>
        </gmap-map>
@@ -442,10 +455,21 @@ export default {
       finReserva: false,
       userUpdate: false,
       map: null,
+      showMap: true,
       markerOptions: {
-        url: require('../assets/logo.png'),
-        size: {width: 60, height: 90, f: 'px', b: 'px'},
-        scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}
+        url: require('../assets/moto_red_64.png')
+        // size: {width: 60, height: 90, f: 'px', b: 'px'}
+        // scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}
+      },
+      infoPosition: null,
+      infoContent: '',
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
       }
     }
   },
@@ -507,6 +531,7 @@ export default {
     takeBike (bike) {
       this.bike = bike
       this.navigation = true
+      this.showMap = false
     },
     unlockBike () {
       const parameters = {
@@ -649,6 +674,16 @@ export default {
       VueGoogleMaps.loaded.then(() => {
         this.map = new VueGoogleMaps.gmapApi.maps.Map(document.getElementById('map'))
       })
+    },
+    toggleInfoWindow (bike, idx) {
+      this.infoPosition = {lat: bike.latitude, lng: bike.longitude}
+      this.bike = bike
+      if (this.currentMidx === idx) {
+        this.infoWinOpen = !this.infoWinOpen
+      } else {
+        this.infoWinOpen = true
+        this.currentMidx = idx
+      }
     }
   },
   created () {
