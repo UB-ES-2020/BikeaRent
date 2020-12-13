@@ -457,7 +457,7 @@ export default {
       map: null,
       showMap: true,
       markerOptions: {
-        url: require('../assets/moto_red_64.png')
+        url: require('../assets/moto_red_64_background.png')
         // size: {width: 60, height: 90, f: 'px', b: 'px'}
         // scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}
       },
