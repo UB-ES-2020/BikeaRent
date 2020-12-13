@@ -55,7 +55,7 @@
     <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
     <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
     <br>
-    <button class="btn btn-info" @click="navigation=false">Cancel</button>
+    <button class="btn btn-info" @click="navigation=false, showMap=true">Cancel</button>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
   </div>
   <div v-if="active">
@@ -361,7 +361,7 @@
       <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
     </b-card>
   </div>
-  <div v-if="showMap = true">
+  <div v-if="showMap">
     <div class="map-container">
       <gmap-map
         id="map"
