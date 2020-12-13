@@ -387,7 +387,7 @@
           :key="bike.id"
           v-for="(bike) in bikes"
           :position="{lat: bike.latitude, lng: bike.longitude}"
-          @click="toggleInfoWindow(bike, bike.id)"
+          @click="toggleInfoWindow(bike)"
           :icon="markerOptions"
         ></gmap-marker>
        </gmap-map>
@@ -458,12 +458,10 @@ export default {
       showMap: true,
       markerOptions: {
         url: require('../assets/moto_red_64_background.png')
-        // size: {width: 60, height: 90, f: 'px', b: 'px'}
-        // scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}
       },
       infoPosition: null,
       infoContent: '',
-      infoWinOpen: false,
+      infoOpened: false,
       currentMidx: null,
       infoOptions: {
         pixelOffset: {
@@ -532,6 +530,7 @@ export default {
       this.bike = bike
       this.navigation = true
       this.showMap = false
+      this.infoOpened = false
     },
     unlockBike () {
       const parameters = {
@@ -675,15 +674,10 @@ export default {
         this.map = new VueGoogleMaps.gmapApi.maps.Map(document.getElementById('map'))
       })
     },
-    toggleInfoWindow (bike, idx) {
+    toggleInfoWindow (bike) {
       this.infoPosition = {lat: bike.latitude, lng: bike.longitude}
       this.bike = bike
-      if (this.currentMidx === idx) {
-        this.infoWinOpen = !this.infoWinOpen
-      } else {
-        this.infoWinOpen = true
-        this.currentMidx = idx
-      }
+      this.infoOpened = true
     }
   },
   created () {
