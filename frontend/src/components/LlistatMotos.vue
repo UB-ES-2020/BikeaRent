@@ -167,7 +167,6 @@
       <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
     </b-card>
   </div>
-
   <div v-if="bikeAdding">
     <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
@@ -519,6 +518,7 @@ export default {
         .then((res) => {
           this.reserva.totalTimeUsed = res.data.totalTimeUsed
           this.reserva.price = res.data.price
+          alert(this.reserva.price)
           this.getAccount() // actualitzem diners user
           this.active = false
           this.finReserva = true
