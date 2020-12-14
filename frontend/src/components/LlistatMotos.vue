@@ -13,7 +13,7 @@
 </style>
 <template>
 <div id="app">
-  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva">
+  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva & !deregister">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
@@ -34,6 +34,9 @@
     </div>
     <div v-if="user.type == 3" >
       <button type="button" class="btn btn-warning" @click="addEmpl=true, showMap=false, showTable=false" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
+    </div>
+    <div v-if="user.type == 0">
+      <button type="button" class="btn btn-warning" @click="deregister=true" style="position: absolute; right: 2%; background-color: #ff00ff">Deregister</button>
     </div>
     <table v-if="showTable & (user.type == 1 || user.type == 2 || user.type == 3)">
       <thead style="border-bottom: 5px solid #000;">
@@ -77,6 +80,12 @@
           <h5 class="mt-2">Plate: {{bike.plate}}</h5>
       </div>
     </b-modal>
+  </div>
+  <div v-if="deregister">
+    <h2> Deregister</h2>
+    <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="deregister=false">Close</button>
+    <h3> Make sure you want to unregister, you will not be able to recover the account!</h3>
+    <button class="btn btn-danger" @click="deregisterAcc">Deregister</button>
   </div>
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
@@ -454,6 +463,7 @@ export default {
       bikeUpdate: false,
       finReserva: false,
       userUpdate: false,
+      deregister: false,
       map: null,
       showMap: true,
       showTable: true,
@@ -498,6 +508,20 @@ export default {
         })
         .catch((error) => {
           console.error(error)
+        })
+    },
+    deregisterAcc () {
+      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
+      axios.delete(path)
+        .then((res) => {
+          alert('Account deleted!')
+          this.deregister = false
+          this.$router.replace({path: '/'})
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Could not delete the account!')
+          alert(error)
         })
     },
     submitEmployee () {
@@ -557,8 +581,8 @@ export default {
     },
     lockBike () {
       const parameters = {
-        user_id: this.user.id,
-        bike_id: this.bike.id
+        userid: this.user.id,
+        bikeid: this.bike.id
       }
 
       const path = 'https://bike-a-rent.herokuapp.com/rent'
@@ -566,6 +590,7 @@ export default {
         .then((res) => {
           this.reserva.totalTimeUsed = res.data.totalTimeUsed
           this.reserva.price = res.data.price
+          alert(this.reserva.price)
           this.getAccount() // actualitzem diners user
           this.active = false
           this.finReserva = true
@@ -573,7 +598,7 @@ export default {
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
-          alert('Sorry, you cannot take this bike. Try again')
+          alert('Sorry, there was an error when finalizing rent. Try again')
         })
     },
     addBike () {

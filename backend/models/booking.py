@@ -3,18 +3,19 @@ from models.account import AccountsModel
 
 from datetime import datetime
 
+
 class BookingModel(db.Model):
     __tablename__ = 'booking'
 
     id = db.Column(db.Integer, primary_key=True)
     # userid = db.Column(db.Integer, db.ForeignKey('accounts.id'), nullable=False)
     # motoid = db.Column(db.Integer, db.ForeignKey('motos.id'), nullable=False)
-    userid = db.Column(db.Integer,nullable=False)
-    motoid = db.Column(db.Integer,nullable=False)
-    startDate = db.Column(db.String(25),nullable=False)
-    endDate = db.Column(db.String(25),nullable=True)
-    totalTimeUsed = db.Column(db.Integer,nullable=True)
-    price = db.Column(db.Float(),nullable=True)
+    userid = db.Column(db.Integer, nullable=False)
+    motoid = db.Column(db.Integer, nullable=False)
+    startDate = db.Column(db.String(), nullable=False)
+    endDate = db.Column(db.String(), nullable=True)
+    totalTimeUsed = db.Column(db.Integer, nullable=True)
+    price = db.Column(db.Float(), nullable=True)
 
     def __init__(self, userid, motoid, totalTimeUsed, endDate, price, startDate=datetime.now()):
         self.userid = userid
