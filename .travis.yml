@@ -4,13 +4,21 @@ python:
 install:
 - pip install -r backend/requirements.txt
 script:
+- npm install -g @vue/cli
 - cd backend
+- rm /templates/index.html
+- rm -r /static
+- cd ..
+- cd frontend
+- npm run build
+- cp dist/index.html ../backend/templates
+- cp -r dist/static ../backend
 before_deploy:
 - heroku
 branches:
   only:
   - main
-  - development
+  - travis
 deploy:
   skip_cleanup: true
   provider: heroku
