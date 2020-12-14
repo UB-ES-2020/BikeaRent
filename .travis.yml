@@ -5,10 +5,6 @@ install:
 - pip install -r backend/requirements.txt
 script:
 - npm install -g @vue/cli
-- cd backend
-- rm /templates/index.html
-- rm -r /static
-- cd ..
 - cd frontend
 - npm run build
 - cp dist/index.html ../backend/templates
