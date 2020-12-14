@@ -12,8 +12,8 @@ class BookingModel(db.Model):
     # motoid = db.Column(db.Integer, db.ForeignKey('motos.id'), nullable=False)
     userid = db.Column(db.Integer, nullable=False)
     motoid = db.Column(db.Integer, nullable=False)
-    startDate = db.Column(db.String(25), nullable=False)
-    endDate = db.Column(db.String(25), nullable=True)
+    startDate = db.Column(db.String(), nullable=False)
+    endDate = db.Column(db.String(), nullable=True)
     totalTimeUsed = db.Column(db.Integer, nullable=True)
     price = db.Column(db.Float(), nullable=True)
 
