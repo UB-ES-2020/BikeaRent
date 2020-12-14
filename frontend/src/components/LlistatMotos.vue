@@ -23,19 +23,19 @@
       <div>
         <div>
           <button class="btn btn-primary" style="position: absolute; right: 15%" @click="showInfoUser()">Info User</button>
-          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true">Edit User</button>
+          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true, showMap=false, showTable=false">Edit User</button>
         </div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
         <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
-      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
+      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true, showMap=false, showTable=false">Add Bike</button>
     </div>
     <div v-if="user.type == 3" >
-      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
+      <button type="button" class="btn btn-warning" @click="addEmpl=true, showMap=false, showTable=false" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
-    <table v-if="user.type == 1 || user.type == 2 || user.type == 3">
+    <table v-if="showTable & (user.type == 1 || user.type == 2 || user.type == 3)">
       <thead style="border-bottom: 5px solid #000;">
         <tr>
           <th>Bike model</th>
@@ -47,7 +47,7 @@
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button v-if="user.type != 1" class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
-        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeUpdate=true">Update Bike</button>
+        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="getBike(bike)">Update Bike</button>
       </tbody>
     </table>
   </div>
@@ -81,7 +81,7 @@
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="addEmpl=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="addEmpl=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-20" label="Name:" label-for="input-20">
         <b-form-input
           id="input-20"
@@ -154,13 +154,13 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
+      <button class="btn btn-danger" @click="submitEmployee, showMap=true, showTable=false">Add employee</button>
     </b-card>
   </div>
   <div v-if="bikeAdding">
     <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-3" label="Model:" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -221,7 +221,7 @@
   <div v-if="bikeUpdate">
     <h3> Update a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-8" label="Model:" label-for="input-8">
         <b-form-input
           id="input-8"
@@ -267,7 +267,7 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false">Update this bike</button>
+      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false, showMap=true, showTable=true">Update this bike</button>
     </b-card>
   </div>
   <div>
@@ -294,7 +294,7 @@
   <div v-if="userUpdate">
     <h3> Update a user in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="userUpdate=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="userUpdate=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-13" label="Name:" label-for="input-13">
         <b-form-input
           id="input-13"
@@ -358,7 +358,7 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
+      <button class="btn btn-danger" @click="updateUser(), userUpdate=false, showMap=true, showTable=true">Update this user</button>
     </b-card>
   </div>
   <div v-if="showMap">
@@ -456,6 +456,7 @@ export default {
       userUpdate: false,
       map: null,
       showMap: true,
+      showTable: true,
       markerOptions: {
         url: require('../assets/moto_red_64_background.png')
       },
@@ -532,6 +533,11 @@ export default {
       this.showMap = false
       this.infoOpened = false
     },
+    getBike (bike) {
+      this.bike = bike
+      this.bikeUpdate = true
+      this.showMap = false
+    },
     unlockBike () {
       const parameters = {
         userid: this.user.id,
@@ -584,12 +590,25 @@ export default {
         .then((res) => {
           alert('New bike created!')
           this.bikeAdding = false
+          this.getBikes()
+          this.actualitza()
+          this.showMap = true
+          this.showTable = true
           // this.created()
         })
         .catch((error) => {
           alert(error)
           console.error(error)
         })
+    },
+    actualitza () {
+      this.$router.replace({
+        path: '/home',
+        query: {
+          username: this.username,
+          token: this.userToken
+        }
+      })
     },
     showInfo (bike) {
       this.bike = bike
@@ -607,6 +626,7 @@ export default {
         })
     },
     updateBike (bike) {
+      this.bike = bike
       const path = 'https://bike-a-rent.herokuapp.com/bike/' + this.bike.id
       const parameters = {
         model: this.bike.model,
@@ -621,6 +641,7 @@ export default {
       })
         .then(() => {
           alert('Bike updated')
+          this.initMap()
         })
         .catch((error) => {
           console.error(error)
