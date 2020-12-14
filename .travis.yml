@@ -16,7 +16,7 @@ before_deploy:
 branches:
   only:
   - main
-  - travis
+  - development
 deploy:
   skip_cleanup: true
   provider: heroku
@@ -24,4 +24,4 @@ deploy:
     secure: r0eFDc/BHtZKaxNwmPZmAZvc4txyhnfUpCjyMFcJ/+3TDE8vcA/TKcJ0HQoaRvwK3WYTHZz9aX+usUk+Jt4bdgCvdUKQwY2cGD/bbK0wUpvBb3hPKDnzWfK7d/o4CF4/sb7IrOU+YrPgCO0iaRFRZMAv0kHgJuLLSxRkJ/ZB6/zDd39zCUKlnPFfN3fd1dbUgvtPF3xdNAFfdof5zoJ4qkPffr95N9CI2wRqy5j2kKQTOF33hDiCipP5ywK3XxapR8QuW0wURW7gMdcImDe+FL8wnUsveiP5LlT9Clrnw2Knm0XF2JUCGZYNQnUA1+jS27P8w+GDA+y4rWtODpdGNjHFoGOV64yXcqXHl0Whp1YmPmV28SC5yYWYhnacuJnSNKGW4ndU7OM7rRBOJLKovoXxs01SVhzszgADE6bEfws0RQsZSj6bBVqVz/aXAhxinnpY8rUbhUv8AS29bNrhT+DFpGLdqeraOPasbdKDFrDE31jVrjkiFGKjXCh5lmXZmMAcOBQMAb+TGvqa4Vj9mrtiU8BBzC+8USd84+FQkxcazq/4fn1/raABt1MTmQeVNXpCYhzMNsZYJyauOBfGq53EpDE8yYXRNnlY/NXKBFqhSDjKn7v3G1NDxIuZN1vgdTl/18Ev+b8XwxTB30ME8ZvjeAgoV9BvXeaNd2x8dm4=
   app:
     main: bike__aRent
-    travis: bike-a-rent
+    development: bike-a-rent
