@@ -41,6 +41,9 @@
           <li class="nav-item">
             <button class="btn btn-success" @click="userUpdate=true">Edit User</button>
           </li>
+          <li v-if="user.type == 0" class="nav-item">
+            <button type="button" class="btn btn-warning" @click="deregister=true" style="background-color: #ff00ff">Deregister</button>
+          </li>
           <li class="nav-item">
             <button type="button" class="btn btn-outline-light" @click="logout" >Logout</button>
           </li>
