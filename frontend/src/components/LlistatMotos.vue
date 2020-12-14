@@ -387,8 +387,9 @@
           :key="bike.id"
           v-for="(bike) in bikes"
           :position="{lat: bike.latitude, lng: bike.longitude}"
+          :label="markerOptions"
+          :style="markerOptions2"
           @click="toggleInfoWindow(bike)"
-          :icon="markerOptions"
         ></gmap-marker>
        </gmap-map>
     </div>
@@ -401,7 +402,11 @@
 import axios from 'axios'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import { mapState } from 'vuex'
+import GmapCustomMarker from 'vue2-gmap-custom-marker'
 export default {
+  components: {
+    'gmap-custom-marker': GmapCustomMarker
+  },
   name: 'Map',
   data () {
     return {
@@ -458,7 +463,13 @@ export default {
       showMap: true,
       showTable: true,
       markerOptions: {
-        url: require('../assets/moto_red_64_background.png')
+        // url: require('../assets/moto_red_64_background.svg'),
+        text: 'B',
+        color: '#FFF',
+        fillColor: '#000'
+      },
+      markerOptions2: {
+        url: require('../assets/moto_red_64_background.svg')
       },
       infoPosition: null,
       infoContent: '',
@@ -591,7 +602,6 @@ export default {
           alert('New bike created!')
           this.bikeAdding = false
           this.getBikes()
-          this.actualitza()
           this.showMap = true
           this.showTable = true
           // this.created()
@@ -600,15 +610,6 @@ export default {
           alert(error)
           console.error(error)
         })
-    },
-    actualitza () {
-      this.$router.replace({
-        path: '/home',
-        query: {
-          username: this.username,
-          token: this.userToken
-        }
-      })
     },
     showInfo (bike) {
       this.bike = bike
@@ -682,13 +683,6 @@ export default {
         .catch((error) => {
           console.error(error)
         })
-    },
-    getMap (callback) {
-      function checkForMap () {
-        if (this.map) callback(this.map)
-        else setTimeout(checkForMap, 200)
-      }
-      checkForMap()
     },
     initMap () {
       VueGoogleMaps.loaded.then(() => {
