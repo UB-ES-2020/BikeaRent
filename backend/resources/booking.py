@@ -45,16 +45,16 @@ class Booking(Resource):
 
         if user.availableMoney > 5:
             if moto_active is True:
-                try:
-                    new_rent = BookingModel(userid, bikeid, None, None, None)
-                    new_rent.startDate = datetime.now()
-                    new_rent.save_to_db()
+                # try:
+                new_rent = BookingModel(userid, bikeid, None, None, None)
+                new_rent.startDate = datetime.now()
+                new_rent.save_to_db()
 
-                    MotosModel.change_status(bikeid)
+                MotosModel.change_status(bikeid)
 
-                    return {"new_rent": new_rent.json()}, 201
-                except:
-                    return "Something went wrong", 500
+                return {"new_rent": new_rent.json()}, 201
+                # except:
+                #     return "Something went wrong", 500
             return "Moto selected is not active", 400
         return "Not money enough", 400
 
@@ -79,15 +79,15 @@ class Booking(Resource):
             book = BookingModel.finalize_book(userid, bikeid)
             if book is None:
                 return "No renting found", 404
-            try:
-                MotosModel.change_status(bikeid)
+            # try:
+            MotosModel.change_status(bikeid)
 
-                admin_user.availableMoney += book.price
-                admin_user.save_to_db()
-                user.availableMoney -= book.price
-                user.save_to_db()
+            admin_user.availableMoney += book.price
+            admin_user.save_to_db()
+            user.availableMoney -= book.price
+            user.save_to_db()
 
-                return {"finalized_rent": book.json()}, 201
-            except:
-                return "Something went wrong", 500
+            return {"finalized_rent": book.json()}, 201
+            # except:
+            #     return "Something went wrong", 500
         return "Admin user not found", 404
