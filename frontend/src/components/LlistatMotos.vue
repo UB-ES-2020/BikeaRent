@@ -11,7 +11,6 @@
     width: 100%;
   }
 </style>
-
 <template>
 <div id="app">
   <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva & !deregister">
@@ -24,22 +23,22 @@
       <div>
         <div>
           <button class="btn btn-primary" style="position: absolute; right: 15%" @click="showInfoUser()">Info User</button>
-          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true">Edit User</button>
+          <button class="btn btn-success" style="position: absolute; right: 25%" @click="userUpdate=true, showMap=false, showTable=false">Edit User</button>
         </div>
         <h6 style="color: #d3d9df">{{this.user.username}}</h6>
         <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
       </div>
     </nav>
     <div v-if="user.type == 1" >
-      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
+      <button style="position: absolute; right: 0%; background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true, showMap=false, showTable=false">Add Bike</button>
     </div>
     <div v-if="user.type == 3" >
-      <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
+      <button type="button" class="btn btn-warning" @click="addEmpl=true, showMap=false, showTable=false" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
     <div v-if="user.type == 0">
       <button type="button" class="btn btn-warning" @click="deregister=true" style="position: absolute; right: 2%; background-color: #ff00ff">Deregister</button>
     </div>
-    <table>
+    <table v-if="showTable & (user.type == 1 || user.type == 2 || user.type == 3)">
       <thead style="border-bottom: 5px solid #000;">
         <tr>
           <th>Bike model</th>
@@ -51,7 +50,7 @@
         <td>{{ bike.longitude }} , {{ bike.latitude }} </td>
         <button class="btn btn-primary"  @click="showInfo(bike)">Info Bike</button>
         <button v-if="user.type != 1" class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
-        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeUpdate=true">Update Bike</button>
+        <button v-if="user.type == 1" style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="getBike(bike)">Update Bike</button>
       </tbody>
     </table>
   </div>
@@ -59,7 +58,7 @@
     <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
     <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
     <br>
-    <button class="btn btn-info" @click="navigation=false">Cancel</button>
+    <button class="btn btn-info" @click="navigation=false, showMap=true">Cancel</button>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
   </div>
   <div v-if="active">
@@ -91,7 +90,7 @@
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="addEmpl=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="addEmpl=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-20" label="Name:" label-for="input-20">
         <b-form-input
           id="input-20"
@@ -164,13 +163,13 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
+      <button class="btn btn-danger" @click="submitEmployee, showMap=true, showTable=false">Add employee</button>
     </b-card>
   </div>
   <div v-if="bikeAdding">
     <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-3" label="Model:" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -231,7 +230,7 @@
   <div v-if="bikeUpdate">
     <h3> Update a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeUpdate=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-8" label="Model:" label-for="input-8">
         <b-form-input
           id="input-8"
@@ -277,7 +276,7 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false">Update this bike</button>
+      <button class="btn btn-danger" @click="updateBike(bike), bikeUpdate=false, showMap=true, showTable=true">Update this bike</button>
     </b-card>
   </div>
   <div>
@@ -304,7 +303,7 @@
   <div v-if="userUpdate">
     <h3> Update a user in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="userUpdate=false">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="userUpdate=false, showMap=true, showTable=true">Close</button>
       <b-form-group id="input-group-13" label="Name:" label-for="input-13">
         <b-form-input
           id="input-13"
@@ -368,8 +367,40 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="updateUser(), userUpdate=false">Update this user</button>
+      <button class="btn btn-danger" @click="updateUser(), userUpdate=false, showMap=true, showTable=true">Update this user</button>
     </b-card>
+  </div>
+  <div v-if="showMap">
+    <div class="map-container">
+      <gmap-map
+        id="map"
+        ref="map"
+        :center="center"
+        :zoom="13"
+        map-type-id="roadmap"
+        style="width:100%;  height: 600px;">
+        <gmap-info-window
+          :options="infoOptions"
+          :position="infoPosition"
+          :opened="infoOpened"
+          @closeclick="infoOpened=false">
+          <div>
+            <p>Id: {{bike.id}}</p>
+            <p>Plate: {{bike.plate}}</p>
+            <p>Charge: {{bike.charge}}</p>
+            <p>Model: {{bike.model}}</p>
+            <button class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
+          </div>
+        </gmap-info-window>
+        <gmap-marker
+          :key="bike.id"
+          v-for="(bike) in bikes"
+          :position="{lat: bike.latitude, lng: bike.longitude}"
+          @click="toggleInfoWindow(bike)"
+          :icon="markerOptions"
+        ></gmap-marker>
+       </gmap-map>
+    </div>
   </div>
 </div>
 
@@ -377,7 +408,10 @@
 
 <script>
 import axios from 'axios'
+import * as VueGoogleMaps from 'vue2-google-maps'
+import { mapState } from 'vuex'
 export default {
+  name: 'Map',
   data () {
     return {
       user: {
@@ -429,8 +463,39 @@ export default {
       bikeUpdate: false,
       finReserva: false,
       userUpdate: false,
-      deregister: false
+      deregister: false,
+      map: null,
+      showMap: true,
+      showTable: true,
+      markerOptions: {
+        url: require('../assets/scooter_red.png')
+      },
+      infoPosition: null,
+      infoContent: '',
+      infoOpened: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      }
     }
+  },
+  computed: {
+    ...mapState([
+      'map'
+    ]),
+    mapStyle: function () {
+      const h = document.body.clientHeight - 80
+      return 'width: 100%; height: ' + h + 'px'
+    },
+    center: function () {
+      return { lat: 41.38879, lng: 2.15899 }
+    }
+  },
+  mounted () {
+    this.initMap()
   },
   methods: {
     // GET bikes
@@ -489,6 +554,13 @@ export default {
     takeBike (bike) {
       this.bike = bike
       this.navigation = true
+      this.showMap = false
+      this.infoOpened = false
+    },
+    getBike (bike) {
+      this.bike = bike
+      this.bikeUpdate = true
+      this.showMap = false
     },
     unlockBike () {
       const parameters = {
@@ -543,6 +615,9 @@ export default {
         .then((res) => {
           alert('New bike created!')
           this.bikeAdding = false
+          this.getBikes()
+          this.showMap = true
+          this.showTable = true
           // this.created()
         })
         .catch((error) => {
@@ -566,6 +641,7 @@ export default {
         })
     },
     updateBike (bike) {
+      this.bike = bike
       const path = 'https://bike-a-rent.herokuapp.com/bike/' + this.bike.id
       const parameters = {
         model: this.bike.model,
@@ -580,6 +656,7 @@ export default {
       })
         .then(() => {
           alert('Bike updated')
+          this.initMap()
         })
         .catch((error) => {
           console.error(error)
@@ -620,6 +697,16 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    initMap () {
+      VueGoogleMaps.loaded.then(() => {
+        this.map = new VueGoogleMaps.gmapApi.maps.Map(document.getElementById('map'))
+      })
+    },
+    toggleInfoWindow (bike) {
+      this.infoPosition = {lat: bike.latitude, lng: bike.longitude}
+      this.bike = bike
+      this.infoOpened = true
     }
   },
   created () {

@@ -11,11 +11,15 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.11.1",
     "axios": "^0.21.0",
     "bootstrap-vue": "^2.18.1",
+    "google-maps-api-loader": "^1.1.1",
     "jquery": "^3.5.1",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue2-gmap-custom-marker": "^6.0.0",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -59,10 +63,12 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
+    "vuex": "^3.6.0",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "x5-gmaps": "^0.3.30"
   },
   "engines": {
     "node": ">= 6.0.0",

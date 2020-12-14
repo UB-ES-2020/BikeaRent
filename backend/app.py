@@ -12,8 +12,12 @@ from resources.booking import Booking, BookingList
 from decouple import config as config_decouple
 from config import config
 
+
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
+
+# app.config['GOOGLEMAPS_KEY'] = "AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4"
+# GoogleMaps(app, key="AIzaSyD_8CnauFmnvQZ1zuOhY4SGIdwc3MoBbO4")
 
 environment = config['development']
 if config_decouple('PRODUCTION', cast=bool, default=False):
@@ -45,6 +49,8 @@ api.add_resource(Login, '/login')
 
 api.add_resource(Booking, '/rent', '/rent/<int:userid>')
 api.add_resource(BookingList, '/rents')
+
+# api.add_resource(Map, '/map')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
