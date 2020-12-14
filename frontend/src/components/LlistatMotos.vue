@@ -36,6 +36,9 @@
     <div v-if="user.type == 3" >
       <button type="button" class="btn btn-warning" @click="addEmpl=true" style="position: absolute; right: 10%; background-color: #ff00ff">Add Employee</button>
     </div>
+    <div v-if="user.type == 0">
+      <button type="button" class="btn btn-warning" @click="deregister=true" style="position: absolute; right: 2%; background-color: #ff00ff">Deregister</button>
+    </div>
     <table>
       <thead style="border-bottom: 5px solid #000;">
         <tr>
