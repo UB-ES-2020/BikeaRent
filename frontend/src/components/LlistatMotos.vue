@@ -485,8 +485,8 @@ export default {
     },
     lockBike () {
       const parameters = {
-        user_id: this.user.id,
-        bike_id: this.bike.id
+        userid: this.user.id,
+        bikeid: this.bike.id
       }
 
       const path = 'https://bike-a-rent.herokuapp.com/rent'
@@ -501,7 +501,7 @@ export default {
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
-          alert('Sorry, you cannot take this bike. Try again')
+          alert('Sorry, there was an error when finalizing rent. Try again')
         })
     },
     addBike () {
