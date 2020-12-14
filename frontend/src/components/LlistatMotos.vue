@@ -14,7 +14,7 @@
 
 <template>
 <div id="app">
-  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva">
+  <div v-if="!navigation & !active & !bikeAdding & !bikeUpdate & !addEmpl & !finReserva & !deregister">
     <nav class="navbar navbar-dark">
       <h2 style="color: #d3d9df">BaikaRent</h2>
       <h4 v-if="user.type == 1" style="margin: 0; color: #9f40bf">Support account</h4>
@@ -81,6 +81,12 @@
           <h5 class="mt-2">Plate: {{bike.plate}}</h5>
       </div>
     </b-modal>
+  </div>
+  <div v-if="deregister">
+    <h2> Deregister</h2>
+    <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="deregister=false">Close</button>
+    <h3> Make sure you want to unregister, you will not be able to recover the account!</h3>
+    <button class="btn btn-danger" @click="deregisterAcc">Deregister</button>
   </div>
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
@@ -161,6 +167,7 @@
       <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
     </b-card>
   </div>
+
   <div v-if="bikeAdding">
     <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
@@ -422,7 +429,8 @@ export default {
       bikeAdding: false,
       bikeUpdate: false,
       finReserva: false,
-      userUpdate: false
+      userUpdate: false,
+      deregister: false
     }
   },
   methods: {
@@ -436,6 +444,20 @@ export default {
         })
         .catch((error) => {
           console.error(error)
+        })
+    },
+    deregisterAcc () {
+      const path = 'https://bike-a-rent.herokuapp.com/account/' + this.user.username
+      axios.delete(path)
+        .then((res) => {
+          alert('Account deleted!')
+          this.deregister = false
+          this.$router.replace({path: '/'})
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Could not delete the account!')
+          alert(error)
         })
     },
     submitEmployee () {
