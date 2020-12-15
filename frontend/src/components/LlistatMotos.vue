@@ -412,6 +412,10 @@
           @click="toggleInfoWindow(bike)"
           :icon="markerOptions"
         ></gmap-marker>
+        <gmap-marker
+        :position="this.myCoordinates"
+        >
+        </gmap-marker>
        </gmap-map>
     </div>
   </div>
@@ -508,7 +512,7 @@ export default {
       return 'width: 100%; height: ' + h + 'px'
     },
     center: function () {
-      return { lat: 41.38879, lng: 2.15899 }
+      return this.myCoordinates
     }
   },
   mounted () {
