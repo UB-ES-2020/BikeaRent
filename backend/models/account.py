@@ -20,7 +20,7 @@ class AccountsModel(db.Model):
     dataEndDrivePermission = db.Column(db.String(10), nullable=False)
     status = db.Column(db.Boolean, nullable=False)  # true = active, false = notActive
     creditCard = db.Column(db.String(30), unique=True, nullable=False)
-    availableMoney = db.Column(db.Integer, nullable=False)
+    availableMoney = db.Column(db.Float, nullable=False)
     type = db.Column(db.Integer, nullable=False)  # 0=user, 1 = support, 2= technical, 3 = admi
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
