@@ -375,12 +375,12 @@
           :position="infoPosition"
           :opened="infoOpened"
           @closeclick="infoOpened=false">
-          <div>
-            <p>Id: {{bike.id}}</p>
-            <p>Plate: {{bike.plate}}</p>
-            <p>Charge: {{bike.charge}}</p>
-            <p>Model: {{bike.model}}</p>
-            <button class="btn btn-danger"  @click="takeBike(bike)">Take Bike</button>
+          <div style="font-family: 'Verdana'; text-align: left;">
+            <p style="font-family: 'Arial Black';font-size: 18px;">{{bike.model}} {{bike.plate}}</p>
+            <p></p>
+            <p> Id    #{{bike.id}}</p>
+            <p><img src="../assets/flash.png"> {{bike.charge}}%</p>
+            <button class="btn btn-danger" style="width: 100%;" @click="takeBike(bike)">Take Bike</button>
           </div>
         </gmap-info-window>
         <gmap-marker
