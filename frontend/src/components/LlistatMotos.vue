@@ -234,7 +234,7 @@
     <b-card style="width:250px; margin:auto">
       <h4>Total time: {{this.reserva.totalTimeUsed}}</h4>
       <h4>Total cost: {{this.reserva.price}}</h4>
-      <button class="btn btn-success" @click="finReserva=false">OK</button>
+      <button class="btn btn-success" @click="finReserva=false, showMap = true">OK</button>
       <h5>Enjoy your day!</h5>
     </b-card>
   </div>
@@ -464,8 +464,8 @@ export default {
         }
       ],
       reserva: {
-        totalTimeUsed: 0,
-        price: 0
+        totalTimeUsed: null,
+        price: null
       },
       navigation: false,
       active: false,
@@ -595,13 +595,11 @@ export default {
         userid: this.user.id,
         bikeid: this.bike.id
       }
-
       const path = 'https://bike-a-rent.herokuapp.com/rent'
       axios.put(path, parameters)
         .then((res) => {
-          this.reserva.totalTimeUsed = res.data.totalTimeUsed
-          this.reserva.price = res.data.price
-          alert(this.reserva.price)
+          this.reserva.totalTimeUsed = res.data.finalized_rent.totalTimeUsed
+          this.reserva.price = res.data.finalized_rent.price
           this.getAccount() // actualitzem diners user
           this.active = false
           this.finReserva = true
