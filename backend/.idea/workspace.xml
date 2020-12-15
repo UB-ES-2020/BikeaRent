@@ -19,11 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e89715f-4739-4cf3-90e1-6f94a6d1e1f3" name="Default Changelist" comment="">
+    <list default="true" id="0e89715f-4739-4cf3-90e1-6f94a6d1e1f3" name="Default Changelist" comment="imports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.db" beforeDir="false" afterPath="$PROJECT_DIR$/data.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_getMoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_getMoto.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_postMoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_postMoto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +127,18 @@
       <workItem from="1606865904836" duration="4513000" />
       <workItem from="1606871404916" duration="831000" />
       <workItem from="1606873951818" duration="2719000" />
+      <workItem from="1607278106755" duration="4094000" />
+      <workItem from="1607376030567" duration="18129000" />
+      <workItem from="1608035216874" duration="591000" />
     </task>
+    <task id="LOCAL-00001" summary="imports">
+      <created>1607278284163</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1607278284163</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +156,10 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="imports" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="326" y="15" key="#backend" timestamp="1606817438975">
       <screen x="0" y="0" width="1280" height="800" />
@@ -160,28 +173,28 @@
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="501" y="216" key="FileChooserDialogImpl/0.0.1440.920@0.0.1440.920" timestamp="1606670560639" />
-    <state width="1238" height="100" key="GridCell.Tab.0.bottom" timestamp="1606877136518">
+    <state width="1238" height="208" key="GridCell.Tab.0.bottom" timestamp="1607888498692">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="100" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1606877136518" />
+    <state width="1238" height="208" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1607888498692" />
     <state width="1397" height="242" key="GridCell.Tab.0.bottom/0.0.1440.920@0.0.1440.920" timestamp="1606766134938" />
     <state width="1238" height="212" key="GridCell.Tab.0.bottom/0.23.1280.716@0.23.1280.716" timestamp="1606849126304" />
-    <state width="1238" height="100" key="GridCell.Tab.0.center" timestamp="1606877136515">
+    <state width="1238" height="208" key="GridCell.Tab.0.center" timestamp="1607888498688">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="100" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1606877136515" />
+    <state width="1238" height="208" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1607888498688" />
     <state width="1397" height="242" key="GridCell.Tab.0.center/0.0.1440.920@0.0.1440.920" timestamp="1606766134938" />
     <state width="1238" height="212" key="GridCell.Tab.0.center/0.23.1280.716@0.23.1280.716" timestamp="1606849126296" />
-    <state width="1238" height="100" key="GridCell.Tab.0.left" timestamp="1606877136513">
+    <state width="1238" height="208" key="GridCell.Tab.0.left" timestamp="1607888498680">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="100" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1606877136513" />
+    <state width="1238" height="208" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1607888498680" />
     <state width="1397" height="242" key="GridCell.Tab.0.left/0.0.1440.920@0.0.1440.920" timestamp="1606766134937" />
     <state width="1238" height="212" key="GridCell.Tab.0.left/0.23.1280.716@0.23.1280.716" timestamp="1606849126284" />
-    <state width="1238" height="100" key="GridCell.Tab.0.right" timestamp="1606877136517">
+    <state width="1238" height="208" key="GridCell.Tab.0.right" timestamp="1607888498691">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="100" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1606877136517" />
+    <state width="1238" height="208" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1607888498691" />
     <state width="1397" height="242" key="GridCell.Tab.0.right/0.0.1440.920@0.0.1440.920" timestamp="1606766134938" />
     <state width="1238" height="212" key="GridCell.Tab.0.right/0.23.1280.716@0.23.1280.716" timestamp="1606849126301" />
     <state width="1238" height="220" key="GridCell.Tab.1.bottom" timestamp="1606868015744">
@@ -204,10 +217,10 @@
     </state>
     <state width="1238" height="220" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1606868015743" />
     <state width="1238" height="220" key="GridCell.Tab.1.right/0.23.1280.716@0.23.1280.716" timestamp="1606867917525" />
-    <state x="240" y="140" key="Vcs.Push.Dialog.v2" timestamp="1606873999108">
+    <state x="240" y="140" key="Vcs.Push.Dialog.v2" timestamp="1607278292816">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state x="240" y="140" key="Vcs.Push.Dialog.v2/0.0.1280.800@0.0.1280.800" timestamp="1606873999108" />
+    <state x="240" y="140" key="Vcs.Push.Dialog.v2/0.0.1280.800@0.0.1280.800" timestamp="1607278292816" />
     <state x="428" y="321" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606876314218">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
@@ -216,6 +229,6 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/backend$app.coverage" NAME="app Coverage Results" MODIFIED="1606765916324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/backend$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1606670364382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/backend$backend.coverage" NAME="backend Coverage Results" MODIFIED="1606877136490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/backend$backend.coverage" NAME="backend Coverage Results" MODIFIED="1607888498616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

@@ -3,3 +3,4 @@
 *.o
 .idea
 /migrations/
+frontend/node_modules/
