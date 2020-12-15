@@ -91,10 +91,10 @@
     </b-modal>
   </div>
   <div v-if="deregister">
-    <b-modal title="Deregister" id="my-modal" hide-footer>
-      Make sure you want to unregister, you will not be able to recover the account!
+    <b-modal title="Delete account" id="my-modal" hide-footer>
+      Make sure you want to delete the account, you will not be able to recover it!
       <br>
-      <b-button @click="deregisterAcc" variant="danger">Deregister</b-button>
+      <b-button @click="deregisterAcc" variant="danger">Delete</b-button>
     </b-modal>
   </div>
   <div v-if="addEmpl">
@@ -310,7 +310,7 @@
           <h5 v-if="myCoordinates.lat!=0 || myCoordinates.lng!=0">Location: {{myCoordinates.lat}},{{myCoordinates.lng}} </h5>
       </div>
       <b-button class="btn btn-success" @click="userUpdate=true">Edit User</b-button>
-      <b-button v-if="user.type == 0" v-b-modal.my-modal @click="deregister=true" variant="danger">Deregister</b-button>
+      <b-button v-if="user.type == 0" v-b-modal.my-modal @click="deregister=true" variant="danger">Delete account</b-button>
     </b-modal>
   </div>
   <div v-if="userUpdate">
