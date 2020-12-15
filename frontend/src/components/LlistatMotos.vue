@@ -22,20 +22,20 @@
       <h5 v-if="user.type == 2" style="text-align: center; color: #f6a90f">Technician account</h5>
       <h5 v-if="user.type == 3" style="text-align:center; color: #ff00ff">Admin account</h5>
       /*<h6 style="margin-left: 3px; color: #d3d9df">{{this.user.username}}</h6>*/
-      <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney}} €</h6>
+      <h6 v-if="user.type == 0 || user.type == 3" style="color: #d3d9df">{{this.user.availableMoney.toFixed(2)}} €</h6>
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent" style="text-align: right; height:50px">
         <ul class="navbar-nav ml-auto" style="size: 20px;  float:right">
           <li v-if="user.type == 3" class="nav-item" >
-            <button type="button" class="btn btn-warning" @click="addEmpl=true" style="color:white; background-color: #ff00ff">Add Employee</button>
+            <button type="button" class="btn btn-warning" @click="addEmpl=true, showMap=false" style="color:white; background-color: #ff00ff">Add Employee</button>
           </li>
           <li v-if="user.type == 1" class="nav-item">
-            <button style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true">Add Bike</button>
+            <button style="background-color:#9f40bf; color:white" class="btn btn-outline-dark"  @click="bikeAdding=true, showMap=false">Add Bike</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-primary" @click="showInfoUser()">Info User</button>
+            <button class="btn btn-primary" @click="showInfoUser">Info User</button>
           </li>
           <li class="nav-item">
             <button type="button" class="btn btn-outline-light" @click="logout" >Logout</button>
@@ -174,13 +174,13 @@
           >
         </b-form-input>
       </b-form-group>
-      <button class="btn btn-danger" @click="submitEmployee, showMap=true, showTable=false">Add employee</button>
+      <button class="btn btn-danger" @click="submitEmployee">Add employee</button>
     </b-card>
   </div>
   <div v-if="bikeAdding">
     <h3> Add a bike in the system</h3>
     <b-card style="width:250px; margin:auto">
-      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false, showMap=true, showTable=true">Close</button>
+      <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="bikeAdding=false, showMap=true">Close</button>
       <b-form-group id="input-group-3" label="Model:" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -232,8 +232,8 @@
   <div v-if="finReserva">
     <h3>Rent details</h3>
     <b-card style="width:250px; margin:auto">
-      <h4>Total time: {{this.reserva.totalTimeUsed}}</h4>
-      <h4>Total cost: {{this.reserva.price}}</h4>
+      <h4>Total time: {{this.reserva.totalTimeUsed}} s </h4>
+      <h4>Total cost: {{this.reserva.price}} €</h4>
       <button class="btn btn-success" @click="finReserva=false, showMap = true">OK</button>
       <h5>Enjoy your day!</h5>
     </b-card>
@@ -310,8 +310,8 @@
           <h5 v-if="myCoordinates.lat==0 || myCoordinates.lng==0">Location: {{user.latitude}},{{user.longitude}}</h5>
           <h5 v-if="myCoordinates.lat!=0 || myCoordinates.lng!=0">Location: {{myCoordinates.lat}},{{myCoordinates.lng}} </h5>
       </div>
-      <b-button class="btn btn-success" @click="userUpdate=true">Edit User</b-button>
-      <b-button v-if="user.type == 0" v-b-modal.my-modal @click="deregister=true" variant="danger">Delete account</b-button>
+      <b-button class="btn btn-success" @click="showEditUser">Edit User</b-button>
+      <b-button v-if="user.type == 0" v-b-modal.my-modal @click="deregister=true, showMap=false" variant="danger">Delete account</b-button>
     </b-modal>
   </div>
   <div v-if="userUpdate">
@@ -403,7 +403,7 @@
             <p></p>
             <p> Id    #{{bike.id}}</p>
             <p><img src="../assets/flash.png"> {{bike.charge}}%</p>
-            <button class="btn btn-danger" style="width: 100%;" @click="takeBike(bike)">Take Bike</button>
+            <button v-if="user.type != 1" class="btn btn-danger" style="width: 100%;" @click="takeBike(bike)">Take Bike</button>
           </div>
         </gmap-info-window>
         <gmap-marker
@@ -435,8 +435,8 @@ export default {
       user: {
         id: 0,
         token: null,
-        username: 'Albert',
-        availableMoney: 69,
+        username: '',
+        availableMoney: 0,
         type: 0 // 0=user, 1=support, 2=technical, 3=admin
       },
       newUserForm: {
@@ -460,16 +460,7 @@ export default {
         plate: ''
       },
       supportLogged: true,
-      bikes: [
-        {
-          model: 'Vespa',
-          active: false,
-          charge: 90,
-          latitude: 909.87,
-          longitude: 789.09,
-          plate: 'Ola Soy una PlaTe'
-        }
-      ],
+      bikes: [],
       reserva: {
         totalTimeUsed: null,
         price: null
@@ -547,6 +538,8 @@ export default {
         })
     },
     submitEmployee () {
+      this.showMap = true
+      this.showTable = false
       const parameters = {
         firstname: this.newUserForm.firstname,
         surname: this.newUserForm.surname,
@@ -704,7 +697,13 @@ export default {
       document.getElementById('input-12').value = bike.plate
     },
     showInfoUser () {
+      this.showTable = false
       this.$bvModal.show('infoUser-modal')
+    },
+    showEditUser () {
+      this.$bvModal.hide('infoUser-modal')
+      this.userUpdate = true
+      this.showMap = false
     },
     logout () {
       this.$router.replace({path: '/'})
