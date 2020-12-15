@@ -38,12 +38,6 @@
             <button class="btn btn-primary" @click="showInfoUser()">Info User</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-success" @click="userUpdate=true">Edit User</button>
-          </li>
-          <li v-if="user.type == 0" class="nav-item">
-            <button type="button" class="btn btn-warning" @click="deregister=true" style="background-color: #ff00ff">Deregister</button>
-          </li>
-          <li class="nav-item">
             <button type="button" class="btn btn-outline-light" @click="logout" >Logout</button>
           </li>
         </ul>
@@ -66,8 +60,12 @@
     </table>
   </div>
   <div v-if="navigation">
-    <h3>Go to {{this.bike.latitude}}, {{ this.bike.longitude }} to unlock your bike.</h3>
-    <div> Once you ara next to the bike, press the Unlock button to start the renting</div>
+    <h5 style="text-justify: auto">Go to ({{this.bike.latitude}}, {{ this.bike.longitude }}) to unlock your bike.</h5>
+    <h5 v-if="this.myCoordinates.lat!=0 || this.myCoordinates.lng!=0" style="text-justify: auto">User location: ({{this.myCoordinates.lat}}, {{this.myCoordinates.lng}})</h5>
+    <h5 v-if="this.myCoordinates.lat==0 || this.myCoordinates.lng==0" style="text-justify: auto">User location: ({{user.latitude}}, {{user.longitude}})</h5>
+    <h5 v-if="this.myCoordinates.lat!=0 || this.myCoordinates.lng!=0" style="text-justify: auto"> Distance between user and bike: {{distanceKM(this.myCoordinates.lat,this.myCoordinates.lng)}}km</h5>
+    <h5 v-if="this.myCoordinates.lat==0 || this.myCoordinates.lng==0" style="text-justify: auto"> Distance between user and bike: {{distanceKM(user.latitude,user.longitude)}}km</h5>
+    <div> Once you are next to the bike, press the Unlock button to start the renting</div>
     <br>
     <button class="btn btn-info" @click="navigation=false, showMap=true">Cancel</button>
     <button class="btn btn-outline-danger" @click="unlockBike">Unlock Bike</button>
@@ -93,10 +91,11 @@
     </b-modal>
   </div>
   <div v-if="deregister">
-    <h2> Deregister</h2>
-    <button class="btn btn-outline-dark btn-sm" style="margin-block-end: 10px; position:absolute;top:0;right:0;" @click="deregister=false">Close</button>
-    <h3> Make sure you want to unregister, you will not be able to recover the account!</h3>
-    <button class="btn btn-danger" @click="deregisterAcc">Deregister</button>
+    <b-modal title="Deregister" id="my-modal" hide-footer>
+      Make sure you want to unregister, you will not be able to recover the account!
+      <br>
+      <b-button @click="deregisterAcc" variant="danger">Deregister</b-button>
+    </b-modal>
   </div>
   <div v-if="addEmpl">
     <h3> Add a new employee</h3>
@@ -291,7 +290,7 @@
     </b-card>
   </div>
   <div>
-    <b-modal id="infoUser-modal" hide-footer>
+    <b-modal id="infoUser-modal" hide-footer hide-backdrop>
       <template v-slot:modal-title>
         <h4 style="text-align: center">Info Usuari</h4>
       </template>
@@ -307,8 +306,11 @@
           <h5 class="mt-2">Data End Drive Permission: {{ user.dataEndDrivePermission }}</h5>
           <h5 class="mt-2">Credit Card: {{user.creditCard}}</h5>
           <h5 class="mt-2">Available Money: {{user.availableMoney}}</h5>
-          <h5>Location: {{user.latitude}},{{user.longitude}}</h5>
+          <h5 v-if="myCoordinates.lat==0 || myCoordinates.lng==0">Location: {{user.latitude}},{{user.longitude}}</h5>
+          <h5 v-if="myCoordinates.lat!=0 || myCoordinates.lng!=0">Location: {{myCoordinates.lat}},{{myCoordinates.lng}} </h5>
       </div>
+      <b-button class="btn btn-success" @click="userUpdate=true">Edit User</b-button>
+      <b-button v-if="user.type == 0" v-b-modal.my-modal @click="deregister=true" variant="danger">Deregister</b-button>
     </b-modal>
   </div>
   <div v-if="userUpdate">
@@ -490,6 +492,10 @@ export default {
           width: 0,
           height: -35
         }
+      },
+      myCoordinates: {
+        lat: 0,
+        lng: 0
       }
     }
   },
@@ -560,6 +566,16 @@ export default {
           alert('Could not create the account!')
           alert(error)
         })
+    },
+    // Distance
+    distanceKM (lat, lng) {
+      var R = 6371.0710
+      var rlat1 = lat * (Math.PI / 180)
+      var rlat2 = this.bike.latitude * (Math.PI / 180)
+      var difflat = rlat2 - rlat1
+      var difflon = (this.bike.longitude - lng) * (Math.PI / 180)
+      var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat / 2) * Math.sin(difflat / 2) + Math.cos(rlat1) * Math.cos(rlat2) * Math.sin(difflon / 2) * Math.sin(difflon / 2)))
+      return Math.round(d * 100) / 100
     },
     // Take a bike
     takeBike (bike) {
@@ -725,6 +741,15 @@ export default {
     this.user.username = this.$route.query.username
     this.user.token = this.$route.query.token
     this.getAccount()
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.myCoordinates.lat = position.coords.latitude
+        this.myCoordinates.lng = position.coords.longitude
+      },
+      error => {
+        console.log(error.message)
+      }
+    )
   }
 }
 </script>
