@@ -81,7 +81,7 @@ class BookingModel(db.Model):
                 timeUsed = book.endDate - startDate
                 timeUsed = timeUsed.total_seconds()
                 book.totalTimeUsed = int(timeUsed)
-                book.price = timeUsed * pricePerSecond
+                book.price = round(timeUsed * pricePerSecond, 2)
 
                 book.save_to_db()
 
