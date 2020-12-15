@@ -73,7 +73,6 @@
   <div v-if="active">
     <h1>Time is running!!</h1>
     <div> Once you have stoped the bike, press the Lock button to end the renting</div>
-    <button class="btn btn-primary" @click="cancelRent()">Cancel rental </button>
     <button class="btn btn-danger" @click="lockBike">Lock </button>
   </div>
   <div>
@@ -623,9 +622,6 @@ export default {
           console.error(error)
           alert('Sorry, there was an error when finalizing rent. Try again')
         })
-    },
-    cancelRent () {
-
     },
     addBike () {
       const path = 'https://bike-a-rent.herokuapp.com/bike'
